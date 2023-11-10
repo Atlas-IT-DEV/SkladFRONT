@@ -1,4 +1,3 @@
-import "./App.css";
 import { createHashRouter, RouterProvider } from "react-router-dom";
 
 import MainPage from "./pages/main_page";
@@ -10,6 +9,7 @@ const router = createHashRouter([
   {
     path: "/",
     element: <MainPage />,
+    errorElement: <NotFoundPage />,
   },
   {
     path: "/materials",
@@ -18,10 +18,6 @@ const router = createHashRouter([
   {
     path: "/login",
     element: <LoginPage />,
-  },
-  {
-    path: "/notfound",
-    element: <NotFoundPage />,
   },
 ]);
 
