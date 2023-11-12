@@ -15,8 +15,6 @@ const SideMenu = () => {
       bgImage={side_menu_back}
       minH="100vh"
       width="15%"
-      position="fixed"
-      top={0}
       minW="200px"
       paddingLeft="18px"
       paddingTop="20px"
