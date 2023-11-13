@@ -1,4 +1,4 @@
-import { VStack, Text, Image, HStack } from "@chakra-ui/react";
+import { VStack, Text, Image, HStack, Divider } from "@chakra-ui/react";
 import side_menu_back from "./../images/side_menu_back.jpg";
 import logo from "./../images/logo.svg";
 import design_sklad_logo from "./../images/design_sklad_logo.svg";
@@ -21,18 +21,9 @@ const SideMenu = () => {
       alignItems="flex-start"
     >
       <VStack alignItems="flex-start" paddingBottom={[10, 15]}>
-        <Image src={logo} />
-        <Text
-          textColor="#D3D2D2"
-          fontSize={[14, 16, 18, 20, 24]}
-          fontStyle="normal"
-          fontWeight="700"
-          lineHeight="normal"
-          textAlign="left"
-        >
-          Склады
-        </Text>
+        <Image src={logo} w={100} h={61} />
       </VStack>
+      <Divider orientation="horizontal" color="#CCC3C2" />
       <VStack alignItems="flex-start" paddingBottom={[10, 15]}>
         <HStack spacing="13px">
           <Image src={design_sklad_logo} />
@@ -79,17 +70,8 @@ const SideMenu = () => {
           </Text>
         </HStack>
       </VStack>
+      <Divider orientation="horizontal" color="#CCC3C2" />
       <VStack alignItems="flex-start" spacing={[4, 4, 4, 4, 5]}>
-        <Text
-          textColor="#D3D2D2"
-          fontSize={[14, 16, 18, 20, 24]}
-          fontStyle="normal"
-          fontWeight="700"
-          lineHeight="normal"
-          textAlign="left"
-        >
-          Пункты
-        </Text>
         <Text
           fontSize={[13, 13, 14, 15, 16]}
           fontStyle="normal"
