@@ -1,6 +1,10 @@
 import { extendTheme } from "@chakra-ui/react";
 
 const theme = extendTheme({
+  config:{
+    initialColorMode: "light",
+    useSystemColorMode: true,
+  },
   //варианты для различных компонентов
   components: {
     Text: {
@@ -21,4 +25,9 @@ const theme = extendTheme({
     main_yellow: "#FFBF00",
   },
 });
+const config = {
+  initialColorMode: "light",
+  useSystemColorMode: true,
+};
+
 export default theme;
