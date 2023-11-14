@@ -24,9 +24,13 @@ const SideMenu = () => {
         <Image src={logo} w={100} h={61} />
       </VStack>
       <Divider orientation="horizontal" color="#CCC3C2" />
-      <VStack alignItems="flex-start" paddingBottom={[10, 15]}>
+      <VStack
+        alignItems="flex-start"
+        paddingBottom={[10, 15]}
+        paddingTop={[10, 15]}
+      >
         <HStack spacing="13px">
-          <Image src={design_sklad_logo} />
+          <Image src={design_sklad_logo} color='white' />
           <Text
             fontSize={[13, 13, 14, 15, 16]}
             fontStyle="normal"
@@ -71,12 +75,18 @@ const SideMenu = () => {
         </HStack>
       </VStack>
       <Divider orientation="horizontal" color="#CCC3C2" />
-      <VStack alignItems="flex-start" spacing={[4, 4, 4, 4, 5]}>
+      <VStack
+        alignItems="flex-start"
+        spacing={[4, 4, 4, 4, 5]}
+        paddingBottom={[10, 15]}
+        paddingTop={[10, 15]}
+      >
         <Text
           fontSize={[13, 13, 14, 15, 16]}
           fontStyle="normal"
           fontWeight="700"
           textColor="#D3D2D2"
+          variant="side_menu_hover"
         >
           Товары
         </Text>
@@ -85,6 +95,7 @@ const SideMenu = () => {
           fontStyle="normal"
           fontWeight="700"
           textColor="#D3D2D2"
+          variant="side_menu_hover"
         >
           Поставщики
         </Text>
@@ -93,6 +104,7 @@ const SideMenu = () => {
           fontStyle="normal"
           fontWeight="700"
           textColor="#D3D2D2"
+          variant="side_menu_hover"
         >
           Материалы
         </Text>
@@ -101,6 +113,7 @@ const SideMenu = () => {
           fontStyle="normal"
           fontWeight="700"
           textColor="#D3D2D2"
+          variant="side_menu_hover"
         >
           Пермещение товаров
         </Text>
@@ -109,6 +122,7 @@ const SideMenu = () => {
           fontStyle="normal"
           fontWeight="700"
           textColor="#D3D2D2"
+          variant="side_menu_hover"
         >
           Остатки товаров
         </Text>
@@ -117,10 +131,12 @@ const SideMenu = () => {
           fontStyle="normal"
           fontWeight="700"
           textColor="#D3D2D2"
+          variant="side_menu_hover"
         >
           Уровни доступа
         </Text>
       </VStack>
+      <Divider orientation="horizontal" color="#CCC3C2" />
     </VStack>
   );
 };

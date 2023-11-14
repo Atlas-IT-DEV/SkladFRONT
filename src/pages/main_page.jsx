@@ -13,7 +13,7 @@ const MainPage = () => {
       {/* <Button onClick={toggleColorMode}>
         Toggle {colorMode === "light" ? "Dark" : "Light"}
       </Button> */}
-      <VStack padding={25} alignItems="flex-start">
+      <VStack padding={25} alignItems="flex-start" overflow="scroll">
         <Text
           color="#000"
           fontSize={[24, 26, 28, 32, 36]}
@@ -24,7 +24,6 @@ const MainPage = () => {
         >
           Главная страница
         </Text>
-        <EditModal />
         <MainInfo />
         <Recent />
       </VStack>

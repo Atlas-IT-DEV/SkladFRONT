@@ -16,7 +16,7 @@ import {
 } from "@chakra-ui/react";
 import useWindowDimensions from "../../hooks/window_dimensions";
 import React, { useRef } from "react";
-import styles from "./edit_modal.module.css";
+import theme from "../../theme";
 
 const EditModal = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -24,17 +24,13 @@ const EditModal = () => {
   const { height, width } = useWindowDimensions();
 
   const initialRef = useRef(null);
-  const finalRef = useRef(null);
-
-  const theme = extendTheme({
-    components: {},
-  });
+  const finalRef = useRef(null)
 
   return (
     <ChakraProvider theme={theme}>
       {/* <> */}
-      <Button onClick={onOpen} colorScheme="red" size="xs">
-        Open Modal
+      <Button onClick={onOpen} variant='menu_yellow'>
+        Редактировать
       </Button>
 
       <Modal
@@ -134,10 +130,10 @@ const EditModal = () => {
             </SimpleGrid>
           </ModalBody>
           <ModalFooter>
-            <Button colorScheme="red" onClick={onClose} mr={3}>
+            <Button variant='menu_red' onClick={onClose}>
               Отмена
             </Button>
-            <Button colorScheme="green" me={1}>
+            <Button variant='menu_yellow' me={1}>
               Сохранить
             </Button>
           </ModalFooter>

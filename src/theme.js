@@ -10,9 +10,31 @@ const theme = extendTheme({
     Text: {
       variants: {
         side_menu_hover: {
-          bg: "red.400",
+          color: "menu_gray",
           _hover: {
-            bg: "green.400",
+            color: "white",
+          },
+        },
+      },
+    },
+    Button: {
+      variants: {
+        menu_yellow: {
+          border: "2px solid",
+          borderColor: "main_yellow",
+          borderRadius: '0',
+          background: "transparent",
+          _hover: {
+            backgroundColor: "main_yellow",
+          },
+        },
+        menu_red: {
+          border: "2px solid",
+          borderColor: "main_red",
+          borderRadius: '0',
+          background: "transparent",
+          _hover: {
+            backgroundColor: "main_red",
           },
         },
       },
@@ -23,6 +45,7 @@ const theme = extendTheme({
     dark: "#333",
     light_dark: "#666",
     main_yellow: "#FFBF00",
+    main_red: '#FF0F00'
   },
 });
 
