@@ -1,25 +1,25 @@
 {
   "files": {
-    "main.css": "/static/css/main.e891532a.css",
-    "main.js": "/static/js/main.b6da346b.js",
-    "static/media/side_menu_back.jpg": "/static/media/side_menu_back.c5314621bf4cbd5164b0.jpg",
-    "static/media/logo.svg": "/static/media/logo.89d81ef216fbfdfe184472c6b5b090d4.svg",
-    "static/media/starbucks.svg": "/static/media/starbucks.0674db75ce254a655c59949a4d9b003d.svg",
-    "static/media/souvenirs_sklad_logo.svg": "/static/media/souvenirs_sklad_logo.423ad83438afabca55afac585757d398.svg",
-    "static/media/promote_sklad_logo.svg": "/static/media/promote_sklad_logo.b960b936e92639d0d06cd277db7f7983.svg",
-    "static/media/poligraphy_sklad_logo.svg": "/static/media/poligraphy_sklad_logo.e76d8317678b32984688a936da106ed8.svg",
-    "static/media/design_sklad_logo.svg": "/static/media/design_sklad_logo.c271037909bacaf718668a33099ac2c3.svg",
-    "static/media/moon.svg": "/static/media/moon.ab59245df96d0d105118ade3ae99b330.svg",
-    "static/media/bell-active.svg": "/static/media/bell-active.86b9e2eba58ba4d7d46050c924cf508c.svg",
-    "static/media/bell.svg": "/static/media/bell.04bef094ac65dafa79edd9877f700e47.svg",
-    "index.html": "/index.html",
-    "static/media/chevron-down.svg": "/static/media/chevron-down.9c39a3e442d9b7a38e84a73d19c29a71.svg",
-    "static/media/chevron-left.svg": "/static/media/chevron-left.79763c35872009a8020c686c4104b298.svg",
-    "main.e891532a.css.map": "/static/css/main.e891532a.css.map",
-    "main.b6da346b.js.map": "/static/js/main.b6da346b.js.map"
+    "main.css": "./static/css/main.e891532a.css",
+    "main.js": "./static/js/main.582809bc.js",
+    "static/media/side_menu_back.jpg": "./static/media/side_menu_back.c5314621bf4cbd5164b0.jpg",
+    "static/media/logo.svg": "./static/media/logo.89d81ef216fbfdfe184472c6b5b090d4.svg",
+    "static/media/starbucks.svg": "./static/media/starbucks.0674db75ce254a655c59949a4d9b003d.svg",
+    "static/media/souvenirs_sklad_logo.svg": "./static/media/souvenirs_sklad_logo.423ad83438afabca55afac585757d398.svg",
+    "static/media/promote_sklad_logo.svg": "./static/media/promote_sklad_logo.b960b936e92639d0d06cd277db7f7983.svg",
+    "static/media/poligraphy_sklad_logo.svg": "./static/media/poligraphy_sklad_logo.e76d8317678b32984688a936da106ed8.svg",
+    "static/media/design_sklad_logo.svg": "./static/media/design_sklad_logo.c271037909bacaf718668a33099ac2c3.svg",
+    "static/media/moon.svg": "./static/media/moon.ab59245df96d0d105118ade3ae99b330.svg",
+    "static/media/bell-active.svg": "./static/media/bell-active.86b9e2eba58ba4d7d46050c924cf508c.svg",
+    "static/media/bell.svg": "./static/media/bell.04bef094ac65dafa79edd9877f700e47.svg",
+    "index.html": "./index.html",
+    "static/media/chevron-down.svg": "./static/media/chevron-down.9c39a3e442d9b7a38e84a73d19c29a71.svg",
+    "static/media/chevron-left.svg": "./static/media/chevron-left.79763c35872009a8020c686c4104b298.svg",
+    "main.e891532a.css.map": "./static/css/main.e891532a.css.map",
+    "main.582809bc.js.map": "./static/js/main.582809bc.js.map"
   },
   "entrypoints": [
     "static/css/main.e891532a.css",
-    "static/js/main.b6da346b.js"
+    "static/js/main.582809bc.js"
   ]
 }
