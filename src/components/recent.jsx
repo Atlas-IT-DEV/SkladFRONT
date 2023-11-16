@@ -2,21 +2,25 @@ import {
   Table,
   Thead,
   Tbody,
-  Tfoot,
   Tr,
   Th,
   Td,
-  TableCaption,
   TableContainer,
   VStack,
   Text,
   Button,
 } from "@chakra-ui/react";
-import EditModal from "./editModal/edit_modal";
+import { useState } from "react";
+import MyModal from "./myModal/my_modal";
+import ProductEditFrom from "./product_edit_form";
 
 const Recent = () => {
+  const [visibleModal, setVisibleModal] = useState(false);
   return (
     <VStack>
+      <MyModal visibleModal={visibleModal} setVisibleModal={setVisibleModal}>
+        <ProductEditFrom setVisibleModal={setVisibleModal} />
+      </MyModal>
       <Text></Text>
       <TableContainer width="100%">
         <Table variant="striped" width="100%" justifyContent="left">
@@ -40,7 +44,12 @@ const Recent = () => {
               <Td>холст</Td>
               <Td>холст</Td>
               <Td>
-                <EditModal />
+                <Button
+                  onClick={() => setVisibleModal(true)}
+                  variant="menu_yellow"
+                >
+                  Редактировать
+                </Button>
               </Td>
             </Tr>
             <Tr>
@@ -51,7 +60,12 @@ const Recent = () => {
               <Td>холст</Td>
               <Td>холст</Td>
               <Td>
-                <EditModal />
+                <Button
+                  onClick={() => setVisibleModal(true)}
+                  variant="menu_yellow"
+                >
+                  Редактировать
+                </Button>
               </Td>
             </Tr>
             <Tr>
@@ -62,7 +76,12 @@ const Recent = () => {
               <Td>холст</Td>
               <Td></Td>
               <Td>
-                <EditModal />
+                <Button
+                  onClick={() => setVisibleModal(true)}
+                  variant="menu_yellow"
+                >
+                  Редактировать
+                </Button>
               </Td>
             </Tr>
             <Tr>
@@ -73,7 +92,12 @@ const Recent = () => {
               <Td></Td>
               <Td></Td>
               <Td>
-                <EditModal />
+                <Button
+                  onClick={() => setVisibleModal(true)}
+                  variant="menu_yellow"
+                >
+                  Редактировать
+                </Button>
               </Td>
             </Tr>
           </Tbody>
