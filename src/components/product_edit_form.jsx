@@ -356,11 +356,11 @@ const ProductEditFrom = (props) => {
             })}
           </SimpleGrid>
           <Flex justifyContent="flex-end">
-            <Button onClick={onClose} colorScheme="red" mr={3}>
+            <Button variant="menu_red" onClick={onClose} mr={3}>
               Отмена
             </Button>
             <Button
-              colorScheme="green"
+              variant="menu_yellow"
               onClick={() => setIsSubmit(true)}
               type="submit"
               me={1}

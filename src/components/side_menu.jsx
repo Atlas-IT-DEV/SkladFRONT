@@ -30,7 +30,7 @@ const SideMenu = () => {
         paddingTop={[10, 15]}
       >
         <HStack spacing="13px">
-          <Image src={design_sklad_logo} color='white' />
+          <Image src={design_sklad_logo} color="white" />
           <Text
             fontSize={[13, 13, 14, 15, 16]}
             fontStyle="normal"
