@@ -12,7 +12,7 @@ const theme = extendTheme({
         side_menu_hover: {
           color: "menu_gray",
           _hover: {
-            color: "white",
+            color: "main_yellow",
           },
         },
       },

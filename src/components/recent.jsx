@@ -19,7 +19,7 @@ const Recent = () => {
     <VStack>
       <Text></Text>
       <TableContainer width="100%">
-        <Table variant="simple" width="100%" justifyContent="left">
+        <Table variant="striped" width="100%" justifyContent="left">
           <Thead>
             <Th>Недавнее</Th>
             <Th>
@@ -33,53 +33,48 @@ const Recent = () => {
             justifySelf="left"
           >
             <Tr>
+              <Td>холст</Td>
+              <Td>холст</Td>
+              <Td>холст</Td>
+              <Td>холст</Td>
+              <Td>холст</Td>
+              <Td>холст</Td>
               <Td>
                 <EditModal />
               </Td>
-              <Td>1.</Td>
-
-              <Td>холст</Td>
-              <Td>холст</Td>
-              <Td>холст</Td>
-              <Td>холст</Td>
-              <Td>холст</Td>
-              <Td>холст</Td>
             </Tr>
             <Tr>
+              <Td>холст</Td>
+              <Td>холст</Td>
+              <Td>холст</Td>
+              <Td>холст</Td>
+              <Td>холст</Td>
+              <Td>холст</Td>
               <Td>
                 <EditModal />
               </Td>
-              <Td>2.</Td>
-
-              <Td>холст</Td>
-              <Td>холст</Td>
-              <Td>холст</Td>
-              <Td>холст</Td>
-              <Td>холст</Td>
-              <Td>холст</Td>
             </Tr>
             <Tr>
+              <Td>холст</Td>
+              <Td>холст</Td>
+              <Td>холст</Td>
+              <Td>холст</Td>
+              <Td>холст</Td>
+              <Td></Td>
               <Td>
                 <EditModal />
               </Td>
-              <Td>3.</Td>
-
-              <Td>холст</Td>
-              <Td>холст</Td>
-              <Td>холст</Td>
-              <Td>холст</Td>
-              <Td>холст</Td>
             </Tr>
             <Tr>
+              <Td>холст</Td>
+              <Td>холст</Td>
+              <Td>холст</Td>
+              <Td>холст</Td>
+              <Td></Td>
+              <Td></Td>
               <Td>
                 <EditModal />
               </Td>
-              <Td>4.</Td>
-
-              <Td>холст</Td>
-              <Td>холст</Td>
-              <Td>холст</Td>
-              <Td>холст</Td>
             </Tr>
           </Tbody>
         </Table>
