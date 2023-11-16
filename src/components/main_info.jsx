@@ -1,21 +1,15 @@
 import {
   VStack,
-  Stack,
   Text,
   Card,
   CardHeader,
   Heading,
-  Box,
-  StackDivider,
   CardBody,
 } from "@chakra-ui/react";
 
 const MainInfo = () => {
   return (
-    <VStack
-      alignItems="flex-start"
-      width="100%"
-    >
+    <VStack alignItems="flex-start" width="100%">
       <Card>
         <CardHeader>
           <Heading
