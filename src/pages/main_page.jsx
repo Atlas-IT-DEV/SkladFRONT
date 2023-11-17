@@ -10,7 +10,7 @@ const MainPage = () => {
     <Stack direction={"row"} minH="100vh" spacing="0">
       <SideMenu />
       <VStack>
-        <Header />
+        <Header title="Главная" />
         <VStack padding={25} alignItems="flex-start" overflow="scroll">
           <Text
             color="#000"
