@@ -13,6 +13,7 @@ import React, { useState } from "react";
 
 import { useFormik } from "formik";
 import * as Yup from "yup";
+import usePropertyValidation from "../hooks/property_validation";
 
 const validationSchema = Yup.object().shape({
   name: Yup.string()
@@ -74,14 +75,6 @@ const ProductEditFrom = (props) => {
     ],
   });
 
-  // Состояние для отслеживания валидации свойств listProperties
-  const [listPropertiesValidation, setListPropertiesValidation] = useState([
-    true,
-    true,
-    true,
-    false,
-  ]);
-
   // Состояние, которое говорит о том нажимали уже на кнопку сохранения или нет
   // нужна, чтобы подсвечивать красным поля не прошедшие воалидацию
   // это нужно для listProperties, для заданных свойств продукта используется Formik
@@ -98,84 +91,6 @@ const ProductEditFrom = (props) => {
     props.setVisibleModal(false);
   };
 
-  // Функция для смены статуса валидации у свойства в массиве listProperties, notation в данном случае значение false или true
-  const helperSetListPropertiesValidation = (propertyIndex, notation) => {
-    listPropertiesValidation[propertyIndex] = notation;
-    setListPropertiesValidation(listPropertiesValidation);
-    // Оставил, так как мб будем делать не по индексу а по какому-нибудь идентификатору
-    // тогда этот код будет полезен
-
-    // setListPropertiesValidation(
-    //   listPropertiesValidation?.map((this_notation, index) => {
-    //     if (propertyIndex === index) {
-    //       return notation;
-    //     }
-    //     return this_notation;
-    //   })
-    // );
-  };
-
-  // Проверка на заполненность для listProperties
-  const emptyValidation = (value, propertyIndex) => {
-    if (value === "") {
-      helperSetListPropertiesValidation(propertyIndex, false);
-    } else {
-      helperSetListPropertiesValidation(propertyIndex, true);
-    }
-  };
-
-  const doubleСhangeability = (value, propertyIndex) => {
-    const validated = value.match(/^(\d*\.{0,1}\d{0,2}$)/);
-    if (validated && value[0] !== "0") {
-      emptyValidation(value, propertyIndex);
-      return true;
-    }
-    emptyValidation(value, propertyIndex);
-    return false;
-  };
-
-  const integerСhangeability = (value, propertyIndex) => {
-    const validated = value.match(/^(\d*$)/);
-    if (validated && value[0] !== "0") {
-      emptyValidation(value, propertyIndex);
-      return true;
-    }
-    emptyValidation(value, propertyIndex);
-    return false;
-  };
-
-  // Здесь задаётся то каким образом доллжно проверяться свойство с определённым типом
-  const propertycСhangeability = (value, propertyIndex, type) => {
-    switch (type) {
-      case "string":
-        emptyValidation(value, propertyIndex);
-        return true;
-        break;
-      case "double":
-        return doubleСhangeability(value, propertyIndex);
-        break;
-      case "integer":
-        return integerСhangeability(value, propertyIndex);
-        break;
-      default:
-        return false;
-        break;
-    }
-  };
-
-  // Изменение значения у свойства
-  const setProperty = (value, propertyIndex, type) => {
-    if (propertycСhangeability(value, propertyIndex, type)) {
-      let updatedProperties = product.listProperties?.map((property, index) => {
-        if (propertyIndex === index) {
-          return { ...property, value: value };
-        }
-        return property;
-      });
-      setProduct({ ...product, listProperties: updatedProperties });
-    }
-  };
-
   // Изменение для поля с деньгами
   const moneyСhangeability = (event) => {
     const validated = event.target.value.match(/^(\d*\.{0,1}\d{0,2}$)/);
@@ -187,12 +102,30 @@ const ProductEditFrom = (props) => {
     }
   };
 
+  // Хук для валидации и изменения свойств, сейчас внутри хука объявлен массив булевских переменных,
+  // который обозначает какое поле проходит валидацию, а какое нет, в будущем, чтобы задать этот массив самому нужно воспользоваться
+  // setListPropertiesValidation
+  const [
+    propertycСhangeability,
+    listPropertiesValidation,
+    setListPropertiesValidation,
+  ] = usePropertyValidation();
+
+  // Изменение значения у свойства
+  const setProperty = (value, propertyIndex, type) => {
+    if (propertycСhangeability(value, propertyIndex, type)) {
+      product.listProperties[propertyIndex] = {
+        ...product.listProperties[propertyIndex],
+        value: value,
+      };
+      setProduct({ ...product, listProperties: product.listProperties });
+    }
+  };
+
   const formik = useFormik({
     initialValues: initialization(),
     validationSchema: validationSchema,
     onSubmit: (values) => {
-      console.log(listPropertiesValidation.includes(false));
-      console.log(listPropertiesValidation);
       if (!listPropertiesValidation.includes(false)) {
         alert(
           JSON.stringify(
