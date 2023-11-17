@@ -100,14 +100,19 @@ const ProductEditFrom = (props) => {
 
   // Функция для смены статуса валидации у свойства в массиве listProperties, notation в данном случае значение false или true
   const helperSetListPropertiesValidation = (propertyIndex, notation) => {
-    setListPropertiesValidation(
-      listPropertiesValidation?.map((this_notation, index) => {
-        if (propertyIndex === index) {
-          return notation;
-        }
-        return this_notation;
-      })
-    );
+    listPropertiesValidation[propertyIndex] = notation;
+    setListPropertiesValidation(listPropertiesValidation);
+    // Оставил, так как мб будем делать не по индексу а по какому-нибудь идентификатору
+    // тогда этот код будет полезен
+
+    // setListPropertiesValidation(
+    //   listPropertiesValidation?.map((this_notation, index) => {
+    //     if (propertyIndex === index) {
+    //       return notation;
+    //     }
+    //     return this_notation;
+    //   })
+    // );
   };
 
   // Проверка на заполненность для listProperties
