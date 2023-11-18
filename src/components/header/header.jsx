@@ -8,7 +8,7 @@ import starbucks from "../../images/starbucks.svg";
 import styles from "./header.module.css";
 import { useState } from "react";
 
-const Header = () => {
+const Header = ({ title }) => {
   const { colorMode, toggleColorMode } = useColorMode();
   const [bellActive, setBellActive] = useState(false);
 
@@ -19,12 +19,18 @@ const Header = () => {
       height="50px"
       width="100%"
     >
-      <Image
-        className={styles.Header__Icon}
-        src={chevronLeft}
-        w="24px"
-        h="24px"
-      />
+      <HStack spacing="16px" ps="13px">
+        <Image
+          className={styles.Header__Icon}
+          src={chevronLeft}
+          w="24px"
+          h="24px"
+        />
+        <Text fontSize="14px" fontStyle="normal" fontWeight="400">
+          {title}
+        </Text>
+      </HStack>
+
       <HStack spacing="20px" pr="10px">
         {/* <Image
           src={moon}
