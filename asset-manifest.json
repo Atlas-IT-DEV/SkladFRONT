@@ -1,8 +1,8 @@
 {
   "files": {
     "main.css": "./static/css/main.e891532a.css",
-    "main.js": "./static/js/main.582809bc.js",
-    "static/media/side_menu_back.jpg": "./static/media/side_menu_back.c5314621bf4cbd5164b0.jpg",
+    "main.js": "./static/js/main.9fc26703.js",
+    "static/media/background.png": "./static/media/background.28e996d39ccd1fb6a551.png",
     "static/media/logo.svg": "./static/media/logo.89d81ef216fbfdfe184472c6b5b090d4.svg",
     "static/media/starbucks.svg": "./static/media/starbucks.0674db75ce254a655c59949a4d9b003d.svg",
     "static/media/souvenirs_sklad_logo.svg": "./static/media/souvenirs_sklad_logo.423ad83438afabca55afac585757d398.svg",
@@ -10,16 +10,19 @@
     "static/media/poligraphy_sklad_logo.svg": "./static/media/poligraphy_sklad_logo.e76d8317678b32984688a936da106ed8.svg",
     "static/media/design_sklad_logo.svg": "./static/media/design_sklad_logo.c271037909bacaf718668a33099ac2c3.svg",
     "static/media/moon.svg": "./static/media/moon.ab59245df96d0d105118ade3ae99b330.svg",
+    "static/media/delete.svg": "./static/media/delete.0a732c6ff96669024052c85f169de214.svg",
     "static/media/bell-active.svg": "./static/media/bell-active.86b9e2eba58ba4d7d46050c924cf508c.svg",
     "static/media/bell.svg": "./static/media/bell.04bef094ac65dafa79edd9877f700e47.svg",
     "index.html": "./index.html",
+    "static/media/up.svg": "./static/media/up.e196b72e47ab38b5f727ae88581aa342.svg",
+    "static/media/edit.svg": "./static/media/edit.501d39755b8a5032112e380fc46313c0.svg",
     "static/media/chevron-down.svg": "./static/media/chevron-down.9c39a3e442d9b7a38e84a73d19c29a71.svg",
     "static/media/chevron-left.svg": "./static/media/chevron-left.79763c35872009a8020c686c4104b298.svg",
     "main.e891532a.css.map": "./static/css/main.e891532a.css.map",
-    "main.582809bc.js.map": "./static/js/main.582809bc.js.map"
+    "main.9fc26703.js.map": "./static/js/main.9fc26703.js.map"
   },
   "entrypoints": [
     "static/css/main.e891532a.css",
-    "static/js/main.582809bc.js"
+    "static/js/main.9fc26703.js"
   ]
 }
