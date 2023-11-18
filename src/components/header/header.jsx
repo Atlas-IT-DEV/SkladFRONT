@@ -14,7 +14,7 @@ const Header = () => {
 
   return (
     <HStack
-      bg="lightgrey"
+      bg="white"
       justifyContent="space-between"
       height="50px"
       width="100%"
@@ -26,13 +26,13 @@ const Header = () => {
         h="24px"
       />
       <HStack spacing="20px" pr="10px">
-        <Image
+        {/* <Image
           src={moon}
           w="24px"
           h="24px"
           className={styles.Header__Icon}
           onClick={toggleColorMode}
-        />
+        /> */}
         <Image
           src={bellActive ? bell : bellActiveSvg}
           w="24px"

@@ -22,7 +22,7 @@ const theme = extendTheme({
         menu_yellow: {
           border: "2px solid",
           borderColor: "main_yellow",
-          borderRadius: '0',
+          borderRadius: "0",
           background: "transparent",
           _hover: {
             backgroundColor: "main_yellow",
@@ -31,7 +31,7 @@ const theme = extendTheme({
         menu_red: {
           border: "2px solid",
           borderColor: "main_red",
-          borderRadius: '0',
+          borderRadius: "0",
           background: "transparent",
           _hover: {
             backgroundColor: "main_red",
@@ -42,10 +42,12 @@ const theme = extendTheme({
   },
   colors: {
     menu_gray: "#CCC3C2",
-    dark: "#333",
+    main_dark: "#333",
     light_dark: "#666",
     main_yellow: "#FFBF00",
-    main_red: '#FF0F00'
+    main_red: "#FF0F00",
+    menu_white: "#F8F8F8",
+    date_gray: "#A9A9A9",
   },
 });
 
