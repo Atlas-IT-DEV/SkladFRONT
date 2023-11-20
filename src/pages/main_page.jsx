@@ -1,14 +1,15 @@
-import { VStack, Stack, Text } from "@chakra-ui/react";
-import { useRef } from "react";
-import { useEffect } from "react";
-
+import { VStack, Stack, Text, Button } from "@chakra-ui/react";
+import { useState } from "react";
 import SideMenu from "../components/side_menu";
 import MainInfo from "../components/main_info";
 import Recent from "../components/recent";
 import Header from "../components/header/header";
 import Footer from "../components/footer";
+import MyModal from "../components/myModal/my_modal";
+import ProductEditFrom from "../components/product_edit_form";
 
 const MainPage = () => {
+  // const [visibleModal, setVisibleModal] = useState();
   return (
     <Stack
       direction={"row"}
@@ -18,11 +19,15 @@ const MainPage = () => {
       width="100%"
     >
       <SideMenu />
+      {/* <MyModal visibleModal={visibleModal} setVisibleModal={setVisibleModal}>
+        <ProductEditFrom setVisibleModal={setVisibleModal} />
+      </MyModal> */}
       <VStack
         marginLeft={[200, 200, 200, 210, 220]}
         backgroundColor="menu_white"
       >
-        <Header />
+        <Header title="Главная страница" />
+        {/* <Button onClick={() => setVisibleModal(true)}></Button> */}
         <VStack
           padding={25}
           alignItems="flex-start"

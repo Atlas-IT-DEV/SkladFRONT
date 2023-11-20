@@ -25,12 +25,11 @@ export default function usePropertyValidation() {
   };
 
   const doubleСhangeability = (value, propertyIndex) => {
-    const validated = value.match(/^(\d*\.{0,1}\d{0,2}$)/);
+    const validated = value.match(/^(\d*\.{0,1}\d*$)/);
     if (validated && value[0] !== "0") {
       emptyValidation(value, propertyIndex);
       return true;
     }
-    emptyValidation(value, propertyIndex);
     return false;
   };
 
@@ -40,7 +39,32 @@ export default function usePropertyValidation() {
       emptyValidation(value, propertyIndex);
       return true;
     }
-    emptyValidation(value, propertyIndex);
+    return false;
+  };
+
+  const booleanСhangeability = (value, propertyIndex) => {
+    const validated = value.match(/^[01]$/);
+    console.log(validated);
+    if (validated) {
+      emptyValidation(value, propertyIndex);
+      return true;
+    } else if (value === "") {
+      helperSetListPropertiesValidation(propertyIndex, false);
+      return true;
+    }
+    return false;
+  };
+
+  const dateСhangeability = (value, propertyIndex) => {
+    const validated = value.match(/^\d{4}-\d{2}-\d{2}$/);
+    console.log(validated);
+    if (validated) {
+      emptyValidation(value, propertyIndex);
+      return true;
+    } else if (value === "") {
+      helperSetListPropertiesValidation(propertyIndex, false);
+      return true;
+    }
     return false;
   };
 
@@ -56,6 +80,12 @@ export default function usePropertyValidation() {
         break;
       case "integer":
         return integerСhangeability(value, propertyIndex);
+        break;
+      case "boolean":
+        return booleanСhangeability(value, propertyIndex);
+        break;
+      case "date":
+        return dateСhangeability(value, propertyIndex);
         break;
       default:
         return false;

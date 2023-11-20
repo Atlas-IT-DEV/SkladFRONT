@@ -72,6 +72,8 @@ const ProductEditFrom = (props) => {
       { propertyId: 2, value: "value2", name: "name2", type: "string" },
       { propertyId: 3, value: "1000.00", name: "double", type: "double" },
       { propertyId: 4, value: "", name: "integer", type: "integer" },
+      { propertyId: 4, value: "", name: "boolean", type: "boolean" },
+      { propertyId: 4, value: "", name: "date", type: "date" },
     ],
   });
 
@@ -287,6 +289,7 @@ const ProductEditFrom = (props) => {
                   onChange={(event) =>
                     setProperty(event.target.value, index, property.type)
                   }
+                  type={property.type === "date" ? "date" : ""}
                   height={8}
                   placeholder={property.name}
                 />
