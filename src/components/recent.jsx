@@ -16,7 +16,7 @@ import {
 } from "@chakra-ui/react";
 import { useState } from "react";
 import MyModal from "./myModal/my_modal";
-import ProductEditFrom from "./product_edit_form";
+import ProductEditFrom from "./productEditForm/product_edit_form";
 import edit from "./../images/edit.svg";
 import delete_svg from "./../images/delete.svg";
 
