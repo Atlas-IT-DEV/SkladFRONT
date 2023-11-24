@@ -57,7 +57,7 @@ const Table = ({
         <tbody>
           {materialList?.map((material, index) => (
             <tr key={material.id}>
-              <td>{index}</td>
+              <td>{index + 1}.</td>
               <td>{material.name}</td>
               <td>{material.tmc.name}</td>
               <td>{material.tmcType.name}</td>
@@ -73,7 +73,7 @@ const Table = ({
           ))}
         </tbody>
       </table>
-      <div className={styles.table__footer}>sdsd</div>
+      <div className={styles.table__footer}>Здесь будет пагинация</div>
     </Box>
   );
 };

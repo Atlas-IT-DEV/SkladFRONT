@@ -1,11 +1,16 @@
 .table {
   width: 100%;
   background-color: white;
-  &__footer{
+  &__footer {
     background-color: #f3f3f3;
+    height: 40px;
   }
 }
-
+.table td {
+  max-width: 100px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
 .table > ul,
 li {
   margin: 0;
