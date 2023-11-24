@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Box, Image, Stack, VStack } from "@chakra-ui/react";
+import { Box } from "@chakra-ui/react";
 import styles from "./table.module.css";
 import UrForTable from "./ulForTable/ul_for_table";
 import { Instance } from "../../API/instance";
