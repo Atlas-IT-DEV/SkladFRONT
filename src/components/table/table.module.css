@@ -2,6 +2,10 @@
   width: 100%;
   background-color: white;
 }
+.table__Box {
+  box-shadow: 0 0 20px -1px rgba(0, 0, 0, 0.2);
+  width: 100%;
+}
 .table__footer {
   background-color: #f3f3f3;
   height: 40px;
@@ -24,9 +28,6 @@ li {
   background-color: #f3f3f3;
   border-bottom: 3px solid #f8f8f8;
   height: 40px;
-}
-.table thead tr:first-child {
-  box-shadow: 0 -7px 6px -6px rgba(0, 0, 0, 0.3);
 }
 .table thead tr:first-child {
   width: 100%;

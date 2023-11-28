@@ -25,17 +25,12 @@ const Table = ({
   };
 
   return (
-    <Box width="100%">
+    <Box className={styles.table__Box}>
       <table className={styles.table}>
         <thead>
           <tr>
             <td>
-              <UrForTable
-                className={styles.table__ul}
-                sort={sort}
-                setSort={setSort}
-                name="№"
-              />
+              <UrForTable sort={sort} setSort={setSort} name="№" />
             </td>
             <td>
               <UrForTable

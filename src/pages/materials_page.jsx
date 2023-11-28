@@ -11,13 +11,14 @@ import { Instance } from "../API/instance";
 
 const MaterialsPage = () => {
   const [visibleModal, setVisibleModal] = useState();
-  const [materialId, setMaterialId] = useState();
+  const [materialId, setMaterialId] = useState(-1);
   const [materialList, setMaterialList] = useState();
 
   const getMaterialList = async () => {
     try {
       Instance.get("api/materials").then((response) => {
         setMaterialList(response.data);
+        console.log("getMaterialList:", response.data);
       });
     } catch (error) {
       console.error("Error getMaterialList:", error);
@@ -36,12 +37,12 @@ const MaterialsPage = () => {
       width="100%"
     >
       <SideMenu />
-      <MyModal
-        visibleModal={visibleModal}
-        setVisibleModal={setVisibleModal}
-        materialId={materialId}
-      >
-        <ProductEditFrom setVisibleModal={setVisibleModal} />
+      <MyModal visibleModal={visibleModal} setVisibleModal={setVisibleModal}>
+        <ProductEditFrom
+          setVisibleModal={setVisibleModal}
+          materialId={materialId}
+          getMaterialList={getMaterialList}
+        />
       </MyModal>
       <VStack
         marginLeft={[200, 200, 200, 210, 220]}
@@ -69,6 +70,14 @@ const MaterialsPage = () => {
           <Text fontSize={14} fontWeight={400} marginBottom="20px">
             Возможно здеась будет тоже какой то поясняющий текст
           </Text>
+          <HStack color={"black"} width="100%">
+            <HStack color={"black"} width="100%">
+              <Button variant="menu_yellow">Рулонные материалы</Button>
+              <Button variant="menu_yellow">Добавить новый</Button>
+              <Button variant="menu_yellow">Скрытые</Button>
+            </HStack>
+            <Button variant="menu_yellow">Рулонные материалы</Button>
+          </HStack>
           <Table
             materialList={materialList}
             setVisibleModal={setVisibleModal}

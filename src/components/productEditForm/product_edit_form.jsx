@@ -10,56 +10,70 @@ import {
   FormLabel,
 } from "@chakra-ui/react";
 import useWindowDimensions from "../../hooks/window_dimensions";
-import React, { useState } from "react";
-import { useFormik } from "formik";
+import React, { useEffect, useRef, useState } from "react";
+import { Form, Formik, useFormik } from "formik";
 import * as Yup from "yup";
 import usePropertyValidation from "../../hooks/property_validation";
 import styles from "./product_edit_form.module.css";
+import { Instance } from "../../API/instance";
 
 const validationSchema = Yup.object().shape({
   name: Yup.string()
     .min(1, "Too Short!")
     .max(50, "Too Long!")
     .required("Required"),
-  type: Yup.string()
+  comment: Yup.string()
     .min(1, "Too Short!")
-    .max(50, "Too Long!")
-    .required("Required"),
-  covering: Yup.string()
-    .min(1, "Too Short!")
-    .max(50, "Too Long!")
-    .required("Required"),
-  price: Yup.number()
-    .nullable()
-    .notRequired()
-    .test("is-decimal", "invalid decimal", (value) =>
-      (value + "").match(/^(\d*\.{0,1}\d{0,2}$)/),
-    ),
-  density: Yup.string()
-    .min(1, "Too Short!")
-    .max(50, "Too Long!")
-    .required("Required"),
-  width: Yup.number()
-    .nullable()
-    .notRequired()
-    .test("is-decimal", "invalid decimal", (value) =>
-      (value + "").match(/^(\d*\.{0,1}\d{0,2}$)/),
-    ),
-  color: Yup.string()
-    .min(1, "Too Short!")
-    .max(50, "Too Long!")
-    .required("Required"),
-  currency: Yup.string()
-    .min(1, "Too Short!")
-    .max(50, "Too Long!")
+    .max(300, "Too Long!")
     .required("Required"),
 });
 
-const ProductEditFrom = (props) => {
+const ProductEditFrom = ({ setVisibleModal, materialId, getMaterialList }) => {
   const { height, width } = useWindowDimensions();
+
+  const getMaterial = async (materialId) => {
+    try {
+      Instance.get(`api/materials/${materialId}`).then((response) => {
+        setProduct(response.data);
+        // console.log(`getMaterial: ${materialId}`, response.data);
+      });
+    } catch (error) {
+      console.error("Error getMaterial:", error);
+    }
+  };
+
+  const putMaterial = async (material) => {
+    try {
+      Instance.put(`api/materials/${material.id}`, material).then(
+        (response) => {
+          console.log("putMaterial", response.data);
+          getMaterialList();
+        },
+      );
+    } catch (error) {
+      console.error("Error getMaterial:", error);
+    }
+  };
+
+  useEffect(() => {
+    if (materialId >= 0) {
+      getMaterial(materialId);
+    }
+  }, [materialId]);
 
   // Предпологаемый продукт
   const [product, setProduct] = useState({
+    name: "name",
+    type: "type",
+    covering: "covering",
+    price: "price",
+    density: "density",
+    width: "width",
+    color: "color",
+    currency: "currency",
+  });
+
+  const initProduct = {
     name: "",
     type: "",
     covering: "",
@@ -76,7 +90,7 @@ const ProductEditFrom = (props) => {
       { propertyId: 4, value: "", name: "boolean", type: "boolean" },
       { propertyId: 4, value: "", name: "date", type: "date" },
     ],
-  });
+  };
 
   // Состояние, которое говорит о том нажимали уже на кнопку сохранения или нет
   // нужна, чтобы подсвечивать красным поля не прошедшие воалидацию
@@ -85,13 +99,14 @@ const ProductEditFrom = (props) => {
 
   // разделяем свойства продукта, на массив свойств и свойства заданные в самом объъекте
   const initialization = () => {
-    let { listProperties, ...productProperties } = product;
+    let { listProperties, ...productProperties } = initProduct;
+    // console.log(productProperties);
     return productProperties;
   };
 
   // Просто закрываем модалку
   const onClose = () => {
-    props.setVisibleModal(false);
+    setVisibleModal(false);
   };
 
   // Изменение для поля с деньгами
@@ -105,6 +120,7 @@ const ProductEditFrom = (props) => {
     }
   };
 
+  // console.log(product);
   // Хук для валидации и изменения свойств, сейчас внутри хука объявлен массив булевских переменных,
   // который обозначает какое поле проходит валидацию, а какое нет, в будущем, чтобы задать этот массив самому нужно воспользоваться
   // setListPropertiesValidation
@@ -124,26 +140,28 @@ const ProductEditFrom = (props) => {
       setProduct({ ...product, listProperties: product.listProperties });
     }
   };
+  const ref = useRef(null);
+
+  const someFuncton = () => {
+    console.log(ref.current);
+  };
 
   const formik = useFormik({
-    initialValues: initialization(),
+    initialValues: product,
     validationSchema: validationSchema,
     onSubmit: (values) => {
-      if (!listPropertiesValidation.includes(false)) {
-        alert(
-          JSON.stringify(
-            { ...values, listProperties: product.listProperties },
-            null,
-            2,
-          ),
-        );
-        onClose();
-      } else {
+      if (listPropertiesValidation.includes(false)) {
         alert(JSON.stringify(product.listProperties, null, 2));
+      } else {
+        values.tmcId = values.tmc.id;
+        values.tmcTypeId = values.tmcType.id;
+        putMaterial(values);
+        onClose();
       }
     },
+    enableReinitialize: true,
   });
-
+  // console.log(formik.values);
   return (
     <>
       <Flex
@@ -155,6 +173,7 @@ const ProductEditFrom = (props) => {
         <Text fontSize="2xl">Рулонные материалы</Text>
         <CloseButton onClick={onClose} />
       </Flex>
+      {/*<Formik pb={6}>*/}
       <Box pb={6}>
         <form onSubmit={formik.handleSubmit}>
           <SimpleGrid
@@ -174,7 +193,7 @@ const ProductEditFrom = (props) => {
             }}
           >
             <div className={styles.input_box}>
-              <label className={styles.label}>Name</label>
+              <label className={styles.label}>Имя</label>
               <Input
                 position="static"
                 isInvalid={formik.errors.name && formik.touched.name}
@@ -188,124 +207,17 @@ const ProductEditFrom = (props) => {
               />
             </div>
             <div className={styles.input_box}>
-              <label className={styles.label}>Type</label>
-              <Select
-                position="static"
-                isInvalid={formik.errors.type && formik.touched.type}
-                errorBorderColor="crimson"
-                id="type"
-                name="type"
-                value={formik.values.type}
-                onChange={formik.handleChange}
-                height={8}
-                placeholder="Тип"
-              >
-                <option value="Тип 1">Тип 1</option>
-                <option value="Тип 2">Тип 2</option>
-                <option value="Тип 3">Тип 3</option>
-              </Select>
-            </div>
-            <div className={styles.input_box}>
-              <label className={styles.label}>Covering</label>
-              <Select
-                position="static"
-                isInvalid={formik.errors.covering && formik.touched.covering}
-                errorBorderColor="crimson"
-                id="covering"
-                name="covering"
-                value={formik.values.covering}
-                onChange={formik.handleChange}
-                height={8}
-                placeholder="Покрытие"
-              >
-                <option value="Покрытие 1">Покрытие 1</option>
-                <option value="Покрытие 2">Покрытие 2</option>
-                <option value="Покрытие 3">Покрытие 3</option>
-              </Select>
-            </div>
-            <div className={styles.input_box}>
-              <label className={styles.label}>Density</label>
-              <Select
-                position="static"
-                isInvalid={formik.errors.density && formik.touched.density}
-                errorBorderColor="crimson"
-                id="density"
-                name="density"
-                value={formik.values.density}
-                onChange={formik.handleChange}
-                height={8}
-                placeholder="Плотность"
-              >
-                <option value="Плотность 1">Плотность 1</option>
-                <option value="Плотность 2">Плотность 2</option>
-                <option value="Плотность 3">Плотность 3</option>
-              </Select>
-            </div>
-            <div className={styles.input_box}>
-              <label className={styles.label}>Width</label>
-              <Select
-                position="static"
-                isInvalid={formik.errors.width && formik.touched.width}
-                errorBorderColor="crimson"
-                id="width"
-                name="width"
-                value={formik.values.width}
-                onChange={formik.handleChange}
-                height={8}
-                placeholder="Ширина"
-              >
-                <option value="10">10</option>
-                <option value="20">20</option>
-                <option value="30">30</option>
-              </Select>
-            </div>
-            <div className={styles.input_box}>
-              <label className={styles.label}>Color</label>
-              <Select
-                position="static"
-                isInvalid={formik.errors.color && formik.touched.color}
-                errorBorderColor="crimson"
-                id="color"
-                name="color"
-                value={formik.values.color}
-                onChange={formik.handleChange}
-                height={8}
-                placeholder="Цвет"
-              >
-                <option value="Цвет 1">Цвет 1</option>
-                <option value="Цвет 2">Цвет 2</option>
-                <option value="Цвет 3">Цвет 3</option>
-              </Select>
-            </div>
-            <div className={styles.input_box}>
-              <label className={styles.label}>Price</label>
+              <label className={styles.label}>Комментарий</label>
               <Input
                 position="static"
-                isInvalid={formik.errors.price && formik.touched.price}
+                isInvalid={formik.errors.comment && formik.touched.comment}
                 errorBorderColor="crimson"
-                id="price"
-                name="price"
-                value={formik.values.price}
-                onChange={(event) => {
-                  moneyСhangeability(event);
-                }}
-                maxLength="13"
-                height={8}
-                placeholder="Цена за м^2"
-              />
-            </div>
-            <div className={styles.input_box}>
-              <label className={styles.label}>Currency</label>
-              <Input
-                position="static"
-                isInvalid={formik.errors.currency && formik.touched.currency}
-                errorBorderColor="crimson"
-                id="currency"
-                name="currency"
-                value={formik.values.currency}
+                id="comment"
+                name="comment"
+                value={formik.values.comment}
                 onChange={formik.handleChange}
                 height={8}
-                placeholder="Валюта"
+                placeholder="Комментарий"
               />
             </div>
             {product.listProperties?.map((property, index) => {

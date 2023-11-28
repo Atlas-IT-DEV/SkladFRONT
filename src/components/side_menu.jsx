@@ -9,6 +9,7 @@ import promote_sklad_logo from "./../images/promote_sklad_logo.svg";
 import souvenirs_sklad_logo from "./../images/souvenirs_sklad_logo.svg";
 
 import useWindowDimensions from "../hooks/window_dimensions";
+import { NavLink } from "react-router-dom";
 
 const SideMenu = () => {
   const { height, width } = useWindowDimensions();
@@ -99,15 +100,18 @@ const SideMenu = () => {
         >
           Поставщики
         </Text>
-        <Text
-          fontSize={[13, 13, 14, 15, 16]}
-          fontStyle="normal"
-          fontWeight="700"
-          textColor="#D3D2D2"
-          variant="side_menu_hover"
-        >
-          Материалы
-        </Text>
+
+        <NavLink to="/materials">
+          <Text
+            fontSize={[13, 13, 14, 15, 16]}
+            fontStyle="normal"
+            fontWeight="700"
+            textColor="#D3D2D2"
+            variant="side_menu_hover"
+          >
+            Материалы
+          </Text>
+        </NavLink>
         <Text
           fontSize={[13, 13, 14, 15, 16]}
           fontStyle="normal"

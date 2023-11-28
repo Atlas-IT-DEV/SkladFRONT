@@ -6,7 +6,7 @@ export default function usePropertyValidation() {
     true,
     true,
     true,
-    false,
+    true,
   ]);
 
   // Функция для смены статуса валидации у свойства в массиве listProperties, notation в данном случае значение false или true
