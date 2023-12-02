@@ -12,7 +12,7 @@ import React, { useEffect, useState } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import usePropertyValidation from "../../../hooks/property_validation";
-import styles from "./product_edit_form.module.css";
+import styles from "./material_create_form.module.css";
 import EditMaterialDto from "../../../dto/edit_material_dto";
 import MaterialService from "../../../API/material_service";
 
@@ -27,9 +27,13 @@ const validationSchema = Yup.object().shape({
     .required("Required"),
 });
 
-const ProductEditFrom = ({ setVisibleModal, materialId, getMaterialList }) => {
+const MaterialCreateFrom = ({
+  setVisibleModal,
+  materialId,
+  getMaterialList,
+}) => {
   //Можно написать MaterialDto
-  const [product, setProduct] = useState({});
+  const [material, setMaterial] = useState({});
 
   const { height, width } = useWindowDimensions();
 
@@ -54,7 +58,7 @@ const ProductEditFrom = ({ setVisibleModal, materialId, getMaterialList }) => {
   const getMaterial = async (materialId) => {
     try {
       MaterialService.getMaterial(materialId).then((response) => {
-        setProduct(response.data);
+        setMaterial(response.data);
         setListPropertiesValidation(
           generateBooleanArray(response.data.properties.length),
         );
@@ -102,24 +106,24 @@ const ProductEditFrom = ({ setVisibleModal, materialId, getMaterialList }) => {
 
   const setProperty = (value, propertyIndex, type) => {
     if (propertyChangeability(value, propertyIndex, type)) {
-      product.properties[propertyIndex] = {
-        ...product.properties[propertyIndex],
+      material.properties[propertyIndex] = {
+        ...material.properties[propertyIndex],
         value: value,
       };
-      setProduct({ ...product, properties: product.properties });
+      setMaterial({ ...material, properties: material.properties });
     }
   };
 
   const formik = useFormik({
-    initialValues: product,
+    initialValues: material,
     validationSchema: validationSchema,
     onSubmit: (values) => {
       if (listPropertiesValidation.includes(false) || image === null) {
-        alert(JSON.stringify(product.listProperties, null, 2));
+        alert(JSON.stringify(material.listProperties, null, 2));
       } else {
         putMaterial(
           values.id,
-          new EditMaterialDto({ ...values, properties: product.properties }),
+          new EditMaterialDto({ ...values, properties: material.properties }),
         );
         onClose();
       }
@@ -198,7 +202,7 @@ const ProductEditFrom = ({ setVisibleModal, materialId, getMaterialList }) => {
                 placeholder="Комментарий"
               />
             </div>
-            {product.properties?.map((item, index) => {
+            {material.properties?.map((item, index) => {
               return (
                 <div className={styles.input_box} key={index}>
                   <label className={styles.label}>{item.property.name}</label>
@@ -239,4 +243,4 @@ const ProductEditFrom = ({ setVisibleModal, materialId, getMaterialList }) => {
   );
 };
 
-export default ProductEditFrom;
+export default MaterialCreateFrom;

@@ -1,0 +1,16 @@
+.input_box {
+  position: relative;
+  margin-top: 19px;
+}
+.label {
+  position: absolute;
+  z-index: 1;
+  top: -14px;
+  left: 10px;
+  background: #fff;
+  padding: 0 5px;
+}
+.label_image {
+  top: -23px;
+}
+/*# sourceMappingURL=material_create_form.module.css.map */

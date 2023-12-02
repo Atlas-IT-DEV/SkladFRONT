@@ -3,7 +3,7 @@ import { Button, HStack, Stack, Text, VStack } from "@chakra-ui/react";
 import SideMenu from "../components/side_menu";
 import { useEffect, useState } from "react";
 import MyModal from "../components/myModal/my_modal";
-import ProductEditFrom from "../components/forms/productEditForm/product_edit_form";
+import MaterialEditFrom from "../components/forms/materialEditForm/material_edit_form";
 import Header from "../components/header/header";
 import Footer from "../components/footer";
 import TableMaterials from "../components/tableMaterials/table_materials";
@@ -45,7 +45,7 @@ const MaterialsPage = () => {
     >
       <SideMenu />
       <MyModal visibleModal={visibleModal} setVisibleModal={setVisibleModal}>
-        <ProductEditFrom
+        <MaterialEditFrom
           setVisibleModal={setVisibleModal}
           materialId={materialId}
           getMaterialList={getMaterialList}
