@@ -25,8 +25,21 @@ const Pagination = ({
 
   const pageSizeСhangeability = (value) => {
     const validated = value.match(/^(\d*$)/);
+    const pageNumberByTotalCount = Math.floor(totalCountMaterials / value);
+    const pageNumberСalculable = Math.floor(
+      ((currentPage - 1) * pageSize + 1) / value,
+    );
     if ((validated && value[0] !== "0") || value === "") {
       setCurrentPageSize(value);
+      setCurrentPage(
+        currentPage * pageSize > totalCountMaterials
+          ? isFinite(pageNumberByTotalCount) && pageNumberByTotalCount !== 0
+            ? pageNumberByTotalCount
+            : 1
+          : isFinite(pageNumberСalculable) && pageNumberСalculable !== 0
+          ? pageNumberСalculable
+          : 1,
+      );
     }
   };
 
