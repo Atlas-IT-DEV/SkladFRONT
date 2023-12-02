@@ -7,14 +7,14 @@ import {
   SimpleGrid,
   Text,
 } from "@chakra-ui/react";
-import useWindowDimensions from "../../hooks/window_dimensions";
+import useWindowDimensions from "../../../hooks/window_dimensions";
 import React, { useEffect, useState } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import usePropertyValidation from "../../hooks/property_validation";
+import usePropertyValidation from "../../../hooks/property_validation";
 import styles from "./product_edit_form.module.css";
-import EditMaterialDto from "../../DTO/edit_material_dto";
-import MaterialService from "../../API/material_service";
+import EditMaterialDto from "../../../dto/edit_material_dto";
+import MaterialService from "../../../API/material_service";
 
 const validationSchema = Yup.object().shape({
   name: Yup.string()

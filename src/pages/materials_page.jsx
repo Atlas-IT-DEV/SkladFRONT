@@ -3,10 +3,10 @@ import { Button, HStack, Stack, Text, VStack } from "@chakra-ui/react";
 import SideMenu from "../components/side_menu";
 import { useEffect, useState } from "react";
 import MyModal from "../components/myModal/my_modal";
-import ProductEditFrom from "../components/productEditForm/product_edit_form";
+import ProductEditFrom from "../components/forms/productEditForm/product_edit_form";
 import Header from "../components/header/header";
 import Footer from "../components/footer";
-import TableMaterials from "../components/table_materials/table_materials";
+import TableMaterials from "../components/tableMaterials/table_materials";
 import { useFetching } from "../hooks/useFetching";
 import MaterialService from "../API/material_service";
 

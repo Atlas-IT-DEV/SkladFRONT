@@ -1,22 +1,7 @@
-import {
-  Table,
-  Thead,
-  Tbody,
-  Tr,
-  Th,
-  Td,
-  TableContainer,
-  TableCaption,
-  VStack,
-  Text,
-  Button,
-  Flex,
-  HStack,
-  Image,
-} from "@chakra-ui/react";
+import { HStack, Image, Text, VStack } from "@chakra-ui/react";
 import { useState } from "react";
 import MyModal from "./myModal/my_modal";
-import ProductEditFrom from "./productEditForm/product_edit_form";
+import ProductEditFrom from "./forms/productEditForm/product_edit_form";
 import edit from "./../images/edit.svg";
 import delete_svg from "./../images/delete.svg";
 
