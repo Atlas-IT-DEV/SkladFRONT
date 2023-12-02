@@ -1,4 +1,4 @@
-import { VStack, Stack, HStack, Button, Text } from "@chakra-ui/react";
+import { Button, HStack, Stack, Text, VStack } from "@chakra-ui/react";
 
 import SideMenu from "../components/side_menu";
 import { useEffect, useState } from "react";
@@ -7,8 +7,8 @@ import ProductEditFrom from "../components/productEditForm/product_edit_form";
 import Header from "../components/header/header";
 import Footer from "../components/footer";
 import TableMaterials from "../components/table_materials/table_materials";
-import { Instance } from "../API/instance";
 import { useFetching } from "../hooks/useFetching";
+import MaterialService from "../API/material_service";
 
 const MaterialsPage = () => {
   const [visibleModal, setVisibleModal] = useState();
@@ -21,13 +21,14 @@ const MaterialsPage = () => {
   const [totalCountMaterials, setTotalCountMaterials] = useState(0);
 
   const [getMaterialList, paintingError] = useFetching(async () => {
-    Instance.get(
-      `api/materials/warehouse/${warehouseId}?page=${currentPage}&size=${currentPageSize}`,
+    await MaterialService.getMaterials(
+      warehouseId,
+      currentPage,
+      currentPageSize,
     ).then((response) => {
       setMaterialList(response.data.materials);
       setTotalPages(response.data.totalPages);
       setTotalCountMaterials(response.data.totalItems);
-      console.log("getMaterialList:", response.data);
     });
   });
 
@@ -84,18 +85,22 @@ const MaterialsPage = () => {
             </HStack>
             <Button variant="menu_yellow">Рулонные материалы</Button>
           </HStack>
-          <TableMaterials
-            totalCountMaterials={totalCountMaterials}
-            currentPageSize={currentPageSize}
-            setCurrentPageSize={setCurrentPageSize}
-            totalPages={totalPages}
-            materialList={materialList}
-            setVisibleModal={setVisibleModal}
-            setMaterialId={setMaterialId}
-            getMaterialList={getMaterialList}
-            currentPage={currentPage}
-            setCurrentPage={setCurrentPage}
-          />
+          {paintingError ? (
+            <div>{paintingError}</div>
+          ) : (
+            <TableMaterials
+              totalCountMaterials={totalCountMaterials}
+              currentPageSize={currentPageSize}
+              setCurrentPageSize={setCurrentPageSize}
+              totalPages={totalPages}
+              materialList={materialList}
+              setVisibleModal={setVisibleModal}
+              setMaterialId={setMaterialId}
+              getMaterialList={getMaterialList}
+              currentPage={currentPage}
+              setCurrentPage={setCurrentPage}
+            />
+          )}
         </VStack>
         <Footer />
       </VStack>

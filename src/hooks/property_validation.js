@@ -1,14 +1,9 @@
 import { useState } from "react";
 
-export default function usePropertyValidation() {
-  // Состояние для отслеживания валидации свойств listProperties
-  const [listPropertiesValidation, setListPropertiesValidation] = useState([
-    true,
-    true,
-    true,
-    true,
-  ]);
-
+export default function usePropertyValidation(
+  listPropertiesValidation,
+  setListPropertiesValidation,
+) {
   // Функция для смены статуса валидации у свойства в массиве listProperties, notation в данном случае значение false или true
   const helperSetListPropertiesValidation = (propertyIndex, notation) => {
     listPropertiesValidation[propertyIndex] = notation;
@@ -25,6 +20,7 @@ export default function usePropertyValidation() {
   };
 
   const doubleСhangeability = (value, propertyIndex) => {
+    console.log(value + "fsfsefs");
     const validated = value.match(/^(\d*\.{0,1}\d*$)/);
     if (validated && value[0] !== "0") {
       emptyValidation(value, propertyIndex);
@@ -70,21 +66,22 @@ export default function usePropertyValidation() {
 
   // Здесь задаётся то каким образом доллжно проверяться свойство с определённым типом
   const propertycСhangeability = (value, propertyIndex, type) => {
+    console.log(type);
     switch (type) {
-      case "string":
+      case "STRING":
         emptyValidation(value, propertyIndex);
         return true;
         break;
-      case "double":
+      case "DOUBLE":
         return doubleСhangeability(value, propertyIndex);
         break;
-      case "integer":
+      case "INTEGER":
         return integerСhangeability(value, propertyIndex);
         break;
-      case "boolean":
+      case "BOOLEAN":
         return booleanСhangeability(value, propertyIndex);
         break;
-      case "date":
+      case "DATE":
         return dateСhangeability(value, propertyIndex);
         break;
       default:

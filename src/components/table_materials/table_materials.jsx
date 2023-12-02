@@ -2,9 +2,9 @@ import React, { useState } from "react";
 import { Box } from "@chakra-ui/react";
 import styles from "./table_materials.module.css";
 import UrForTable from "./ulForTable/ul_for_table";
-import { Instance } from "../../API/instance";
 import UlToClick from "./ulToClick/ul_to_click";
 import Pagination from "../Pagination/pagination";
+import MaterialService from "../../API/material_service";
 
 const TableMaterials = ({
   totalPages,
@@ -18,14 +18,13 @@ const TableMaterials = ({
   setCurrentPageSize,
   totalCountMaterials,
 }) => {
-  console.log(materialList);
   const [sort, setSort] = useState(false);
-
   const handleRemoveMaterial = async (materialId) => {
     try {
-      const response = await Instance.delete(`/api/materials/${materialId}`);
-      console.log("Deleting material:", response);
-      getMaterialList();
+      if (window.confirm("Вы уверенны, что хотите удалить материал?")) {
+        await MaterialService.deleteMaterial(materialId);
+        getMaterialList();
+      }
     } catch (error) {
       console.error("Error deleting material:", error);
     }

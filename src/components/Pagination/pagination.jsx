@@ -15,7 +15,7 @@ const Pagination = ({
   totalCountMaterials,
 }) => {
   const PaginationPages = usePagination(totalPages, currentPage);
-  //const [pageSize, setPageSize] = useState(currentPageSize);
+
   let pageSize =
     currentPageSize === ""
       ? 5
