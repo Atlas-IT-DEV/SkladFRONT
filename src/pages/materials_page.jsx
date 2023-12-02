@@ -6,28 +6,34 @@ import MyModal from "../components/myModal/my_modal";
 import ProductEditFrom from "../components/productEditForm/product_edit_form";
 import Header from "../components/header/header";
 import Footer from "../components/footer";
-import Table from "../components/table/table";
+import TableMaterials from "../components/table_materials/table_materials";
 import { Instance } from "../API/instance";
+import { useFetching } from "../hooks/useFetching";
 
 const MaterialsPage = () => {
   const [visibleModal, setVisibleModal] = useState();
   const [materialId, setMaterialId] = useState(-1);
   const [materialList, setMaterialList] = useState();
+  const [currentPageSize, setCurrentPageSize] = useState(2);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [warehouseId, setWarehouseId] = useState(1);
+  const [totalPages, setTotalPages] = useState(0);
+  const [totalCountMaterials, setTotalCountMaterials] = useState(0);
 
-  const getMaterialList = async () => {
-    try {
-      Instance.get("api/materials").then((response) => {
-        setMaterialList(response.data);
-        console.log("getMaterialList:", response.data);
-      });
-    } catch (error) {
-      console.error("Error getMaterialList:", error);
-    }
-  };
+  const [getMaterialList, paintingError] = useFetching(async () => {
+    Instance.get(
+      `api/materials/warehouse/${warehouseId}?page=${currentPage}&size=${currentPageSize}`,
+    ).then((response) => {
+      setMaterialList(response.data.materials);
+      setTotalPages(response.data.totalPages);
+      setTotalCountMaterials(response.data.totalItems);
+      console.log("getMaterialList:", response.data);
+    });
+  });
 
   useEffect(() => {
     getMaterialList();
-  }, []);
+  }, [currentPage, currentPageSize]);
   return (
     <Stack
       direction={"row"}
@@ -78,11 +84,17 @@ const MaterialsPage = () => {
             </HStack>
             <Button variant="menu_yellow">Рулонные материалы</Button>
           </HStack>
-          <Table
+          <TableMaterials
+            totalCountMaterials={totalCountMaterials}
+            currentPageSize={currentPageSize}
+            setCurrentPageSize={setCurrentPageSize}
+            totalPages={totalPages}
             materialList={materialList}
             setVisibleModal={setVisibleModal}
             setMaterialId={setMaterialId}
             getMaterialList={getMaterialList}
+            currentPage={currentPage}
+            setCurrentPage={setCurrentPage}
           />
         </VStack>
         <Footer />

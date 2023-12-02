@@ -12,7 +12,7 @@ const UlToClick = ({
 }) => {
   return (
     <ul className={styles.UlToClick}>
-      <li className={styles.UlToClick__li__first}>
+      <li className={`${styles.UlToClick__li} ${styles.UlToClick__li_first}`}>
         <Image
           className={styles.UlToClick__Icon}
           src={edit}
@@ -24,7 +24,7 @@ const UlToClick = ({
           }}
         />
       </li>
-      <li>
+      <li className={styles.UlToClick__li}>
         <Image
           className={styles.UlToClick__Icon}
           src={delete_svg}

@@ -1,15 +1,22 @@
 import React, { useState } from "react";
 import { Box } from "@chakra-ui/react";
-import styles from "./table.module.css";
+import styles from "./table_materials.module.css";
 import UrForTable from "./ulForTable/ul_for_table";
 import { Instance } from "../../API/instance";
 import UlToClick from "./ulToClick/ul_to_click";
+import Pagination from "../Pagination/pagination";
 
-const Table = ({
+const TableMaterials = ({
+  totalPages,
   materialList,
   setVisibleModal,
   setMaterialId,
   getMaterialList,
+  currentPage,
+  setCurrentPage,
+  currentPageSize,
+  setCurrentPageSize,
+  totalCountMaterials,
 }) => {
   console.log(materialList);
   const [sort, setSort] = useState(false);
@@ -28,8 +35,8 @@ const Table = ({
     <Box className={styles.table__Box}>
       <table className={styles.table}>
         <thead>
-          <tr>
-            <td>
+          <tr className={styles.table__thead_tr}>
+            <td className={styles.table__td}>
               <UrForTable sort={sort} setSort={setSort} name="№" />
             </td>
             <td>
@@ -39,24 +46,28 @@ const Table = ({
                 name="Название материала"
               />
             </td>
-            <td>
+            <td className={styles.table__td}>
               <UrForTable sort={sort} setSort={setSort} name="ТМЦ" />
             </td>
             {/*Тип ТМЦ*/}
-            <td>
-              <UrForTable sort={sort} setSort={setSort} name="Тип" />
+            <td className={styles.table__td}>
+              <UrForTable sort={sort} setSort={setSort} name="Тип ТМЦ" />
             </td>
-            <td></td>
+            <td className={styles.table__td}>
+              <UrForTable sort={sort} setSort={setSort} name="Поставщики" />
+            </td>
+            <td className={styles.table__td}></td>
           </tr>
         </thead>
         <tbody>
           {materialList?.map((material, index) => (
-            <tr key={material.id}>
-              <td>{index + 1}.</td>
-              <td>{material.name}</td>
-              <td>{material.tmc.name}</td>
-              <td>{material.tmcType.name}</td>
-              <td>
+            <tr className={styles.table__tbody_tr} key={material.id}>
+              <td className={styles.table__td}>{index + 1}.</td>
+              <td className={styles.table__td}>{material.name}</td>
+              <td className={styles.table__td}>{material.tmcName}</td>
+              <td className={styles.table__td}>{material.tmcTypeName}</td>
+              <td className={styles.table__td}>{material.supplierNames}</td>
+              <td className={styles.table__td}>
                 <UlToClick
                   materialId={material.id}
                   setMaterialId={setMaterialId}
@@ -68,9 +79,17 @@ const Table = ({
           ))}
         </tbody>
       </table>
-      <div className={styles.table__footer}>Здесь будет пагинация</div>
+      <Pagination
+        totalCountMaterials={totalCountMaterials}
+        className={styles.table__footer}
+        currentPageSize={currentPageSize}
+        setCurrentPageSize={setCurrentPageSize}
+        currentPage={currentPage}
+        totalPages={totalPages}
+        setCurrentPage={setCurrentPage}
+      />
     </Box>
   );
 };
 
-export default Table;
+export default TableMaterials;
