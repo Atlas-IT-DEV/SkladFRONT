@@ -8,7 +8,7 @@ import {
   Text,
 } from "@chakra-ui/react";
 import useWindowDimensions from "../../../hooks/window_dimensions";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import usePropertyValidation from "../../../hooks/property_validation";
@@ -27,7 +27,7 @@ const validationSchema = Yup.object().shape({
     .required("Required"),
 });
 
-const MaterialEditFrom = ({ setVisibleModal, materialId, getMaterialList }) => {
+const MaterialEditForm = ({ setVisibleModal, materialId, getMaterialList }) => {
   //Можно написать MaterialDto
   const [material, setMaterial] = useState({});
 
@@ -59,25 +59,29 @@ const MaterialEditFrom = ({ setVisibleModal, materialId, getMaterialList }) => {
           generateBooleanArray(response.data.properties.length),
         );
         setImage(null);
+        ref.current.value = null;
+        setIsSubmit(false);
       });
     } catch (error) {
       console.error("Error getMaterial:", error);
     }
   };
 
-  const putMaterial = async (id, material) => {
+  const updateMaterial = async (id, editMaterial) => {
     try {
       const formData = new FormData();
-      formData.append("updateMaterialDTO", JSON.stringify(material));
+      formData.append("updateMaterialDTO", JSON.stringify(editMaterial));
       formData.append("files", image, image.name);
-      MaterialService.updateMaterial(id, formData).then(getMaterialList());
+      MaterialService.updateMaterial(id, formData).then(() => {
+        getMaterialList();
+      });
     } catch (error) {
       console.error("Error putMaterial:", error);
     }
   };
 
   useEffect(() => {
-    if (materialId >= 0) {
+    if (materialId > 0) {
       getMaterial(materialId);
     }
   }, [materialId]);
@@ -88,6 +92,7 @@ const MaterialEditFrom = ({ setVisibleModal, materialId, getMaterialList }) => {
 
   const fileChangedHandler = (event) => {
     setImage(event.target.files[0]);
+    console.log(event.target.files[0]);
   };
 
   const moneyСhangeability = (event) => {
@@ -117,15 +122,16 @@ const MaterialEditFrom = ({ setVisibleModal, materialId, getMaterialList }) => {
       if (listPropertiesValidation.includes(false) || image === null) {
         alert(JSON.stringify(material.listProperties, null, 2));
       } else {
-        putMaterial(
-          values.id,
-          new EditMaterialDto({ ...values, properties: material.properties }),
-        );
+        updateMaterial(material.id, new EditMaterialDto({ ...material }));
         onClose();
       }
     },
     enableReinitialize: true,
   });
+  const ref = useRef();
+  // console.log(ref.current?.files);
+  // console.log(formik.values);
+  // console.log(material);
   return (
     <>
       <Flex
@@ -160,6 +166,10 @@ const MaterialEditFrom = ({ setVisibleModal, materialId, getMaterialList }) => {
                 Изображение
               </label>
               <Input
+                borderColor="white"
+                focusBorderColor="white"
+                _hover={{ borderColor: "white" }}
+                ref={ref}
                 type="file"
                 accept=".jpg, .jpeg, .png"
                 onChange={fileChangedHandler}
@@ -178,8 +188,10 @@ const MaterialEditFrom = ({ setVisibleModal, materialId, getMaterialList }) => {
                 errorBorderColor="crimson"
                 id="name"
                 name="name"
-                value={formik.values.name}
-                onChange={formik.handleChange}
+                value={material.name}
+                onChange={(e) =>
+                  setMaterial({ ...material, name: e.target.value })
+                }
                 height={8}
                 placeholder="Название"
               />
@@ -192,8 +204,10 @@ const MaterialEditFrom = ({ setVisibleModal, materialId, getMaterialList }) => {
                 errorBorderColor="crimson"
                 id="comment"
                 name="comment"
-                value={formik.values.comment}
-                onChange={formik.handleChange}
+                value={material.comment}
+                onChange={(e) =>
+                  setMaterial({ ...material, comment: e.target.value })
+                }
                 height={8}
                 placeholder="Комментарий"
               />
@@ -239,4 +253,4 @@ const MaterialEditFrom = ({ setVisibleModal, materialId, getMaterialList }) => {
   );
 };
 
-export default MaterialEditFrom;
+export default MaterialEditForm;

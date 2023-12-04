@@ -1,4 +1,4 @@
-import { VStack, Text, Image, HStack, Divider, Button } from "@chakra-ui/react";
+import { Divider, HStack, Image, Text, VStack } from "@chakra-ui/react";
 import { useState } from "react";
 import side_menu_back from "./../images/background.png";
 import logo from "./../images/logo.svg";
@@ -25,7 +25,7 @@ const SideMenu = () => {
       alignItems="flex-start"
       top={0}
       left={0}
-      zIndex={99}
+      zIndex={1}
       overflow="hidden"
       overflowX="hidden"
     >

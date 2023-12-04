@@ -7,7 +7,7 @@ import styles from "./ul_to_click.module.css";
 const UlToClick = ({
   materialId,
   setMaterialId,
-  setVisibleModal,
+  setVisibleEditModal,
   handleRemoveMaterial,
 }) => {
   return (
@@ -20,7 +20,7 @@ const UlToClick = ({
           h="16px"
           onClick={() => {
             setMaterialId(materialId);
-            setVisibleModal(true);
+            setVisibleEditModal(true);
           }}
         />
       </li>

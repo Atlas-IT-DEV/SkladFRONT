@@ -7,8 +7,6 @@ export const usePagination = (totalPages, currentPage) =>
     if (totalPages > paginationPages) {
       if (currentPage > 3) {
         if (totalPages - 2 < currentPage) {
-          console.log(totalPages - paginationPages);
-          console.log(totalPages);
           for (let i = totalPages - paginationPages + 1; i <= totalPages; i++) {
             pageArray.push(i);
             if (i === totalPages) break;

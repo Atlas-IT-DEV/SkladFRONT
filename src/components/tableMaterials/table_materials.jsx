@@ -9,7 +9,7 @@ import MaterialService from "../../API/material_service";
 const TableMaterials = ({
   totalPages,
   materialList,
-  setVisibleModal,
+  setVisibleEditModal,
   setMaterialId,
   getMaterialList,
   currentPage,
@@ -22,8 +22,9 @@ const TableMaterials = ({
   const handleRemoveMaterial = async (materialId) => {
     try {
       if (window.confirm("Вы уверенны, что хотите удалить материал?")) {
-        await MaterialService.deleteMaterial(materialId);
-        getMaterialList();
+        MaterialService.deleteMaterial(materialId).then(() => {
+          getMaterialList();
+        });
       }
     } catch (error) {
       console.error("Error deleting material:", error);
@@ -70,7 +71,7 @@ const TableMaterials = ({
                 <UlToClick
                   materialId={material.id}
                   setMaterialId={setMaterialId}
-                  setVisibleModal={setVisibleModal}
+                  setVisibleEditModal={setVisibleEditModal}
                   handleRemoveMaterial={handleRemoveMaterial}
                 />
               </td>
