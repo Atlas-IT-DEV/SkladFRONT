@@ -18,17 +18,16 @@ const MaterialsPage = () => {
   const [materialList, setMaterialList] = useState();
   const [currentPageSize, setCurrentPageSize] = useState(2);
   const [currentPage, setCurrentPage] = useState(1);
-  const [warehouseId, setWarehouseId] = useState(1);
+  const [warehouseId, setWarehouseId] = useState();
   const [totalPages, setTotalPages] = useState(0);
   const [totalCountMaterials, setTotalCountMaterials] = useState(0);
 
   const [getMaterialList, paintingError] = useFetching(async () => {
-    MaterialService.getMaterials(
+    await MaterialService.getMaterials(
       warehouseId,
       currentPage,
       currentPageSize,
     ).then((response) => {
-      console.log(response.data);
       setMaterialList(response.data.materials);
       setTotalPages(response.data.totalPages);
       setTotalCountMaterials(response.data.totalItems);

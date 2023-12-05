@@ -2,12 +2,14 @@ import { Instance } from "./instance";
 
 export default class MaterialService {
   static async getMaterials(warehouseId, currentPage, currentPageSize) {
-    return Instance.get(
-      `api/materials/warehouse/${warehouseId}?page=${currentPage}&size=${currentPageSize}`,
-    );
-    // return Instance.get(
-    //   `api/materials/warehouse?page=${currentPage}&size=${currentPageSize}`,
-    // );
+    const params = {
+      page: currentPage,
+      size: currentPageSize,
+      warehouseId: warehouseId,
+    };
+    return Instance.get("/api/materials", {
+      params,
+    });
   }
   static async getMaterial(materialId) {
     return Instance.get(`api/materials/${materialId}`);

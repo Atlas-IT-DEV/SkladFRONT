@@ -1,12 +1,11 @@
 export default function usePropertyValidationById(
-  listPropertiesValidation,
-  setListPropertiesValidation,
+  setPropertiesValidation,
+  setSetPropertiesValidation,
 ) {
   // Функция для смены статуса валидации у свойства в массиве listProperties, notation в данном случае значение false или true
   const helperSetListPropertiesValidation = (propertyId, notation) => {
-    listPropertiesValidation.find((item) => item.id === propertyId).validity =
-      notation;
-    setListPropertiesValidation(listPropertiesValidation);
+    setPropertiesValidation.set(propertyId, notation);
+    setSetPropertiesValidation(setPropertiesValidation);
   };
 
   // Проверка на заполненность для listProperties
@@ -19,7 +18,6 @@ export default function usePropertyValidationById(
   };
 
   const doubleСhangeability = (value, propertyId) => {
-    console.log(value + "fsfsefs");
     const validated = value.match(/^(\d*\.{0,1}\d*$)/);
     if (validated && value[0] !== "0") {
       emptyValidation(value, propertyId);
@@ -39,7 +37,6 @@ export default function usePropertyValidationById(
 
   const booleanСhangeability = (value, propertyId) => {
     const validated = value.match(/^[01]$/);
-    console.log(validated);
     if (validated) {
       emptyValidation(value, propertyId);
       return true;
@@ -52,7 +49,6 @@ export default function usePropertyValidationById(
 
   const dateСhangeability = (value, propertyId) => {
     const validated = value.match(/^\d{4}-\d{2}-\d{2}$/);
-    console.log(validated);
     if (validated) {
       emptyValidation(value, propertyId);
       return true;
@@ -65,7 +61,6 @@ export default function usePropertyValidationById(
 
   // Здесь задаётся то каким образом доллжно проверяться свойство с определённым типом
   const propertycСhangeability = (value, propertyId, type) => {
-    console.log(type);
     switch (type) {
       case "STRING":
         emptyValidation(value, propertyId);
@@ -91,7 +86,7 @@ export default function usePropertyValidationById(
 
   return [
     propertycСhangeability,
-    listPropertiesValidation,
-    setListPropertiesValidation,
+    setPropertiesValidation,
+    setSetPropertiesValidation,
   ];
 }

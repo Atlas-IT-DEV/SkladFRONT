@@ -15,6 +15,7 @@ import usePropertyValidation from "../../../hooks/property_validation";
 import styles from "./material_edit_form.module.css";
 import EditMaterialDto from "../../../dto/edit_material_dto";
 import MaterialService from "../../../API/material_service";
+import ImageService from "../../../API/image_service";
 
 const validationSchema = Yup.object().shape({
   name: Yup.string()
@@ -29,13 +30,25 @@ const validationSchema = Yup.object().shape({
 
 const MaterialEditForm = ({ setVisibleModal, materialId, getMaterialList }) => {
   //Можно написать MaterialDto
-  const [material, setMaterial] = useState({});
+  const [material, setMaterial] = useState({
+    id: 0,
+    name: "",
+    comment: "",
+    tmc: {},
+    tmcType: {},
+    images: [],
+    tmCraftifies: [],
+    currentPurchaseMaterials: [],
+    properties: [],
+    show: true,
+    trim: true,
+  });
 
   const { height, width } = useWindowDimensions();
 
   const [listPropertiesValidation, setListPropertiesValidation] = useState([]);
 
-  const [image, setImage] = useState(null);
+  const [images, setImages] = useState(null);
 
   const [isSubmit, setIsSubmit] = useState(false);
 
@@ -44,6 +57,8 @@ const MaterialEditForm = ({ setVisibleModal, materialId, getMaterialList }) => {
     setListPropertiesValidation,
   );
 
+  const refImageInput = useRef();
+
   function generateBooleanArray(n) {
     if (n <= 0) {
       return [];
@@ -51,28 +66,61 @@ const MaterialEditForm = ({ setVisibleModal, materialId, getMaterialList }) => {
     return Array(n).fill(true);
   }
 
+  function base64toImage(base64String, filename, mimeType) {
+    const byteCharacters = btoa(unescape(encodeURIComponent(base64String)));
+    const byteNumbers = new Array(byteCharacters.length);
+
+    for (let i = 0; i < byteCharacters.length; i++) {
+      byteNumbers[i] = byteCharacters.charCodeAt(i);
+    }
+
+    const byteArray = new Uint8Array(byteNumbers);
+    const blob = new Blob([byteArray], { type: mimeType });
+
+    return new File([blob], filename, { type: mimeType });
+  }
+
+  const getImages = async (images) => {
+    const imagesArray = [];
+    for (const image of images) {
+      await ImageService.getImage(image.path).then((response) => {
+        imagesArray.push(
+          base64toImage(response.data, image.path, "image/jpeg"),
+        );
+      });
+    }
+    return imagesArray;
+  };
+
   const getMaterial = async (materialId) => {
     try {
-      MaterialService.getMaterial(materialId).then((response) => {
+      await MaterialService.getMaterial(materialId).then((response) => {
         setMaterial(response.data);
         setListPropertiesValidation(
           generateBooleanArray(response.data.properties.length),
         );
-        setImage(null);
-        ref.current.value = null;
+        setImages(null);
+        refImageInput.current.value = null;
         setIsSubmit(false);
+        getImages(response.data.images).then((images) => {
+          setImages(images);
+        });
       });
     } catch (error) {
       console.error("Error getMaterial:", error);
     }
   };
-
-  const updateMaterial = async (id, editMaterial) => {
+  const updateMaterial = async () => {
     try {
       const formData = new FormData();
-      formData.append("updateMaterialDTO", JSON.stringify(editMaterial));
-      formData.append("files", image, image.name);
-      MaterialService.updateMaterial(id, formData).then(() => {
+      formData.append(
+        "updateMaterialDTO",
+        JSON.stringify(new EditMaterialDto({ ...material })),
+      );
+      for (let i = 0; i < images.length; i++) {
+        formData.append("files", images[i]);
+      }
+      await MaterialService.updateMaterial(material.id, formData).then(() => {
         getMaterialList();
       });
     } catch (error) {
@@ -91,18 +139,7 @@ const MaterialEditForm = ({ setVisibleModal, materialId, getMaterialList }) => {
   };
 
   const fileChangedHandler = (event) => {
-    setImage(event.target.files[0]);
-    console.log(event.target.files[0]);
-  };
-
-  const moneyСhangeability = (event) => {
-    const validated = event.target.value.match(/^(\d*\.{0,1}\d{0,2}$)/);
-    if (
-      (validated && event.target.value[0] !== "0") ||
-      event.target.value === ""
-    ) {
-      formik.handleChange(event);
-    }
+    setImages(event.target.files);
   };
 
   const setProperty = (value, propertyIndex, type) => {
@@ -118,20 +155,15 @@ const MaterialEditForm = ({ setVisibleModal, materialId, getMaterialList }) => {
   const formik = useFormik({
     initialValues: material,
     validationSchema: validationSchema,
-    onSubmit: (values) => {
-      if (listPropertiesValidation.includes(false) || image === null) {
-        alert(JSON.stringify(material.listProperties, null, 2));
-      } else {
-        updateMaterial(material.id, new EditMaterialDto({ ...material }));
+    onSubmit: () => {
+      if (!listPropertiesValidation.includes(false) || images === null) {
+        updateMaterial();
         onClose();
       }
     },
     enableReinitialize: true,
   });
-  const ref = useRef();
-  // console.log(ref.current?.files);
-  // console.log(formik.values);
-  // console.log(material);
+
   return (
     <>
       <Flex
@@ -166,15 +198,16 @@ const MaterialEditForm = ({ setVisibleModal, materialId, getMaterialList }) => {
                 Изображение
               </label>
               <Input
+                multiple
                 borderColor="white"
                 focusBorderColor="white"
                 _hover={{ borderColor: "white" }}
-                ref={ref}
+                ref={refImageInput}
                 type="file"
                 accept=".jpg, .jpeg, .png"
                 onChange={fileChangedHandler}
                 position="static"
-                isInvalid={image === null && isSubmit}
+                isInvalid={images === null && isSubmit}
                 errorBorderColor="crimson"
                 height={8}
                 placeholder="Изображение"
@@ -202,9 +235,9 @@ const MaterialEditForm = ({ setVisibleModal, materialId, getMaterialList }) => {
                 position="static"
                 isInvalid={formik.errors.comment && formik.touched.comment}
                 errorBorderColor="crimson"
+                value={material.comment}
                 id="comment"
                 name="comment"
-                value={material.comment}
                 onChange={(e) =>
                   setMaterial({ ...material, comment: e.target.value })
                 }

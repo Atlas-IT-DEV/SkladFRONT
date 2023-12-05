@@ -22,7 +22,7 @@ const TableMaterials = ({
   const handleRemoveMaterial = async (materialId) => {
     try {
       if (window.confirm("Вы уверенны, что хотите удалить материал?")) {
-        MaterialService.deleteMaterial(materialId).then(() => {
+        await MaterialService.deleteMaterial(materialId).then(() => {
           getMaterialList();
         });
       }

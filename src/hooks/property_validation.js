@@ -1,5 +1,3 @@
-import { useState } from "react";
-
 export default function usePropertyValidation(
   listPropertiesValidation,
   setListPropertiesValidation,
@@ -20,7 +18,6 @@ export default function usePropertyValidation(
   };
 
   const doubleСhangeability = (value, propertyIndex) => {
-    console.log(value + "fsfsefs");
     const validated = value.match(/^(\d*\.{0,1}\d*$)/);
     if (validated && value[0] !== "0") {
       emptyValidation(value, propertyIndex);
@@ -40,7 +37,6 @@ export default function usePropertyValidation(
 
   const booleanСhangeability = (value, propertyIndex) => {
     const validated = value.match(/^[01]$/);
-    console.log(validated);
     if (validated) {
       emptyValidation(value, propertyIndex);
       return true;
@@ -53,7 +49,6 @@ export default function usePropertyValidation(
 
   const dateСhangeability = (value, propertyIndex) => {
     const validated = value.match(/^\d{4}-\d{2}-\d{2}$/);
-    console.log(validated);
     if (validated) {
       emptyValidation(value, propertyIndex);
       return true;
@@ -66,7 +61,6 @@ export default function usePropertyValidation(
 
   // Здесь задаётся то каким образом доллжно проверяться свойство с определённым типом
   const propertycСhangeability = (value, propertyIndex, type) => {
-    console.log(type);
     switch (type) {
       case "STRING":
         emptyValidation(value, propertyIndex);

@@ -38,49 +38,23 @@ const validationSchema = Yup.object().shape({
     .min(1, "Too Short!")
     .max(20, "Too Long!")
     .required("Required"),
-  materialPropertyDTOList: Yup.array(
-    Yup.object({
-      propertyId: Yup.number()
-        .min(1, "Too Short!")
-        .max(18, "Too Long!")
-        .required("Required"),
-      value: Yup.string()
-        .min(1, "Too Short!")
-        .max(50, "Too Long!")
-        .required("Required"),
-    }),
-  )
-    .min(1, "Too Short!")
-    .max(20, "Too Long!")
-    .required("Required"),
   show: Yup.boolean().required("Required"),
   trim: Yup.boolean().required("Required"),
 });
 
-const MaterialCreateForm = ({
-  setVisibleModal,
-  materialId,
-  getMaterialList,
-}) => {
+const MaterialCreateForm = ({ setVisibleModal, getMaterialList }) => {
   //Можно написать MaterialDto
   const [material, setMaterial] = useState({
     name: "",
     tmcId: 0,
     tmcTypeId: 0,
     tmCraftifyIdList: [],
-    materialPropertyDTOList: [
-      {
-        propertyId: 0,
-        value: "string",
-      },
-    ],
+    materialPropertyDTOList: new Map(),
     show: true,
     trim: true,
   });
 
   const [tmcList, setTmcList] = useState([]);
-
-  const [originTmcList, setOriginTmcList] = useState([]);
 
   const [tmcTypeList, setTmcTypeList] = useState([]);
 
@@ -88,22 +62,39 @@ const MaterialCreateForm = ({
 
   const { height, width } = useWindowDimensions();
 
-  const [listPropertiesValidation, setListPropertiesValidation] = useState([]);
+  const [mapPropertiesValidation, setMapPropertiesValidation] = useState(
+    new Map(),
+  );
 
-  const [image, setImage] = useState(null);
+  const [potentialProperties, setPotentialProperties] = useState([]);
+
+  const [currentProperties, setCurrentProperties] = useState([]);
+
+  const [images, setImages] = useState(null);
 
   const [isSubmit, setIsSubmit] = useState(false);
 
+  const selectPropertiesRef = useRef();
+
   const [propertyChangeability] = usePropertyValidationById(
-    listPropertiesValidation,
-    setListPropertiesValidation,
+    mapPropertiesValidation,
+    setMapPropertiesValidation,
   );
 
-  const createMaterial = async (insertMaterial) => {
+  const createMaterial = async () => {
     try {
+      console.log("hui");
       const formData = new FormData();
-      formData.append("insertMaterialDTO ", JSON.stringify(insertMaterial));
-      formData.append("files", image, image.name);
+      formData.append(
+        "insertMaterialDTO ",
+        JSON.stringify({
+          ...material,
+          materialPropertyDTOList: materialPropertyDTOListToArray(),
+        }),
+      );
+      for (let i = 0; i < images.length; i++) {
+        formData.append("files", images[i]);
+      }
       MaterialService.createMaterial(formData).then(() => {
         getMaterialList();
       });
@@ -114,13 +105,8 @@ const MaterialCreateForm = ({
 
   const getTmcs = async () => {
     try {
-      TmcService.getTmcs().then((response) => {
-        setOriginTmcList(response.data);
-        setTmcList(
-          response.data.map((tmc) => {
-            return { value: tmc.id, label: tmc.name };
-          }),
-        );
+      await TmcService.getTmcs().then((response) => {
+        setTmcList(response.data);
       });
     } catch (error) {
       console.error("Error getMaterial:", error);
@@ -129,7 +115,7 @@ const MaterialCreateForm = ({
 
   const getTmcTypes = async () => {
     try {
-      TmcTypeService.getTmcTypes().then((response) => {
+      await TmcTypeService.getTmcTypes().then((response) => {
         setTmcTypeList(
           response.data.map((craftify) => {
             return { value: craftify.id, label: craftify.name };
@@ -143,7 +129,7 @@ const MaterialCreateForm = ({
 
   const getTmcCraftifies = async () => {
     try {
-      TmcCraftifyService.getTmcCraftifies().then((response) => {
+      await TmcCraftifyService.getTmcCraftifies().then((response) => {
         setCraftifyTypeList(
           response.data.map((tmcType) => {
             return { value: tmcType.id, label: tmcType.name };
@@ -165,20 +151,10 @@ const MaterialCreateForm = ({
     setVisibleModal(false);
   };
 
-  const fileChangedHandler = (event) => {
-    setImage(event.target.files[0]);
-  };
-
-  const setProperty = (value, propertyId, type) => {
+  const changeProperty = (value, propertyId, type) => {
     const changeability = propertyChangeability(value, propertyId, type);
     if (changeability) {
-      let index = material.materialPropertyDTOList.findIndex(
-        (property) => property.propertyId === propertyId,
-      );
-      material.materialPropertyDTOList[index] = {
-        propertyId: material.materialPropertyDTOList[index].propertyId,
-        value: value,
-      };
+      material.materialPropertyDTOList.set(propertyId, value);
       setMaterial({
         ...material,
         materialPropertyDTOList: material.materialPropertyDTOList,
@@ -186,60 +162,60 @@ const MaterialCreateForm = ({
     }
   };
 
-  const formik = useFormik({
-    initialValues: material,
-    validationSchema: validationSchema,
-    onSubmit: (values) => {
-      alert("FSEGFESGFESG");
-      createMaterial(material);
-      onClose();
-    },
-    enableReinitialize: true,
-  });
-
-  const setPropertiesValidation = (properties) => {
-    setListPropertiesValidation(
-      properties.map((property) => {
-        const res = listPropertiesValidation.find((propertyValid) => {
-          return property.id === propertyValid.id;
-        });
-        if (res === undefined) {
-          return {
-            id: property.id,
-            validity: false,
-          };
-        } else {
-          return {
-            id: res.id,
-            validity: res.validity,
-          };
-        }
+  const materialPropertyDTOListToArray = () => {
+    return Array.from(
+      material.materialPropertyDTOList.entries(),
+      ([key, value]) => ({
+        propertyId: key,
+        value,
       }),
     );
   };
 
-  const change = (e) => {
-    setPropertiesValidation(e);
-    setCurrentProperties(
-      e.map((property) => {
-        return {
-          id: property.id,
-          name: property.label,
-          type: property.type,
-          value: "",
-        };
-      }),
-    );
+  const mapToArray = (set) => {
+    return Array.from(set);
+  };
+
+  const changeMapPropertiesValidation = (properties) => {
+    properties.forEach((property) => {
+      if (!mapPropertiesValidation.has(property.id)) {
+        mapPropertiesValidation.set(property.id, false);
+      }
+    });
+    setMapPropertiesValidation(mapPropertiesValidation);
+  };
+
+  const changeProperties = (e) => {
+    changeMapPropertiesValidation(e);
+    const newCurrentProperties = [];
+    const newMaterialPropertyDTOList = new Map();
+    e.forEach((property) => {
+      if (material.materialPropertyDTOList.has(property.id)) {
+        newMaterialPropertyDTOList.set(
+          property.id,
+          material.materialPropertyDTOList.get(property.id),
+        );
+      } else {
+        newMaterialPropertyDTOList.set(property.id, "");
+      }
+      newCurrentProperties.push({
+        id: property.id,
+        name: property.label,
+        type: property.type,
+        value: "",
+      });
+    });
+    setCurrentProperties(newCurrentProperties);
     setMaterial({
       ...material,
-      materialPropertyDTOList: e.map((property) => {
-        return {
-          propertyId: property.id,
-          value: "",
-        };
-      }),
+      materialPropertyDTOList: newMaterialPropertyDTOList,
     });
   };
+
+  const fileChangedHandler = (event) => {
+    setImages(event.target.files);
+  };
+
   const changeTmCraftifyIdList = (e) => {
     setMaterial({
       ...material,
@@ -247,17 +223,16 @@ const MaterialCreateForm = ({
     });
   };
 
-  const [potentialProperties, setPotentialProperties] = useState([]);
-
-  const [currentProperties, setCurrentProperties] = useState([]);
-
   const changeTmcId = (e) => {
-    selectRef.current?.clearValue();
-    setMaterial({ ...material, tmcId: e.value, materialPropertyDTOList: [] });
-    var result = originTmcList.find((Tmc) => {
+    selectPropertiesRef.current?.clearValue();
+    setMaterial({
+      ...material,
+      tmcId: e.value,
+      materialPropertyDTOList: new Map(),
+    });
+    var result = tmcList.find((Tmc) => {
       return Tmc.id === e.value;
     });
-
     setPotentialProperties(
       result?.properties?.map((property) => {
         return {
@@ -269,7 +244,21 @@ const MaterialCreateForm = ({
       }),
     );
   };
-  const selectRef = useRef();
+
+  const formik = useFormik({
+    initialValues: material,
+    validationSchema: validationSchema,
+    onSubmit: () => {
+      if (
+        !mapToArray(mapPropertiesValidation).includes(false) ||
+        images === null
+      ) {
+        createMaterial();
+        onClose();
+      }
+    },
+    enableReinitialize: true,
+  });
 
   return (
     <>
@@ -308,8 +297,9 @@ const MaterialCreateForm = ({
                 type="file"
                 accept=".jpg, .jpeg, .png"
                 onChange={fileChangedHandler}
+                multiple
                 position="static"
-                isInvalid={image === null && isSubmit}
+                isInvalid={images === null && isSubmit}
                 errorBorderColor="crimson"
                 height={8}
                 placeholder="Изображение"
@@ -339,7 +329,9 @@ const MaterialCreateForm = ({
                 position="static"
                 isInvalid={formik.errors.tmcId && formik.touched.tmcId}
                 errorBorderColor="crimson"
-                options={tmcList}
+                options={tmcList.map((tmc) => {
+                  return { value: tmc.id, label: tmc.name };
+                })}
                 id="tmcId"
                 name="tmcId"
                 onChange={(e) => changeTmcId(e)}
@@ -371,6 +363,7 @@ const MaterialCreateForm = ({
                 isMulti
                 closeMenuOnSelect={false}
                 menuPortalTarget={document.body}
+                isInvalid={formik.errors.tmcTypeId && formik.touched.tmcTypeId}
                 styles={{ menuPortal: (base) => ({ ...base, zIndex: 3 }) }}
                 position="static"
                 errorBorderColor="crimson"
@@ -387,35 +380,18 @@ const MaterialCreateForm = ({
             <div className={styles.input_box}>
               <label className={styles.label}>Свойтсва</label>
               <Select
-                ref={selectRef}
+                ref={selectPropertiesRef}
                 isMulti
                 menuPortalTarget={document.body}
                 styles={{ menuPortal: (base) => ({ ...base, zIndex: 3 }) }}
                 position="static"
                 errorBorderColor="crimson"
                 options={potentialProperties}
-                onChange={(e) => change(e)}
+                onChange={(e) => changeProperties(e)}
                 height={8}
                 placeholder="Свойтсва"
               ></Select>
             </div>
-            {/*<div className={styles.input_box}>*/}
-            {/*  <label className={styles.label}>Свойтсва</label>*/}
-            {/*  <Input*/}
-            {/*    position="static"*/}
-            {/*    isInvalid={*/}
-            {/*      formik.errors.materialPropertyDTOList &&*/}
-            {/*      formik.touched.materialPropertyDTOList*/}
-            {/*    }*/}
-            {/*    errorBorderColor="crimson"*/}
-            {/*    id="materialPropertyDTOList"*/}
-            {/*    name="materialPropertyDTOList"*/}
-            {/*    value={formik.values.materialPropertyDTOList}*/}
-            {/*    onChange={formik.handleChange}*/}
-            {/*    height={8}*/}
-            {/*    placeholder="Свойтсва"*/}
-            {/*  />*/}
-            {/*</div>*/}
             {currentProperties?.map((item, index) => {
               return (
                 <div className={styles.input_box} key={index}>
@@ -424,16 +400,12 @@ const MaterialCreateForm = ({
                   <Input
                     position="static"
                     isInvalid={
-                      listPropertiesValidation[index] === false && isSubmit
+                      mapPropertiesValidation.get(item.id) === false && isSubmit
                     }
                     errorBorderColor="crimson"
-                    value={
-                      material.materialPropertyDTOList.find(
-                        (property) => property.propertyId === item.id,
-                      ).value
-                    }
+                    value={material.materialPropertyDTOList.get(item.id)}
                     onChange={(event) =>
-                      setProperty(event.target.value, item.id, item.type)
+                      changeProperty(event.target.value, item.id, item.type)
                     }
                     type={item.type === "DATE" ? "date" : ""}
                     height={8}
