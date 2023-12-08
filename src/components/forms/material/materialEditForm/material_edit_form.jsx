@@ -92,13 +92,6 @@ const MaterialEditForm = ({ setVisibleModal, materialId, getMaterialList }) => {
     return imagesArray;
   };
 
-  const fileChangedHandler = (event) => {
-    setImages(event.target.files);
-    const reader = new FileReader();
-    reader.addEventListener("load", () => {});
-    reader.readAsDataURL(event.target.files[0]);
-  };
-
   const getMaterial = async (materialId) => {
     try {
       const response = await MaterialService.getMaterial(materialId);
@@ -118,12 +111,14 @@ const MaterialEditForm = ({ setVisibleModal, materialId, getMaterialList }) => {
         }),
       );
       setMapPropertiesValidation(generateBooleanMap(response.data.properties));
-      setImages(null);
-      refImageInput.current.value = null;
       setIsSubmit(false);
-      getImages(response.data.images).then((images) => {
-        setImages(images);
+      const images = await getImages(response.data.images);
+      const dt = new DataTransfer();
+      images.forEach((image) => {
+        dt.items.add(image);
       });
+      refImageInput.current.files = dt.files;
+      setImages(images);
     } catch (error) {
       console.error("Error getMaterial:", error);
     }
@@ -182,12 +177,17 @@ const MaterialEditForm = ({ setVisibleModal, materialId, getMaterialList }) => {
 
   const clearImages = () => {
     refImageInput.current.value = null;
+    setImages(refImageInput.current.files);
+  };
+
+  const imageChangedHandler = (event) => {
+    setImages(event.target.files);
   };
 
   const changeTmCraftifyIdList = (e) => {
     setMaterial({
       ...material,
-      tmCraftifyIdList: e.map((craftify) => {
+      tmCraftifyIdList: e?.map((craftify) => {
         return {
           id: craftify.value,
           name: craftify.label,
@@ -264,7 +264,7 @@ const MaterialEditForm = ({ setVisibleModal, materialId, getMaterialList }) => {
                 ref={refImageInput}
                 type="file"
                 accept=".jpg, .jpeg"
-                onChange={fileChangedHandler}
+                onChange={imageChangedHandler}
                 placeholder="Изображение"
               />
             </div>

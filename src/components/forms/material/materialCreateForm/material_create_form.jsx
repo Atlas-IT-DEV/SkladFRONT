@@ -194,6 +194,15 @@ const MaterialCreateForm = ({ setVisibleModal, getMaterialList }) => {
     });
   };
 
+  const imageChangedHandler = (event) => {
+    setImages(event.target.files);
+  };
+
+  const clearImages = () => {
+    refImageInput.current.value = null;
+    setImages(refImageInput.current.files);
+  };
+
   const formik = useFormik({
     initialValues: material,
     validationSchema: validationSchema,
@@ -207,14 +216,6 @@ const MaterialCreateForm = ({ setVisibleModal, getMaterialList }) => {
     },
     enableReinitialize: true,
   });
-
-  const fileChangedHandler = (event) => {
-    setImages(event.target.files);
-  };
-
-  const clearImages = () => {
-    refImageInput.current.value = null;
-  };
   return (
     <>
       <Flex
@@ -257,7 +258,7 @@ const MaterialCreateForm = ({ setVisibleModal, getMaterialList }) => {
                 _hover={{ borderColor: "white" }}
                 type="file"
                 accept=".jpg, .jpeg"
-                onChange={fileChangedHandler}
+                onChange={imageChangedHandler}
                 multiple
                 placeholder="Изображение"
               />
