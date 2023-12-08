@@ -10,7 +10,7 @@ const UrForTable = ({ sort, setSort, name }) => {
       <li className={`${styles.UlForTable__li_first} ${styles.UlForTable__li}`}>
         {name}
       </li>
-      {sort ? (
+      {typeof sort === "undefined" ? null : sort ? (
         <li className={styles.UlForTable__li}>
           <Image
             src={chevronUp}

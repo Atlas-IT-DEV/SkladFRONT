@@ -1,43 +1,39 @@
 import {
   Box,
   Button,
+  Checkbox,
   CloseButton,
   Flex,
+  HStack,
   Input,
   SimpleGrid,
+  Stack,
   Text,
 } from "@chakra-ui/react";
-import useWindowDimensions from "../../../hooks/window_dimensions";
 import React, { useEffect, useRef, useState } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import styles from "./material_create_form.module.css";
-import TmcService from "../../../API/tmc_service";
+import TmcService from "../../../../API/tmc_service";
 import { Select } from "chakra-react-select";
-import TmcTypeService from "../../../API/tmcType_service";
-import TmcCraftifyService from "../../../API/tmcCraftify_service";
-import usePropertyValidationById from "../../../hooks/property_validation_by_id";
-import MaterialService from "../../../API/material_service";
+import TmcTypeService from "../../../../API/tmcType_service";
+import TmcCraftifyService from "../../../../API/tmcCraftify_service";
+import usePropertyValidationById from "../../../../hooks/property_validation_by_id";
+import MaterialService from "../../../../API/material_service";
+import {
+  mapPropertiesValidationToArray,
+  materialPropertyDTOListToArray,
+} from "../support/conversion_functions";
 
 const validationSchema = Yup.object().shape({
   name: Yup.string()
     .min(1, "Too Short!")
     .max(50, "Too Long!")
     .required("Required"),
-  tmcId: Yup.number()
-    .min(1, "Too Short!")
-    .max(18, "Too Long!")
-    .required("Required"),
-  tmcTypeId: Yup.number()
-    .min(1, "Too Short!")
-    .max(18, "Too Long!")
-    .required("Required"),
+  tmcId: Yup.number().min(1, "Too Short!").required("Required"),
+  tmcTypeId: Yup.number().min(1, "Too Short!").required("Required"),
   tmCraftifyIdList: Yup.array(
-    Yup.number().min(1, "Too Short!").max(18, "Too Long!").required("Required"),
-  )
-    .min(1, "Too Short!")
-    .max(20, "Too Long!")
-    .required("Required"),
+    Yup.number().min(1, "Too Short!").required("Required"),
+  ).max(20, "Too Long!"),
   show: Yup.boolean().required("Required"),
   trim: Yup.boolean().required("Required"),
 });
@@ -60,13 +56,9 @@ const MaterialCreateForm = ({ setVisibleModal, getMaterialList }) => {
 
   const [craftifyList, setCraftifyTypeList] = useState([]);
 
-  const { height, width } = useWindowDimensions();
-
   const [mapPropertiesValidation, setMapPropertiesValidation] = useState(
     new Map(),
   );
-
-  const [potentialProperties, setPotentialProperties] = useState([]);
 
   const [currentProperties, setCurrentProperties] = useState([]);
 
@@ -74,28 +66,30 @@ const MaterialCreateForm = ({ setVisibleModal, getMaterialList }) => {
 
   const [isSubmit, setIsSubmit] = useState(false);
 
-  const selectPropertiesRef = useRef();
+  const refImageInput = useRef();
 
-  const [propertyChangeability] = usePropertyValidationById(
-    mapPropertiesValidation,
-    setMapPropertiesValidation,
-  );
+  const [propertyChangeability, changeMapPropertiesValidation] =
+    usePropertyValidationById(
+      mapPropertiesValidation,
+      setMapPropertiesValidation,
+    );
 
   const createMaterial = async () => {
     try {
-      console.log("hui");
       const formData = new FormData();
       formData.append(
         "insertMaterialDTO ",
         JSON.stringify({
           ...material,
-          materialPropertyDTOList: materialPropertyDTOListToArray(),
+          materialPropertyDTOList: materialPropertyDTOListToArray(
+            material.materialPropertyDTOList,
+          ),
         }),
       );
-      for (let i = 0; i < images.length; i++) {
+      for (let i = 0; i < images?.length; i++) {
         formData.append("files", images[i]);
       }
-      MaterialService.createMaterial(formData).then(() => {
+      await MaterialService.createMaterial(formData).then(() => {
         getMaterialList();
       });
     } catch (error) {
@@ -162,34 +156,21 @@ const MaterialCreateForm = ({ setVisibleModal, getMaterialList }) => {
     }
   };
 
-  const materialPropertyDTOListToArray = () => {
-    return Array.from(
-      material.materialPropertyDTOList.entries(),
-      ([key, value]) => ({
-        propertyId: key,
-        value,
-      }),
-    );
-  };
-
-  const mapToArray = (set) => {
-    return Array.from(set);
-  };
-
-  const changeMapPropertiesValidation = (properties) => {
-    properties.forEach((property) => {
-      if (!mapPropertiesValidation.has(property.id)) {
-        mapPropertiesValidation.set(property.id, false);
-      }
+  const changeTmCraftifyIdList = (e) => {
+    setMaterial({
+      ...material,
+      tmCraftifyIdList: e.map((craftify) => craftify.value),
     });
-    setMapPropertiesValidation(mapPropertiesValidation);
   };
 
-  const changeProperties = (e) => {
-    changeMapPropertiesValidation(e);
+  const changeTmcId = (e) => {
+    const result = tmcList.find((Tmc) => {
+      return Tmc.id === e.value;
+    });
+    changeMapPropertiesValidation(result.properties);
     const newCurrentProperties = [];
     const newMaterialPropertyDTOList = new Map();
-    e.forEach((property) => {
+    result.properties?.forEach((property) => {
       if (material.materialPropertyDTOList.has(property.id)) {
         newMaterialPropertyDTOList.set(
           property.id,
@@ -200,7 +181,7 @@ const MaterialCreateForm = ({ setVisibleModal, getMaterialList }) => {
       }
       newCurrentProperties.push({
         id: property.id,
-        name: property.label,
+        name: property.name,
         type: property.type,
         value: "",
       });
@@ -208,41 +189,9 @@ const MaterialCreateForm = ({ setVisibleModal, getMaterialList }) => {
     setCurrentProperties(newCurrentProperties);
     setMaterial({
       ...material,
+      tmcId: e.value,
       materialPropertyDTOList: newMaterialPropertyDTOList,
     });
-  };
-
-  const fileChangedHandler = (event) => {
-    setImages(event.target.files);
-  };
-
-  const changeTmCraftifyIdList = (e) => {
-    setMaterial({
-      ...material,
-      tmCraftifyIdList: e.map((craftify) => craftify.value),
-    });
-  };
-
-  const changeTmcId = (e) => {
-    selectPropertiesRef.current?.clearValue();
-    setMaterial({
-      ...material,
-      tmcId: e.value,
-      materialPropertyDTOList: new Map(),
-    });
-    var result = tmcList.find((Tmc) => {
-      return Tmc.id === e.value;
-    });
-    setPotentialProperties(
-      result?.properties?.map((property) => {
-        return {
-          value: property.id,
-          id: property.id,
-          label: property.name,
-          type: property.type,
-        };
-      }),
-    );
   };
 
   const formik = useFormik({
@@ -250,8 +199,7 @@ const MaterialCreateForm = ({ setVisibleModal, getMaterialList }) => {
     validationSchema: validationSchema,
     onSubmit: () => {
       if (
-        !mapToArray(mapPropertiesValidation).includes(false) ||
-        images === null
+        !mapPropertiesValidationToArray(mapPropertiesValidation).includes(false)
       ) {
         createMaterial();
         onClose();
@@ -260,6 +208,13 @@ const MaterialCreateForm = ({ setVisibleModal, getMaterialList }) => {
     enableReinitialize: true,
   });
 
+  const fileChangedHandler = (event) => {
+    setImages(event.target.files);
+  };
+
+  const clearImages = () => {
+    refImageInput.current.value = null;
+  };
   return (
     <>
       <Flex
@@ -274,9 +229,9 @@ const MaterialCreateForm = ({ setVisibleModal, getMaterialList }) => {
       <Box pb={6}>
         <form onSubmit={formik.handleSubmit}>
           <SimpleGrid
-            maxH="300px"
+            maxH="500px"
+            width="500px"
             overflowX="scroll"
-            columns={width < 768 ? 1 : 2}
             spacing={5}
             p={1}
             sx={{
@@ -289,26 +244,27 @@ const MaterialCreateForm = ({ setVisibleModal, getMaterialList }) => {
               },
             }}
           >
-            <div className={styles.input_box}>
-              <label className={`${styles.label} ${styles.label_image}`}>
-                Изображение
-              </label>
+            <div>
+              <HStack>
+                <label>Изображение</label>
+                <CloseButton onClick={clearImages} />
+              </HStack>
               <Input
+                height={8}
+                ref={refImageInput}
+                borderColor="white"
+                focusBorderColor="white"
+                _hover={{ borderColor: "white" }}
                 type="file"
-                accept=".jpg, .jpeg, .png"
+                accept=".jpg, .jpeg"
                 onChange={fileChangedHandler}
                 multiple
-                position="static"
-                isInvalid={images === null && isSubmit}
-                errorBorderColor="crimson"
-                height={8}
                 placeholder="Изображение"
               />
             </div>
-            <div className={styles.input_box}>
-              <label className={styles.label}>Имя</label>
+            <div>
+              <label>Имя</label>
               <Input
-                position="static"
                 isInvalid={formik.errors.name && formik.touched.name}
                 errorBorderColor="crimson"
                 id="name"
@@ -317,16 +273,15 @@ const MaterialCreateForm = ({ setVisibleModal, getMaterialList }) => {
                 onChange={(e) =>
                   setMaterial({ ...material, name: e.target.value })
                 }
-                height={8}
+                height="40px"
                 placeholder="Название"
               />
             </div>
-            <div className={styles.input_box}>
-              <label className={styles.label}>ТМЦ</label>
+            <div>
+              <label>ТМЦ</label>
               <Select
                 menuPortalTarget={document.body}
                 styles={{ menuPortal: (base) => ({ ...base, zIndex: 3 }) }}
-                position="static"
                 isInvalid={formik.errors.tmcId && formik.touched.tmcId}
                 errorBorderColor="crimson"
                 options={tmcList.map((tmc) => {
@@ -335,16 +290,14 @@ const MaterialCreateForm = ({ setVisibleModal, getMaterialList }) => {
                 id="tmcId"
                 name="tmcId"
                 onChange={(e) => changeTmcId(e)}
-                height={8}
                 placeholder="Тип"
               ></Select>
             </div>
-            <div className={styles.input_box}>
-              <label className={styles.label}>Тип ТМЦ</label>
+            <div>
+              <label>Тип ТМЦ</label>
               <Select
                 menuPortalTarget={document.body}
                 styles={{ menuPortal: (base) => ({ ...base, zIndex: 3 }) }}
-                position="static"
                 isInvalid={formik.errors.tmcTypeId && formik.touched.tmcTypeId}
                 errorBorderColor="crimson"
                 options={tmcTypeList}
@@ -357,60 +310,79 @@ const MaterialCreateForm = ({ setVisibleModal, getMaterialList }) => {
                 placeholder="Тип ТМЦ"
               ></Select>
             </div>
-            <div className={styles.input_box}>
-              <label className={styles.label}>tmCraftifyIdList</label>
+            <div>
+              <label>Способы обработки</label>
               <Select
                 isMulti
                 closeMenuOnSelect={false}
                 menuPortalTarget={document.body}
-                isInvalid={formik.errors.tmcTypeId && formik.touched.tmcTypeId}
-                styles={{ menuPortal: (base) => ({ ...base, zIndex: 3 }) }}
-                position="static"
-                errorBorderColor="crimson"
-                // value={currentProperties}
-                options={craftifyList}
-                onChange={
-                  (e) => changeTmCraftifyIdList(e)
-                  // setMaterial({ ...material, tmCraftifyIdList: e.value })
+                isInvalid={
+                  formik.errors.tmCraftifyIdList &&
+                  formik.touched.tmCraftifyIdList
                 }
-                height={8}
-                placeholder="tmCraftifyIdList"
-              ></Select>
-            </div>
-            <div className={styles.input_box}>
-              <label className={styles.label}>Свойтсва</label>
-              <Select
-                ref={selectPropertiesRef}
-                isMulti
-                menuPortalTarget={document.body}
                 styles={{ menuPortal: (base) => ({ ...base, zIndex: 3 }) }}
-                position="static"
                 errorBorderColor="crimson"
-                options={potentialProperties}
-                onChange={(e) => changeProperties(e)}
+                options={craftifyList}
+                onChange={(e) => changeTmCraftifyIdList(e)}
                 height={8}
-                placeholder="Свойтсва"
+                placeholder="Способы обработки"
               ></Select>
             </div>
+            <Stack spacing={[1, 5]} direction={["column", "row"]}>
+              <Checkbox
+                size="md"
+                colorScheme="green"
+                isChecked={material.show}
+                onChange={(e) =>
+                  setMaterial({ ...material, show: e.target.checked })
+                }
+              >
+                Показывать
+              </Checkbox>
+              <Checkbox
+                size="md"
+                colorScheme="green"
+                isChecked={material.trim}
+                onChange={(e) =>
+                  setMaterial({ ...material, trim: e.target.checked })
+                }
+              >
+                Отделка
+              </Checkbox>
+            </Stack>
             {currentProperties?.map((item, index) => {
               return (
-                <div className={styles.input_box} key={index}>
-                  {item.value}
-                  <label className={styles.label}>{item.name}</label>
-                  <Input
-                    position="static"
-                    isInvalid={
-                      mapPropertiesValidation.get(item.id) === false && isSubmit
-                    }
-                    errorBorderColor="crimson"
-                    value={material.materialPropertyDTOList.get(item.id)}
-                    onChange={(event) =>
-                      changeProperty(event.target.value, item.id, item.type)
-                    }
-                    type={item.type === "DATE" ? "date" : ""}
-                    height={8}
-                    placeholder={item.name}
-                  />
+                <div key={item.id}>
+                  {item.type === "BOOLEAN" ? (
+                    <Checkbox
+                      size="md"
+                      colorScheme="green"
+                      isChecked={material.materialPropertyDTOList.get(item.id)}
+                      onChange={(event) =>
+                        changeProperty(event.target.checked, item.id, item.type)
+                      }
+                    >
+                      {item.name}
+                    </Checkbox>
+                  ) : (
+                    <div>
+                      <label>{item.name}</label>
+                      <Input
+                        isInvalid={
+                          mapPropertiesValidation.get(item.id) === false &&
+                          isSubmit
+                        }
+                        errorBorderColor="crimson"
+                        value={material.materialPropertyDTOList.get(item.id)}
+                        onChange={(event) =>
+                          changeProperty(event.target.value, item.id, item.type)
+                        }
+                        type={item.type === "DATE" ? "date" : ""}
+                        height={8}
+                        placeholder={item.name}
+                      />
+                    </div>
+                  )}
                 </div>
               );
             })}

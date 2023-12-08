@@ -1,32 +1,28 @@
 export default class EditMaterialDto {
   constructor(args) {
-    this.name = args.name || null;
-    this.comment = args.comment || " ";
+    this.name = args?.name || "";
+    this.comment = args?.comment || "";
     this.tmCraftifyIdList =
-      args.tmCraftifies.map((craftify) => craftify.id) || [];
-    this.materialPropertyDTOList =
-      args.properties.map((property) => {
+      args?.tmCraftifies?.map((craftify) => {
         return {
-          propertyId: property.property.id,
-          value: property.value,
+          id: craftify.id,
+          name: craftify.name,
         };
       }) || [];
-    this.show = args.show;
-    this.trim = args.trim || " ";
+    this.materialPropertyDTOList =
+      propertiesToMap(args?.properties) || new Map();
+    this.show = args?.show === true;
   }
 }
-// {
-//     "name": "string",
-//     "comment": "string",
-//     "tmCraftifyIdList": [
-//     0
-// ],
-//     "materialPropertyDTOList": [
-//     {
-//         "propertyId": 0,
-//         "value": "string"
-//     }
-// ],
-//     "show": true,
-//     "trim": true
-// }
+
+const propertiesToMap = (properties) => {
+  const materialPropertyDTOList = new Map();
+  properties?.forEach((obj) => {
+    if (obj.value === "true" || obj.value === "false") {
+      materialPropertyDTOList.set(obj.property.id, obj.value === "true");
+    } else {
+      materialPropertyDTOList.set(obj.property.id, obj.value);
+    }
+  });
+  return materialPropertyDTOList;
+};

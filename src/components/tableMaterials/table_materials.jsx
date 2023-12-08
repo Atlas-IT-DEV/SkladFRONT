@@ -37,7 +37,7 @@ const TableMaterials = ({
         <thead>
           <tr className={styles.table__thead_tr}>
             <td className={styles.table__td}>
-              <UrForTable sort={sort} setSort={setSort} name="№" />
+              <UrForTable name="№" />
             </td>
             <td>
               <UrForTable
@@ -49,7 +49,6 @@ const TableMaterials = ({
             <td className={styles.table__td}>
               <UrForTable sort={sort} setSort={setSort} name="ТМЦ" />
             </td>
-            {/*Тип ТМЦ*/}
             <td className={styles.table__td}>
               <UrForTable sort={sort} setSort={setSort} name="Тип ТМЦ" />
             </td>

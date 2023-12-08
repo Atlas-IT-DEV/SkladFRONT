@@ -1,15 +1,14 @@
 import { Button, HStack, Stack, Text, VStack } from "@chakra-ui/react";
-
-import SideMenu from "../components/side_menu";
 import { useEffect, useState } from "react";
 import MyModal from "../components/myModal/my_modal";
-import MaterialEditForm from "../components/forms/materialEditForm/material_edit_form";
-import MaterialCreateForm from "../components/forms/materialCreateForm/material_create_form";
+import MaterialEditForm from "../components/forms/material/materialEditForm/material_edit_form";
+import MaterialCreateForm from "../components/forms/material/materialCreateForm/material_create_form";
 import Header from "../components/header/header";
 import Footer from "../components/footer";
 import TableMaterials from "../components/tableMaterials/table_materials";
 import { useFetching } from "../hooks/useFetching";
 import MaterialService from "../API/material_service";
+import SideMenu from "../components/side_menu";
 
 const MaterialsPage = () => {
   const [visibleEditModal, setVisibleEditModal] = useState();
@@ -121,6 +120,8 @@ const MaterialsPage = () => {
               setCurrentPage={setCurrentPage}
             />
           )}
+          {/*<img src="http://localhost:8080/api/images/96_material4_0.jpeg" />*/}
+          {/*<img src="http://localhost:8080/api/images/96_material4_0.jpg" />*/}
         </VStack>
         <Footer />
       </VStack>

@@ -1,11 +1,11 @@
 export default function usePropertyValidationById(
-  setPropertiesValidation,
-  setSetPropertiesValidation,
+  mapPropertiesValidation,
+  setMapPropertiesValidation,
 ) {
   // Функция для смены статуса валидации у свойства в массиве listProperties, notation в данном случае значение false или true
   const helperSetListPropertiesValidation = (propertyId, notation) => {
-    setPropertiesValidation.set(propertyId, notation);
-    setSetPropertiesValidation(setPropertiesValidation);
+    mapPropertiesValidation.set(propertyId, notation);
+    setMapPropertiesValidation(mapPropertiesValidation);
   };
 
   // Проверка на заполненность для listProperties
@@ -36,12 +36,8 @@ export default function usePropertyValidationById(
   };
 
   const booleanСhangeability = (value, propertyId) => {
-    const validated = value.match(/^[01]$/);
-    if (validated) {
+    if (typeof value === "boolean") {
       emptyValidation(value, propertyId);
-      return true;
-    } else if (value === "") {
-      helperSetListPropertiesValidation(propertyId, false);
       return true;
     }
     return false;
@@ -65,28 +61,33 @@ export default function usePropertyValidationById(
       case "STRING":
         emptyValidation(value, propertyId);
         return true;
-        break;
       case "DOUBLE":
         return doubleСhangeability(value, propertyId);
-        break;
       case "INTEGER":
         return integerСhangeability(value, propertyId);
-        break;
       case "BOOLEAN":
         return booleanСhangeability(value, propertyId);
-        break;
       case "DATE":
         return dateСhangeability(value, propertyId);
-        break;
       default:
         return false;
-        break;
     }
   };
 
-  return [
-    propertycСhangeability,
-    setPropertiesValidation,
-    setSetPropertiesValidation,
-  ];
+  const changeMapPropertiesValidation = (properties) => {
+    const newMapPropertiesValidation = new Map();
+    properties.forEach((property) => {
+      if (mapPropertiesValidation.has(property.id)) {
+        newMapPropertiesValidation.set(
+          property.id,
+          mapPropertiesValidation.get(property.id),
+        );
+      } else {
+        newMapPropertiesValidation.set(property.id, false);
+      }
+    });
+    setMapPropertiesValidation(newMapPropertiesValidation);
+  };
+
+  return [propertycСhangeability, changeMapPropertiesValidation];
 }
