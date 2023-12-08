@@ -354,7 +354,7 @@ const MaterialEditForm = ({ setVisibleModal, materialId, getMaterialList }) => {
                           changeProperty(event.target.value, item.id, item.type)
                         }
                         type={item.type === "DATE" ? "date" : ""}
-                        height={8}
+                        height="40px"
                         placeholder={item.name}
                       />
                     </div>
