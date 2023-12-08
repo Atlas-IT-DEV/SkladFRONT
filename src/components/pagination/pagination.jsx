@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { Image, Input, Text } from "@chakra-ui/react";
 import styles from "./pagination.module.css";
 import chevron_left_pagination from "../../images/chevron-left-pagination.svg";
@@ -25,14 +25,13 @@ const Pagination = ({
 
   const pageSizeСhangeability = (value) => {
     const validated = value.match(/^(\d*$)/);
+    const currentMaterialCount = currentPage * pageSize;
     const pageNumberByTotalCount = Math.floor(totalCountMaterials / value);
-    const pageNumberСalculable = Math.floor(
-      ((currentPage - 1) * pageSize + 1) / value,
-    );
+    const pageNumberСalculable = Math.floor(currentMaterialCount / value);
     if ((validated && value[0] !== "0") || value === "") {
       setCurrentPageSize(value);
       setCurrentPage(
-        currentPage * pageSize > totalCountMaterials
+        currentMaterialCount > totalCountMaterials
           ? isFinite(pageNumberByTotalCount) && pageNumberByTotalCount !== 0
             ? pageNumberByTotalCount
             : 1

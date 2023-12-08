@@ -1,5 +1,5 @@
 import { Button, HStack, Stack, Text, VStack } from "@chakra-ui/react";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import MyModal from "../components/myModal/my_modal";
 import MaterialEditForm from "../components/forms/material/materialEditForm/material_edit_form";
 import MaterialCreateForm from "../components/forms/material/materialCreateForm/material_create_form";
@@ -9,19 +9,25 @@ import TableMaterials from "../components/tableMaterials/table_materials";
 import { useFetching } from "../hooks/useFetching";
 import MaterialService from "../API/material_service";
 import SideMenu from "../components/side_menu";
+import { Select } from "chakra-react-select";
+import WarehouseService from "../API/warehouse_service";
 
 const MaterialsPage = () => {
   const [visibleEditModal, setVisibleEditModal] = useState();
   const [visibleCreateModal, setVisibleCreateModal] = useState();
   const [materialId, setMaterialId] = useState(-1);
-  const [materialList, setMaterialList] = useState();
-  const [currentPageSize, setCurrentPageSize] = useState(2);
+  const [materialList, setMaterialList] = useState([]);
+  const [currentPageSize, setCurrentPageSize] = useState(10);
   const [currentPage, setCurrentPage] = useState(1);
   const [warehouseId, setWarehouseId] = useState();
   const [totalPages, setTotalPages] = useState(0);
   const [totalCountMaterials, setTotalCountMaterials] = useState(0);
+  const [warehouseList, setWarehouseList] = useState([
+    { value: -1, label: "Все склады" },
+    { value: null, label: "Нераспределенные" },
+  ]);
 
-  const [getMaterialList, paintingError] = useFetching(async () => {
+  const [getMaterialList, materialListError] = useFetching(async () => {
     await MaterialService.getMaterials(
       warehouseId,
       currentPage,
@@ -32,6 +38,21 @@ const MaterialsPage = () => {
       setTotalCountMaterials(response.data.totalItems);
     });
   });
+  console.log(warehouseList);
+  const [getWarehouseList, warehouseListError] = useFetching(async () => {
+    await WarehouseService.getWarehouses().then((response) => {
+      setWarehouseList([
+        ...warehouseList,
+        ...response.data.map((warehouse) => {
+          return { value: warehouse.id, label: warehouse.name };
+        }),
+      ]);
+    });
+  });
+
+  useEffect(() => {
+    getWarehouseList();
+  }, []);
 
   useEffect(() => {
     getMaterialList();
@@ -66,6 +87,7 @@ const MaterialsPage = () => {
         />
       </MyModal>
       <VStack
+        overflowY="scroll"
         marginLeft={[200, 200, 200, 210, 220]}
         backgroundColor="menu_white"
         width="100%"
@@ -74,9 +96,8 @@ const MaterialsPage = () => {
         <VStack
           padding={25}
           alignItems="flex-start"
-          overflowY="scroll"
           spacing="40px"
-          height="100%"
+          flexGrow={1}
           width="100%"
         >
           <Text
@@ -101,11 +122,19 @@ const MaterialsPage = () => {
                 Добавить новый
               </Button>
               <Button variant="menu_yellow">Скрытые</Button>
+              <Select
+                options={warehouseList}
+                onChange={(e) => {
+                  setWarehouseId(e.value);
+                  console.log(e);
+                }}
+                placeholder="Склады"
+              ></Select>
             </HStack>
             <Button variant="menu_yellow">Рулонные материалы</Button>
           </HStack>
-          {paintingError ? (
-            <div>{paintingError}</div>
+          {materialListError ? (
+            <div>{materialListError}</div>
           ) : (
             <TableMaterials
               totalCountMaterials={totalCountMaterials}
@@ -118,10 +147,9 @@ const MaterialsPage = () => {
               getMaterialList={getMaterialList}
               currentPage={currentPage}
               setCurrentPage={setCurrentPage}
+              warehouseId={warehouseId}
             />
           )}
-          {/*<img src="http://localhost:8080/api/images/96_material4_0.jpeg" />*/}
-          {/*<img src="http://localhost:8080/api/images/96_material4_0.jpg" />*/}
         </VStack>
         <Footer />
       </VStack>

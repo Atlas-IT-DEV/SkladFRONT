@@ -17,6 +17,7 @@ const TableMaterials = ({
   currentPageSize,
   setCurrentPageSize,
   totalCountMaterials,
+  warehouseId,
 }) => {
   const [sort, setSort] = useState(false);
   const handleRemoveMaterial = async (materialId) => {
@@ -55,6 +56,19 @@ const TableMaterials = ({
             <td className={styles.table__td}>
               <UrForTable sort={sort} setSort={setSort} name="Поставщики" />
             </td>
+            <td className={styles.table__td}>
+              <UrForTable
+                sort={sort}
+                setSort={setSort}
+                name={
+                  warehouseId === null
+                    ? "Количество нераспределенных"
+                    : warehouseId > 0
+                    ? "Количество на складе"
+                    : "Количество на всех складах"
+                }
+              />
+            </td>
             <td className={styles.table__td}></td>
           </tr>
         </thead>
@@ -66,6 +80,7 @@ const TableMaterials = ({
               <td className={styles.table__td}>{material.tmcName}</td>
               <td className={styles.table__td}>{material.tmcTypeName}</td>
               <td className={styles.table__td}>{material.supplierNames}</td>
+              <td className={styles.table__td}>{material.count}</td>
               <td className={styles.table__td}>
                 <UlToClick
                   materialId={material.id}
