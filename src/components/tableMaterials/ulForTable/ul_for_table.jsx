@@ -7,9 +7,11 @@ import styles from "./ul_for_table.module.css";
 const UrForTable = ({ sort, setSort, name }) => {
   return (
     <ul className={styles.UlForTable}>
-      <li>{name}</li>
-      {sort ? (
-        <li>
+      <li className={`${styles.UlForTable__li_first} ${styles.UlForTable__li}`}>
+        {name}
+      </li>
+      {typeof sort === "undefined" ? null : sort ? (
+        <li className={styles.UlForTable__li}>
           <Image
             src={chevronUp}
             w="16px"
@@ -20,7 +22,7 @@ const UrForTable = ({ sort, setSort, name }) => {
           />
         </li>
       ) : (
-        <li>
+        <li className={styles.UlForTable__li}>
           <Image
             src={noSort}
             w="16px"

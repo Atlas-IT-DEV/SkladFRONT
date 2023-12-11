@@ -1,36 +1,13 @@
-import {
-  Table,
-  Thead,
-  Tbody,
-  Tr,
-  Th,
-  Td,
-  TableContainer,
-  TableCaption,
-  VStack,
-  Text,
-  Button,
-  Flex,
-  HStack,
-  Image,
-} from "@chakra-ui/react";
-import { useState } from "react";
-import MyModal from "./myModal/my_modal";
-import ProductEditFrom from "./productEditForm/product_edit_form";
+import { HStack, Image, Text, VStack } from "@chakra-ui/react";
 import edit from "./../images/edit.svg";
 import delete_svg from "./../images/delete.svg";
 
 const Recent = () => {
-  const [visibleModal, setVisibleModal] = useState(false);
   return (
     <VStack alignContent="flex-start" alignItems="flex-start" width="100%">
-      {" "}
       <Text fontWeight={700} fontSize={24} color="black">
         Недавнее
       </Text>
-      <MyModal visibleModal={visibleModal} setVisibleModal={setVisibleModal}>
-        <ProductEditFrom setVisibleModal={setVisibleModal} />
-      </MyModal>
       <VStack width="100%" spacing="2px">
         <HStack
           backgroundColor="white"

@@ -1,4 +1,4 @@
-import { VStack, Text, Image, HStack, Divider, Button } from "@chakra-ui/react";
+import { Divider, HStack, Image, Text, VStack } from "@chakra-ui/react";
 import { useState } from "react";
 import side_menu_back from "./../images/background.png";
 import logo from "./../images/logo.svg";
@@ -9,6 +9,7 @@ import promote_sklad_logo from "./../images/promote_sklad_logo.svg";
 import souvenirs_sklad_logo from "./../images/souvenirs_sklad_logo.svg";
 
 import useWindowDimensions from "../hooks/window_dimensions";
+import { NavLink } from "react-router-dom";
 
 const SideMenu = () => {
   const { height, width } = useWindowDimensions();
@@ -24,7 +25,7 @@ const SideMenu = () => {
       alignItems="flex-start"
       top={0}
       left={0}
-      zIndex={99}
+      zIndex={1}
       overflow="hidden"
       overflowX="hidden"
     >
@@ -99,15 +100,29 @@ const SideMenu = () => {
         >
           Поставщики
         </Text>
-        <Text
-          fontSize={[13, 13, 14, 15, 16]}
-          fontStyle="normal"
-          fontWeight="700"
-          textColor="#D3D2D2"
-          variant="side_menu_hover"
-        >
-          Материалы
-        </Text>
+
+        <NavLink to="/materials">
+          <Text
+            fontSize={[13, 13, 14, 15, 16]}
+            fontStyle="normal"
+            fontWeight="700"
+            textColor="#D3D2D2"
+            variant="side_menu_hover"
+          >
+            Материалы
+          </Text>
+        </NavLink>
+        <NavLink to="/purchases">
+          <Text
+            fontSize={[13, 13, 14, 15, 16]}
+            fontStyle="normal"
+            fontWeight="700"
+            textColor="#D3D2D2"
+            variant="side_menu_hover"
+          >
+            Покупки
+          </Text>
+        </NavLink>
         <Text
           fontSize={[13, 13, 14, 15, 16]}
           fontStyle="normal"

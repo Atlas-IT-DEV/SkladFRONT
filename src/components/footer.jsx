@@ -1,4 +1,4 @@
-import { HStack, Image, VStack, Text } from "@chakra-ui/react";
+import { HStack, Image, Text } from "@chakra-ui/react";
 import up from "./../images/up.svg";
 
 const Footer = () => {
@@ -7,7 +7,7 @@ const Footer = () => {
       bottom='0px'
       backgroundColor="#E9D8CC"
       width="100%"
-      height={["60px", "70px", "80px", "90px", "100px"]}
+      minHeight={["60px", "70px", "80px", "90px", "100px"]}
       padding={["10px", "12px", "15px", "20px", "25px"]}
     >
       <HStack justify="space-between" width="100%" align="center">

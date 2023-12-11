@@ -1,12 +1,9 @@
-import { VStack, Stack, Text, Button } from "@chakra-ui/react";
-import { useState } from "react";
+import { Stack, Text, VStack } from "@chakra-ui/react";
 import SideMenu from "../components/side_menu";
 import MainInfo from "../components/main_info";
 import Recent from "../components/recent";
 import Header from "../components/header/header";
 import Footer from "../components/footer";
-import MyModal from "../components/myModal/my_modal";
-import ProductEditFrom from "../components/productEditForm/product_edit_form";
 
 const MainPage = () => {
   return (

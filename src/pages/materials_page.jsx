@@ -1,32 +1,66 @@
-import { VStack, Stack, HStack, Button, Text } from "@chakra-ui/react";
-
-import SideMenu from "../components/side_menu";
-import { useEffect, useState } from "react";
+import { Button, HStack, Stack, Text, VStack } from "@chakra-ui/react";
+import React, { useEffect, useState } from "react";
 import MyModal from "../components/myModal/my_modal";
-import ProductEditFrom from "../components/productEditForm/product_edit_form";
+import MaterialEditForm from "../components/forms/material/material_edit_form";
+import MaterialCreateForm from "../components/forms/material/material_create_form";
 import Header from "../components/header/header";
 import Footer from "../components/footer";
-import Table from "../components/table/table";
-import { Instance } from "../API/instance";
+import TableMaterials from "../components/tableMaterials/table_materials";
+import { useFetching } from "../hooks/useFetching";
+import MaterialService from "../API/material_service";
+import SideMenu from "../components/side_menu";
+import { Select } from "chakra-react-select";
+import WarehouseService from "../API/warehouse_service";
+import PurchaseCreateForm from "../components/forms/purchase/purchase_create_form";
 
 const MaterialsPage = () => {
-  const [visibleModal, setVisibleModal] = useState();
-  const [materialId, setMaterialId] = useState();
-  const [materialList, setMaterialList] = useState();
+  const [visibleEditModal, setVisibleEditModal] = useState();
+  const [visibleCreateModal, setVisibleCreateModal] = useState();
+  const [visibleCreatePurchaseModal, setVisibleCreatePurchaseModal] =
+    useState();
+  const [userId, setUserId] = useState(1);
+  const [materialId, setMaterialId] = useState(-1);
+  const [materialList, setMaterialList] = useState([]);
+  const [currentPageSize, setCurrentPageSize] = useState(10);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [warehouseId, setWarehouseId] = useState();
+  const [totalPages, setTotalPages] = useState(0);
+  const [totalCountMaterials, setTotalCountMaterials] = useState(0);
+  const [warehouseList, setWarehouseList] = useState([
+    { value: -1, label: "Все склады" },
+    { value: null, label: "Нераспределенные" },
+  ]);
 
-  const getMaterialList = async () => {
-    try {
-      Instance.get("api/materials").then((response) => {
-        setMaterialList(response.data);
-      });
-    } catch (error) {
-      console.error("Error getMaterialList:", error);
-    }
-  };
+  const [getMaterialList, materialListError] = useFetching(async () => {
+    await MaterialService.getMaterials(
+      warehouseId,
+      currentPage,
+      currentPageSize,
+    ).then((response) => {
+      setMaterialList(response.data.materials);
+      setTotalPages(response.data.totalPages);
+      setTotalCountMaterials(response.data.totalItems);
+    });
+  });
+  console.log(warehouseList);
+  const [getWarehouseList, warehouseListError] = useFetching(async () => {
+    await WarehouseService.getWarehouses().then((response) => {
+      setWarehouseList([
+        ...warehouseList,
+        ...response.data.map((warehouse) => {
+          return { value: warehouse.id, label: warehouse.name };
+        }),
+      ]);
+    });
+  });
+
+  useEffect(() => {
+    getWarehouseList();
+  }, []);
 
   useEffect(() => {
     getMaterialList();
-  }, []);
+  }, [warehouseId, currentPage, currentPageSize]);
   return (
     <Stack
       direction={"row"}
@@ -37,13 +71,37 @@ const MaterialsPage = () => {
     >
       <SideMenu />
       <MyModal
-        visibleModal={visibleModal}
-        setVisibleModal={setVisibleModal}
-        materialId={materialId}
+        visibleModal={visibleEditModal}
+        setVisibleModal={setVisibleEditModal}
       >
-        <ProductEditFrom setVisibleModal={setVisibleModal} />
+        <MaterialEditForm
+          setVisibleModal={setVisibleEditModal}
+          materialId={materialId}
+          getMaterialList={getMaterialList}
+        />
+      </MyModal>
+      <MyModal
+        visibleModal={visibleCreateModal}
+        setVisibleModal={setVisibleCreateModal}
+      >
+        <MaterialCreateForm
+          setVisibleModal={setVisibleCreateModal}
+          materialId={materialId}
+          getMaterialList={getMaterialList}
+        />
+      </MyModal>
+      <MyModal
+        visibleModal={visibleCreatePurchaseModal}
+        setVisibleModal={setVisibleCreatePurchaseModal}
+      >
+        <PurchaseCreateForm
+          userId={userId}
+          setVisibleModal={setVisibleCreatePurchaseModal}
+          materialId={materialId}
+        />
       </MyModal>
       <VStack
+        overflowY="scroll"
         marginLeft={[200, 200, 200, 210, 220]}
         backgroundColor="menu_white"
         width="100%"
@@ -52,9 +110,8 @@ const MaterialsPage = () => {
         <VStack
           padding={25}
           alignItems="flex-start"
-          overflowY="scroll"
           spacing="40px"
-          height="100%"
+          flexGrow={1}
           width="100%"
         >
           <Text
@@ -69,12 +126,45 @@ const MaterialsPage = () => {
           <Text fontSize={14} fontWeight={400} marginBottom="20px">
             Возможно здеась будет тоже какой то поясняющий текст
           </Text>
-          <Table
-            materialList={materialList}
-            setVisibleModal={setVisibleModal}
-            setMaterialId={setMaterialId}
-            getMaterialList={getMaterialList}
-          />
+          <HStack color={"black"} width="100%">
+            <HStack color={"black"} width="100%">
+              <Button variant="menu_yellow">Рулонные материалы</Button>
+              <Button
+                variant="menu_yellow"
+                onClick={() => setVisibleCreateModal(true)}
+              >
+                Добавить новый
+              </Button>
+              <Button variant="menu_yellow">Скрытые</Button>
+              <Select
+                options={warehouseList}
+                onChange={(e) => {
+                  setWarehouseId(e.value);
+                  console.log(e);
+                }}
+                placeholder="Склады"
+              ></Select>
+            </HStack>
+            <Button variant="menu_yellow">Рулонные материалы</Button>
+          </HStack>
+          {materialListError ? (
+            <div>{materialListError}</div>
+          ) : (
+            <TableMaterials
+              totalCountMaterials={totalCountMaterials}
+              currentPageSize={currentPageSize}
+              setCurrentPageSize={setCurrentPageSize}
+              totalPages={totalPages}
+              materialList={materialList}
+              setVisibleEditModal={setVisibleEditModal}
+              setVisibleCreatePurchaseModal={setVisibleCreatePurchaseModal}
+              setMaterialId={setMaterialId}
+              getMaterialList={getMaterialList}
+              currentPage={currentPage}
+              setCurrentPage={setCurrentPage}
+              warehouseId={warehouseId}
+            />
+          )}
         </VStack>
         <Footer />
       </VStack>
