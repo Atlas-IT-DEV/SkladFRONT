@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Box } from "@chakra-ui/react";
 import styles from "./table_materials.module.css";
 import UrForTable from "./ulForTable/ul_for_table";
-import UlToClick from "./ulToClick/ul_to_click";
+import UlToClick from "./ulToClickMaterial/ul_to_click_material";
 import Pagination from "../pagination/pagination";
 import MaterialService from "../../API/material_service";
 
@@ -10,6 +10,7 @@ const TableMaterials = ({
   totalPages,
   materialList,
   setVisibleEditModal,
+  setVisibleCreatePurchaseModal,
   setMaterialId,
   getMaterialList,
   currentPage,
@@ -86,6 +87,7 @@ const TableMaterials = ({
                   materialId={material.id}
                   setMaterialId={setMaterialId}
                   setVisibleEditModal={setVisibleEditModal}
+                  setVisibleCreatePurchaseModal={setVisibleCreatePurchaseModal}
                   handleRemoveMaterial={handleRemoveMaterial}
                 />
               </td>

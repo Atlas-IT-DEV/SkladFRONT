@@ -1,0 +1,128 @@
+import React, { useEffect, useState } from "react";
+import { FormikProvider, useFormik } from "formik";
+import {
+  Box,
+  Button,
+  CloseButton,
+  Flex,
+  SimpleGrid,
+  Text,
+} from "@chakra-ui/react";
+import FormikInput from "../../UI/formik_input";
+import PurchaseService from "../../../API/purchase_service";
+import * as Yup from "yup";
+
+const validationSchema = Yup.object().shape({
+  linkToMaterial: Yup.string()
+    .nullable()
+    .min(1, "Too Short!")
+    .max(100, "Too Long!")
+    .required("Required"),
+  comment: Yup.string()
+    .nullable()
+    .min(1, "Too Short!")
+    .max(100, "Too Long!")
+    .required("Required"),
+});
+
+const PurchaseEditForm = ({ setVisibleModal, purchaseId, getPurchaseList }) => {
+  const [purchase, setPurchase] = useState({
+    linkToMaterial: "",
+    comment: "",
+  });
+
+  const getPurchase = async (purchaseId) => {
+    try {
+      const response = await PurchaseService.getPurchase(purchaseId);
+      setPurchase({
+        linkToMaterial: response.data.linkToMaterial || "",
+        comment: response.data.comment || "",
+      });
+    } catch (error) {
+      console.error("Error getMaterial:", error);
+    }
+  };
+
+  useEffect(() => {
+    getPurchase(purchaseId);
+  }, [purchaseId]);
+
+  const onClose = () => {
+    setVisibleModal(false);
+  };
+
+  const updatePurchase = async (purchase) => {
+    try {
+      await PurchaseService.updatePurchase(purchaseId, purchase);
+    } catch (error) {
+      console.error("Error createPurchase:", error);
+    }
+  };
+
+  const formik = useFormik({
+    initialValues: purchase,
+    validationSchema: validationSchema,
+    onSubmit: (values, { setSubmitting }) => {
+      updatePurchase(values);
+      onClose();
+      setSubmitting(false);
+    },
+    enableReinitialize: true,
+  });
+  console.log(formik.values);
+  console.log(formik.errors);
+  return (
+    <FormikProvider>
+      <Flex
+        justifyContent="space-between"
+        alignItems="center"
+        fontWeight="bold"
+        mb={9}
+      >
+        <Text fontSize="2xl">Рулонные материалы</Text>
+        <CloseButton onClick={onClose} />
+      </Flex>
+      <Box pb={6}>
+        <form onSubmit={formik.handleSubmit}>
+          <SimpleGrid
+            maxH="500px"
+            width="500px"
+            overflowX="scroll"
+            spacing={5}
+            p={1}
+            sx={{
+              "::-webkit-scrollbar": {
+                w: "2",
+              },
+              "&::-webkit-scrollbar-thumb": {
+                borderRadius: "10",
+                bg: `gray.100`,
+              },
+            }}
+          >
+            <FormikInput
+              formik={formik}
+              name={"linkToMaterial"}
+              label={"Ссылка на материал"}
+            />
+            <FormikInput
+              formik={formik}
+              name={"comment"}
+              label={"Комментарий"}
+            />
+          </SimpleGrid>
+          <Flex justifyContent="flex-end">
+            <Button variant="menu_red" onClick={onClose} mr={3}>
+              Отмена
+            </Button>
+            <Button variant="menu_yellow" type="submit" me={1}>
+              Сохранить
+            </Button>
+          </Flex>
+        </form>
+      </Box>
+    </FormikProvider>
+  );
+};
+
+export default PurchaseEditForm;

@@ -1,6 +1,5 @@
-import { HStack, useColorMode, Text, Image } from "@chakra-ui/react";
+import { HStack, Image, Text, useColorMode } from "@chakra-ui/react";
 import chevronLeft from "../../images/chevron-left.svg";
-import moon from "../../images/moon.svg";
 import bell from "../../images/bell.svg";
 import bellActiveSvg from "../../images/bell-active.svg";
 import chevronLDown from "../../images/chevron-down.svg";
@@ -16,7 +15,7 @@ const Header = ({ title }) => {
     <HStack
       bg="white"
       justifyContent="space-between"
-      height="50px"
+      minHeight="50px"
       width="100%"
     >
       <HStack spacing="16px" ps="13px">

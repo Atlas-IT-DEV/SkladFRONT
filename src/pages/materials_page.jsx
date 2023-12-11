@@ -1,8 +1,8 @@
 import { Button, HStack, Stack, Text, VStack } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 import MyModal from "../components/myModal/my_modal";
-import MaterialEditForm from "../components/forms/material/materialEditForm/material_edit_form";
-import MaterialCreateForm from "../components/forms/material/materialCreateForm/material_create_form";
+import MaterialEditForm from "../components/forms/material/material_edit_form";
+import MaterialCreateForm from "../components/forms/material/material_create_form";
 import Header from "../components/header/header";
 import Footer from "../components/footer";
 import TableMaterials from "../components/tableMaterials/table_materials";
@@ -11,10 +11,14 @@ import MaterialService from "../API/material_service";
 import SideMenu from "../components/side_menu";
 import { Select } from "chakra-react-select";
 import WarehouseService from "../API/warehouse_service";
+import PurchaseCreateForm from "../components/forms/purchase/purchase_create_form";
 
 const MaterialsPage = () => {
   const [visibleEditModal, setVisibleEditModal] = useState();
   const [visibleCreateModal, setVisibleCreateModal] = useState();
+  const [visibleCreatePurchaseModal, setVisibleCreatePurchaseModal] =
+    useState();
+  const [userId, setUserId] = useState(1);
   const [materialId, setMaterialId] = useState(-1);
   const [materialList, setMaterialList] = useState([]);
   const [currentPageSize, setCurrentPageSize] = useState(10);
@@ -86,6 +90,16 @@ const MaterialsPage = () => {
           getMaterialList={getMaterialList}
         />
       </MyModal>
+      <MyModal
+        visibleModal={visibleCreatePurchaseModal}
+        setVisibleModal={setVisibleCreatePurchaseModal}
+      >
+        <PurchaseCreateForm
+          userId={userId}
+          setVisibleModal={setVisibleCreatePurchaseModal}
+          materialId={materialId}
+        />
+      </MyModal>
       <VStack
         overflowY="scroll"
         marginLeft={[200, 200, 200, 210, 220]}
@@ -143,6 +157,7 @@ const MaterialsPage = () => {
               totalPages={totalPages}
               materialList={materialList}
               setVisibleEditModal={setVisibleEditModal}
+              setVisibleCreatePurchaseModal={setVisibleCreatePurchaseModal}
               setMaterialId={setMaterialId}
               getMaterialList={getMaterialList}
               currentPage={currentPage}

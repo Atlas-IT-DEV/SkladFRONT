@@ -7,133 +7,80 @@ import {
   HStack,
   Input,
   SimpleGrid,
+  Stack,
   Text,
 } from "@chakra-ui/react";
 import React, { useEffect, useRef, useState } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import EditMaterialDto from "../../../../dto/edit_material_dto";
-import MaterialService from "../../../../API/material_service";
-import ImageService from "../../../../API/image_service";
+import TmcService from "../../../API/tmc_service";
 import { Select } from "chakra-react-select";
-import TmcCraftifyService from "../../../../API/tmcCraftify_service";
-import usePropertyValidationById from "../../../../hooks/property_validation_by_id";
+import TmcTypeService from "../../../API/tmcType_service";
+import TmcCraftifyService from "../../../API/tmcCraftify_service";
+import usePropertyValidationById from "../../../hooks/property_validation_by_id";
+import MaterialService from "../../../API/material_service";
 import {
-  arrayBufferToBase64,
-  base64ToFile,
   mapPropertiesValidationToArray,
   materialPropertyDTOListToArray,
-} from "../support/conversion_functions";
+} from "./support/conversion_functions";
 
 const validationSchema = Yup.object().shape({
   name: Yup.string()
     .min(1, "Too Short!")
     .max(50, "Too Long!")
     .required("Required"),
-  comment: Yup.string().nullable().min(1, "Too Short!").max(300, "Too Long!"),
-  tmCraftifyIdList: Yup.array()
-    .of(
-      Yup.object().shape({
-        id: Yup.number().min(1, "Too Short!").required("Required"),
-        name: Yup.string()
-          .min(1, "Too Short!")
-          .max(50, "Too Long!")
-          .required("Required"),
-      }),
-    )
-    .max(20, "Too Long!"),
+  tmcId: Yup.number().min(1, "Too Short!").required("Required"),
+  tmcTypeId: Yup.number().min(1, "Too Short!").required("Required"),
+  tmCraftifyIdList: Yup.array(
+    Yup.number().min(1, "Too Short!").required("Required"),
+  ).max(20, "Too Long!"),
   show: Yup.boolean().required("Required"),
+  trim: Yup.boolean().required("Required"),
 });
 
-const MaterialEditForm = ({ setVisibleModal, materialId, getMaterialList }) => {
+const MaterialCreateForm = ({ setVisibleModal, getMaterialList }) => {
   //Можно написать MaterialDto
-  const [material, setMaterial] = useState(new EditMaterialDto());
+  const [material, setMaterial] = useState({
+    name: "",
+    tmcId: "",
+    tmcTypeId: "",
+    tmCraftifyIdList: [],
+    materialPropertyDTOList: new Map(),
+    show: true,
+    trim: true,
+  });
+
+  const [tmcList, setTmcList] = useState([]);
+
+  const [tmcTypeList, setTmcTypeList] = useState([]);
+
+  const [craftifyList, setCraftifyTypeList] = useState([]);
 
   const [mapPropertiesValidation, setMapPropertiesValidation] = useState(
     new Map(),
   );
 
+  const [currentProperties, setCurrentProperties] = useState([]);
+
   const [images, setImages] = useState(null);
 
   const [isSubmit, setIsSubmit] = useState(false);
 
-  const [craftifyList, setCraftifyList] = useState([]);
-
-  const [currentProperties, setCurrentProperties] = useState([]);
-
-  const [propertyChangeability] = usePropertyValidationById(
-    mapPropertiesValidation,
-    setMapPropertiesValidation,
-  );
-
   const refImageInput = useRef();
 
-  const selectCraftifiesRef = useRef();
+  const [propertyChangeability, changeMapPropertiesValidation] =
+    usePropertyValidationById(
+      mapPropertiesValidation,
+      setMapPropertiesValidation,
+    );
 
-  const generateBooleanMap = (properties) => {
-    if (properties !== undefined) {
-      const propertiesValidation = new Map();
-      properties.forEach((obj) => {
-        propertiesValidation.set(obj.property.id, true);
-      });
-      return propertiesValidation;
-    }
-  };
-
-  const getImages = async (images) => {
-    const imagesArray = [];
-    for (const image of images) {
-      await ImageService.getImage(image.path).then((response) => {
-        imagesArray.push(
-          base64ToFile(arrayBufferToBase64(response.data), image.path),
-        );
-      });
-    }
-    return imagesArray;
-  };
-
-  const getMaterial = async (materialId) => {
-    try {
-      const response = await MaterialService.getMaterial(materialId);
-      selectCraftifiesRef.current?.setValue(
-        response.data.tmCraftifies.map((crafty) => {
-          return { value: crafty.id, label: crafty.name };
-        }),
-      );
-      setMaterial(new EditMaterialDto(response.data));
-      setCurrentProperties(
-        response.data.properties?.map((item) => {
-          return {
-            id: item.property.id,
-            name: item.property.name,
-            type: item.property.type,
-          };
-        }),
-      );
-      setMapPropertiesValidation(generateBooleanMap(response.data.properties));
-      setIsSubmit(false);
-      const images = await getImages(response.data.images);
-      const dt = new DataTransfer();
-      images.forEach((image) => {
-        dt.items.add(image);
-      });
-      refImageInput.current.files = dt.files;
-      setImages(images);
-    } catch (error) {
-      console.error("Error getMaterial:", error);
-    }
-  };
-
-  const updateMaterial = async () => {
+  const createMaterial = async () => {
     try {
       const formData = new FormData();
       formData.append(
-        "updateMaterialDTO",
+        "insertMaterialDTO ",
         JSON.stringify({
           ...material,
-          tmCraftifyIdList: material.tmCraftifyIdList.map(
-            (craftify) => craftify.id,
-          ),
           materialPropertyDTOList: materialPropertyDTOListToArray(
             material.materialPropertyDTOList,
           ),
@@ -142,7 +89,7 @@ const MaterialEditForm = ({ setVisibleModal, materialId, getMaterialList }) => {
       for (let i = 0; i < images?.length; i++) {
         formData.append("files", images[i]);
       }
-      await MaterialService.updateMaterial(materialId, formData).then(() => {
+      await MaterialService.createMaterial(formData).then(() => {
         getMaterialList();
       });
     } catch (error) {
@@ -150,10 +97,34 @@ const MaterialEditForm = ({ setVisibleModal, materialId, getMaterialList }) => {
     }
   };
 
+  const getTmcs = async () => {
+    try {
+      await TmcService.getTmcs().then((response) => {
+        setTmcList(response.data);
+      });
+    } catch (error) {
+      console.error("Error getMaterial:", error);
+    }
+  };
+
+  const getTmcTypes = async () => {
+    try {
+      await TmcTypeService.getTmcTypes().then((response) => {
+        setTmcTypeList(
+          response.data.map((craftify) => {
+            return { value: craftify.id, label: craftify.name };
+          }),
+        );
+      });
+    } catch (error) {
+      console.error("Error getMaterial:", error);
+    }
+  };
+
   const getTmcCraftifies = async () => {
     try {
       await TmcCraftifyService.getTmcCraftifies().then((response) => {
-        setCraftifyList(
+        setCraftifyTypeList(
           response.data.map((tmcType) => {
             return { value: tmcType.id, label: tmcType.name };
           }),
@@ -165,35 +136,13 @@ const MaterialEditForm = ({ setVisibleModal, materialId, getMaterialList }) => {
   };
 
   useEffect(() => {
-    if (materialId > 0) {
-      getMaterial(materialId);
-      getTmcCraftifies();
-    }
-  }, [materialId]);
+    getTmcs();
+    getTmcTypes();
+    getTmcCraftifies();
+  }, []);
 
   const onClose = () => {
     setVisibleModal(false);
-  };
-
-  const clearImages = () => {
-    refImageInput.current.value = null;
-    setImages(refImageInput.current.files);
-  };
-
-  const imageChangedHandler = (event) => {
-    setImages(event.target.files);
-  };
-
-  const changeTmCraftifyIdList = (e) => {
-    setMaterial({
-      ...material,
-      tmCraftifyIdList: e?.map((craftify) => {
-        return {
-          id: craftify.value,
-          name: craftify.label,
-        };
-      }),
-    });
   };
 
   const changeProperty = (value, propertyId, type) => {
@@ -207,6 +156,53 @@ const MaterialEditForm = ({ setVisibleModal, materialId, getMaterialList }) => {
     }
   };
 
+  const changeTmCraftifyIdList = (e) => {
+    setMaterial({
+      ...material,
+      tmCraftifyIdList: e.map((craftify) => craftify.value),
+    });
+  };
+
+  const changeTmcId = (e) => {
+    const result = tmcList.find((Tmc) => {
+      return Tmc.id === e.value;
+    });
+    changeMapPropertiesValidation(result.properties);
+    const newCurrentProperties = [];
+    const newMaterialPropertyDTOList = new Map();
+    result.properties?.forEach((property) => {
+      if (material.materialPropertyDTOList.has(property.id)) {
+        newMaterialPropertyDTOList.set(
+          property.id,
+          material.materialPropertyDTOList.get(property.id),
+        );
+      } else {
+        newMaterialPropertyDTOList.set(property.id, "");
+      }
+      newCurrentProperties.push({
+        id: property.id,
+        name: property.name,
+        type: property.type,
+        value: "",
+      });
+    });
+    setCurrentProperties(newCurrentProperties);
+    setMaterial({
+      ...material,
+      tmcId: e.value,
+      materialPropertyDTOList: newMaterialPropertyDTOList,
+    });
+  };
+
+  const imageChangedHandler = (event) => {
+    setImages(event.target.files);
+  };
+
+  const clearImages = () => {
+    refImageInput.current.value = null;
+    setImages(refImageInput.current.files);
+  };
+
   const formik = useFormik({
     initialValues: material,
     validationSchema: validationSchema,
@@ -214,7 +210,7 @@ const MaterialEditForm = ({ setVisibleModal, materialId, getMaterialList }) => {
       if (
         !mapPropertiesValidationToArray(mapPropertiesValidation).includes(false)
       ) {
-        updateMaterial();
+        createMaterial();
         onClose();
         setSubmitting(false);
       }
@@ -256,15 +252,15 @@ const MaterialEditForm = ({ setVisibleModal, materialId, getMaterialList }) => {
                 <CloseButton onClick={clearImages} />
               </HStack>
               <Input
-                multiple
+                height={8}
+                ref={refImageInput}
                 borderColor="white"
                 focusBorderColor="white"
                 _hover={{ borderColor: "white" }}
-                height={8}
-                ref={refImageInput}
                 type="file"
                 accept=".jpg, .jpeg"
                 onChange={imageChangedHandler}
+                multiple
                 placeholder="Изображение"
               />
             </div>
@@ -284,19 +280,36 @@ const MaterialEditForm = ({ setVisibleModal, materialId, getMaterialList }) => {
               />
             </div>
             <div>
-              <label>Комментарий</label>
-              <Input
-                isInvalid={formik.errors.comment && formik.touched.comment}
+              <label>ТМЦ</label>
+              <Select
+                menuPortalTarget={document.body}
+                styles={{ menuPortal: (base) => ({ ...base, zIndex: 3 }) }}
+                isInvalid={formik.errors.tmcId && formik.touched.tmcId}
                 errorBorderColor="crimson"
-                value={material.comment || ""}
-                id="comment"
-                name="comment"
+                options={tmcList.map((tmc) => {
+                  return { value: tmc.id, label: tmc.name };
+                })}
+                id="tmcId"
+                name="tmcId"
+                onChange={(e) => changeTmcId(e)}
+                placeholder="Тип"
+              ></Select>
+            </div>
+            <div>
+              <label>Тип ТМЦ</label>
+              <Select
+                menuPortalTarget={document.body}
+                styles={{ menuPortal: (base) => ({ ...base, zIndex: 3 }) }}
+                isInvalid={formik.errors.tmcTypeId && formik.touched.tmcTypeId}
+                errorBorderColor="crimson"
+                options={tmcTypeList}
+                id="tmcTypeId"
+                name="tmcTypeId"
                 onChange={(e) =>
-                  setMaterial({ ...material, comment: e.target.value })
+                  setMaterial({ ...material, tmcTypeId: e.value })
                 }
-                height="40px"
-                placeholder="Комментарий"
-              />
+                placeholder="Тип ТМЦ"
+              ></Select>
             </div>
             <div>
               <label>Способы обработки</label>
@@ -310,22 +323,33 @@ const MaterialEditForm = ({ setVisibleModal, materialId, getMaterialList }) => {
                 }
                 styles={{ menuPortal: (base) => ({ ...base, zIndex: 3 }) }}
                 errorBorderColor="crimson"
-                ref={selectCraftifiesRef}
                 options={craftifyList}
                 onChange={(e) => changeTmCraftifyIdList(e)}
                 placeholder="Способы обработки"
               ></Select>
             </div>
-            <Checkbox
-              size="md"
-              isChecked={material?.show}
-              colorScheme="green"
-              onChange={(e) =>
-                setMaterial({ ...material, show: e.target.checked })
-              }
-            >
-              Показывать
-            </Checkbox>
+            <Stack spacing={[1, 5]} direction={["column", "row"]}>
+              <Checkbox
+                size="md"
+                colorScheme="green"
+                isChecked={material.show}
+                onChange={(e) =>
+                  setMaterial({ ...material, show: e.target.checked })
+                }
+              >
+                Показывать
+              </Checkbox>
+              <Checkbox
+                size="md"
+                colorScheme="green"
+                isChecked={material.trim}
+                onChange={(e) =>
+                  setMaterial({ ...material, trim: e.target.checked })
+                }
+              >
+                Отделка
+              </Checkbox>
+            </Stack>
             {currentProperties?.map((item, index) => {
               return (
                 <div key={item.id}>
@@ -382,4 +406,4 @@ const MaterialEditForm = ({ setVisibleModal, materialId, getMaterialList }) => {
   );
 };
 
-export default MaterialEditForm;
+export default MaterialCreateForm;
