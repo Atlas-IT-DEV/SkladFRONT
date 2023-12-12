@@ -5,7 +5,7 @@ import MaterialEditForm from "../components/forms/material/material_edit_form";
 import MaterialCreateForm from "../components/forms/material/material_create_form";
 import Header from "../components/header/header";
 import Footer from "../components/footer";
-import TableMaterials from "../components/tableMaterials/table_materials";
+import TableMaterials from "../components/tables/tableMaterials/table_materials";
 import { useFetching } from "../hooks/useFetching";
 import MaterialService from "../API/material_service";
 import SideMenu from "../components/side_menu";

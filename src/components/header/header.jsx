@@ -1,9 +1,15 @@
-import { HStack, Image, Text, useColorMode } from "@chakra-ui/react";
+import {
+  Button,
+  HStack,
+  Image,
+  Text,
+  useColorMode,
+  VStack,
+} from "@chakra-ui/react";
 import chevronLeft from "../../images/chevron-left.svg";
 import bell from "../../images/bell.svg";
 import bellActiveSvg from "../../images/bell-active.svg";
 import chevronLDown from "../../images/chevron-down.svg";
-import chevronUp from "./../../images/chevron-up.svg";
 import starbucks from "../../images/starbucks.svg";
 import styles from "./header.module.css";
 import { useState } from "react";
@@ -68,7 +74,7 @@ const Header = ({ title }) => {
                 <VStack position={"relative"} top="50px">
                   <Button>Профиль</Button>
                   <Button>Настройки</Button>
-                </VStack>
+                </VStack>,
               );
             }}
           />

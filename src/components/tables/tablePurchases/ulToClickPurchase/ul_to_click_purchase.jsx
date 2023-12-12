@@ -1,9 +1,9 @@
 import React from "react";
 import { Image } from "@chakra-ui/react";
-import edit from "../../../images/edit.svg";
-import delete_svg from "../../../images/delete.svg";
+import edit from "../../../../images/edit.svg";
+import delete_svg from "../../../../images/delete.svg";
 import styles from "./ul_to_click_purchase.module.css";
-import PurchaseService from "../../../API/purchase_service";
+import PurchaseService from "../../../../API/purchase_service";
 
 const UlToClickPurchase = ({
   purchaseId,

@@ -16,7 +16,7 @@ import EditMaterialDto from "../../../dto/edit_material_dto";
 import MaterialService from "../../../API/material_service";
 import ImageService from "../../../API/image_service";
 import { Select } from "chakra-react-select";
-import TmcCraftifyService from "../../../API/tmcCraftify_service";
+import CraftifyService from "../../../API/craftify_service";
 import usePropertyValidationById from "../../../hooks/property_validation_by_id";
 import {
   arrayBufferToBase64,
@@ -150,9 +150,9 @@ const MaterialEditForm = ({ setVisibleModal, materialId, getMaterialList }) => {
     }
   };
 
-  const getTmcCraftifies = async () => {
+  const getCraftifies = async () => {
     try {
-      await TmcCraftifyService.getTmcCraftifies().then((response) => {
+      await CraftifyService.getCraftifies().then((response) => {
         setCraftifyList(
           response.data.map((tmcType) => {
             return { value: tmcType.id, label: tmcType.name };
@@ -167,7 +167,7 @@ const MaterialEditForm = ({ setVisibleModal, materialId, getMaterialList }) => {
   useEffect(() => {
     if (materialId > 0) {
       getMaterial(materialId);
-      getTmcCraftifies();
+      getCraftifies();
     }
   }, [materialId]);
 

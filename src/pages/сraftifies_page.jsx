@@ -1,25 +1,25 @@
 import React, { useEffect, useState } from "react";
+import { useFetching } from "../hooks/useFetching";
 import { Button, HStack, Stack, Text, VStack } from "@chakra-ui/react";
+import MyModal from "../components/myModal/my_modal";
 import SideMenu from "../components/side_menu";
 import Header from "../components/header/header";
 import Footer from "../components/footer";
-import TableProperties from "../components/tables/tableProperties/table_properties";
-import MyModal from "../components/myModal/my_modal";
-import PropertyCreateForm from "../components/forms/property/property_create_form";
-import { useFetching } from "../hooks/useFetching";
-import PropertyService from "../API/property_service";
+import CraftifyService from "../API/craftify_service";
+import TableCraftifies from "../components/tables/tableCraftifies/table_craftifies";
+import CraftifyCreateForm from "../components/forms/craftify/craftify_create_form";
 
-const PropertyPage = () => {
+const СraftifiesPage = () => {
   const [visibleCreateModal, setVisibleCreateModal] = useState();
-  const [propertyList, setPropertyList] = useState([]);
+  const [craftifyList, setCraftifyList] = useState([]);
 
-  const [getPropertyList, propertyListError] = useFetching(async () => {
-    const response = await PropertyService.getProperties();
-    setPropertyList(response.data);
+  const [getCraftifyList, craftifyListError] = useFetching(async () => {
+    const response = await CraftifyService.getCraftifies();
+    setCraftifyList(response.data);
   });
 
   useEffect(() => {
-    getPropertyList();
+    getCraftifyList();
   }, []);
 
   return (
@@ -34,9 +34,9 @@ const PropertyPage = () => {
         visibleModal={visibleCreateModal}
         setVisibleModal={setVisibleCreateModal}
       >
-        <PropertyCreateForm
+        <CraftifyCreateForm
           setVisibleModal={setVisibleCreateModal}
-          getPropertyList={getPropertyList}
+          getCraftifyList={getCraftifyList}
         />
       </MyModal>
       <SideMenu />
@@ -46,7 +46,7 @@ const PropertyPage = () => {
         backgroundColor="menu_white"
         width="100%"
       >
-        <Header title="Свойства" />
+        <Header title="Способы обработки" />
         <VStack
           padding={25}
           alignItems="flex-start"
@@ -61,7 +61,7 @@ const PropertyPage = () => {
             lineHeight="normal"
             fontStyle="normal"
           >
-            Свойства
+            Способы обработки
           </Text>
           <Text fontSize={14} fontWeight={400} marginBottom="20px">
             Возможно здеась будет тоже какой то поясняющий текст
@@ -72,17 +72,17 @@ const PropertyPage = () => {
                 variant="menu_yellow"
                 onClick={() => setVisibleCreateModal(true)}
               >
-                Добавить новое свойство
+                Добавить новую обработку
               </Button>
             </HStack>
           </HStack>
-          {propertyListError ? (
-            <div>{propertyListError}</div>
+          {craftifyListError ? (
+            <div>{craftifyListError}</div>
           ) : (
-            <TableProperties
+            <TableCraftifies
               setVisibleCreateModal={setVisibleCreateModal}
-              getPropertyList={getPropertyList}
-              propertyList={propertyList}
+              getCraftifyList={getCraftifyList}
+              craftifyList={craftifyList}
             />
           )}
         </VStack>
@@ -92,4 +92,4 @@ const PropertyPage = () => {
   );
 };
 
-export default PropertyPage;
+export default СraftifiesPage;

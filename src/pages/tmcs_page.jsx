@@ -1,25 +1,25 @@
 import React, { useEffect, useState } from "react";
+import { useFetching } from "../hooks/useFetching";
+import TmcService from "../API/tmc_service";
 import { Button, HStack, Stack, Text, VStack } from "@chakra-ui/react";
+import MyModal from "../components/myModal/my_modal";
 import SideMenu from "../components/side_menu";
 import Header from "../components/header/header";
 import Footer from "../components/footer";
-import TableProperties from "../components/tables/tableProperties/table_properties";
-import MyModal from "../components/myModal/my_modal";
-import PropertyCreateForm from "../components/forms/property/property_create_form";
-import { useFetching } from "../hooks/useFetching";
-import PropertyService from "../API/property_service";
+import TableTmcs from "../components/tables/tableTmcs/table_tmcs";
+import TmcCreateForm from "../components/forms/tmc/tmc_create_form";
 
-const PropertyPage = () => {
+const TmcsPage = () => {
   const [visibleCreateModal, setVisibleCreateModal] = useState();
-  const [propertyList, setPropertyList] = useState([]);
+  const [tmcList, setTmcList] = useState([]);
 
-  const [getPropertyList, propertyListError] = useFetching(async () => {
-    const response = await PropertyService.getProperties();
-    setPropertyList(response.data);
+  const [getTmcList, tmcListError] = useFetching(async () => {
+    const response = await TmcService.getTmcs();
+    setTmcList(response.data);
   });
 
   useEffect(() => {
-    getPropertyList();
+    getTmcList();
   }, []);
 
   return (
@@ -34,9 +34,9 @@ const PropertyPage = () => {
         visibleModal={visibleCreateModal}
         setVisibleModal={setVisibleCreateModal}
       >
-        <PropertyCreateForm
+        <TmcCreateForm
           setVisibleModal={setVisibleCreateModal}
-          getPropertyList={getPropertyList}
+          getTmcList={getTmcList}
         />
       </MyModal>
       <SideMenu />
@@ -76,13 +76,13 @@ const PropertyPage = () => {
               </Button>
             </HStack>
           </HStack>
-          {propertyListError ? (
-            <div>{propertyListError}</div>
+          {tmcListError ? (
+            <div>{tmcListError}</div>
           ) : (
-            <TableProperties
+            <TableTmcs
               setVisibleCreateModal={setVisibleCreateModal}
-              getPropertyList={getPropertyList}
-              propertyList={propertyList}
+              getTmcList={getTmcList}
+              tmcList={tmcList}
             />
           )}
         </VStack>
@@ -92,4 +92,4 @@ const PropertyPage = () => {
   );
 };
 
-export default PropertyPage;
+export default TmcsPage;

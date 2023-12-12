@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { Box } from "@chakra-ui/react";
 import styles from "./table_materials.module.css";
-import Pagination from "../pagination/pagination";
-import MaterialService from "../../API/material_service";
+import Pagination from "../../pagination/pagination";
+import MaterialService from "../../../API/material_service";
 import UlToClickMaterial from "./ulToClickMaterial/ul_to_click_material";
 import UlForTable from "./ulForTable/ul_for_table";
 

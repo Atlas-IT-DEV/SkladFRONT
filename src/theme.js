@@ -24,7 +24,7 @@ const theme = extendTheme({
           borderColor: "main_yellow",
           borderRadius: "0",
           background: "transparent",
-          width: '100%',
+          // width: '100%',
           _hover: {
             backgroundColor: "main_yellow",
           },

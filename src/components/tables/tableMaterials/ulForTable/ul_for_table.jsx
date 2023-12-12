@@ -1,7 +1,7 @@
 import React from "react";
 import { Image } from "@chakra-ui/react";
-import chevronUp from "../../../images/chevron-up.svg";
-import noSort from "../../../images/no-sort.svg";
+import chevronUp from "../../../../images/chevron-up.svg";
+import noSort from "../../../../images/no-sort.svg";
 import styles from "./ul_for_table.module.css";
 
 const UlForTable = ({ sort, setSort, name }) => {

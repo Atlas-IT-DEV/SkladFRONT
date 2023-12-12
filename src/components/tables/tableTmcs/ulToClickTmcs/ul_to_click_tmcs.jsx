@@ -1,24 +1,19 @@
 import React from "react";
 import { Image } from "@chakra-ui/react";
-import edit from "../../../images/edit.svg";
-import delete_svg from "../../../images/delete.svg";
-import styles from "./ul_to_click_property.module.css";
-import PropertyService from "../../../API/property_service";
+import edit from "../../../../images/edit.svg";
+import delete_svg from "../../../../images/delete.svg";
+import styles from "./ul_to_click_tmcs.module.css";
+import TmcService from "../../../../API/tmc_service";
 
-const UlToClickProperty = ({
-  propertyId,
-  setPropertyId,
-  setVisibleEditModal,
-  getPropertyList,
-}) => {
-  const handleRemoveProperties = async (purchaseId) => {
+const UlToClickTmc = ({ tmcId, setTmcId, setVisibleEditModal, getTmcList }) => {
+  const handleRemoveTmcs = async (tmcId) => {
     try {
       if (window.confirm("Вы уверенны, что хотите удалить свойство?")) {
-        await PropertyService.deleteProperty(purchaseId);
-        getPropertyList();
+        await TmcService.deleteTmc(tmcId);
+        getTmcList();
       }
     } catch (error) {
-      console.error("Error deleting purchase:", error);
+      console.error("Error deleting tmc:", error);
     }
   };
   return (
@@ -30,7 +25,7 @@ const UlToClickProperty = ({
           w="16px"
           h="16px"
           onClick={() => {
-            setPropertyId(propertyId);
+            setTmcId(tmcId);
             setVisibleEditModal(true);
           }}
         />
@@ -42,7 +37,7 @@ const UlToClickProperty = ({
           w="16px"
           h="16px"
           onClick={() => {
-            handleRemoveProperties(propertyId);
+            handleRemoveTmcs(tmcId);
           }}
         />
       </li>
@@ -50,4 +45,4 @@ const UlToClickProperty = ({
   );
 };
 
-export default UlToClickProperty;
+export default UlToClickTmc;

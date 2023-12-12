@@ -134,6 +134,28 @@ const SideMenu = () => {
             Свойства
           </Text>
         </NavLink>
+        <NavLink to="/craftifies">
+          <Text
+            fontSize={[13, 13, 14, 15, 16]}
+            fontStyle="normal"
+            fontWeight="700"
+            textColor="#D3D2D2"
+            variant="side_menu_hover"
+          >
+            Способы обработки
+          </Text>
+        </NavLink>
+        <NavLink to="/tmcs">
+          <Text
+            fontSize={[13, 13, 14, 15, 16]}
+            fontStyle="normal"
+            fontWeight="700"
+            textColor="#D3D2D2"
+            variant="side_menu_hover"
+          >
+            ТМЦ
+          </Text>
+        </NavLink>
         <Text
           fontSize={[13, 13, 14, 15, 16]}
           fontStyle="normal"

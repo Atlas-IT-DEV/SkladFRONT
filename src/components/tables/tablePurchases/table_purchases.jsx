@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { Box } from "@chakra-ui/react";
 import styles from "./table_purchases.module.css";
-import Pagination from "../pagination/pagination";
-import PurchaseService from "../../API/purchase_service";
+import Pagination from "../../pagination/pagination";
+import PurchaseService from "../../../API/purchase_service";
 import UrForTable from "../tableMaterials/ulForTable/ul_for_table";
 import UlToClickPurchase from "./ulToClickPurchase/ul_to_click_purchase";
-import { useFetching } from "../../hooks/useFetching";
-import MyModal from "../myModal/my_modal";
-import PurchaseEditForm from "../forms/purchase/purchase_edit_form";
-import { convertDateToYesterday } from "../../helperFunc/convertDateToYesterday";
+import { useFetching } from "../../../hooks/useFetching";
+import MyModal from "../../myModal/my_modal";
+import PurchaseEditForm from "../../forms/purchase/purchase_edit_form";
+import { convertDateToYesterday } from "../../../helperFunc/convertDateToYesterday";
 
 const TablePurchases = () => {
   const [sort, setSort] = useState(false);

@@ -2,7 +2,7 @@ import { Stack, Text, VStack } from "@chakra-ui/react";
 import React from "react";
 import Header from "../components/header/header";
 import Footer from "../components/footer";
-import TablePurchases from "../components/tablePurchases/table_purchases";
+import TablePurchases from "../components/tables/tablePurchases/table_purchases";
 import SideMenu from "../components/side_menu";
 
 const PurchasesPage = () => {
