@@ -3,6 +3,7 @@ import chevronLeft from "../../images/chevron-left.svg";
 import bell from "../../images/bell.svg";
 import bellActiveSvg from "../../images/bell-active.svg";
 import chevronLDown from "../../images/chevron-down.svg";
+import chevronUp from "./../../images/chevron-up.svg";
 import starbucks from "../../images/starbucks.svg";
 import styles from "./header.module.css";
 import { useState } from "react";
@@ -10,6 +11,7 @@ import { useState } from "react";
 const Header = ({ title }) => {
   const { colorMode, toggleColorMode } = useColorMode();
   const [bellActive, setBellActive] = useState(false);
+  const [dropdawn, setDropDawn] = useState("");
 
   return (
     <HStack
@@ -61,8 +63,16 @@ const Header = ({ title }) => {
             w="24px"
             h="24px"
             className={styles.Header__Icon}
-            onClick={() => {}}
+            onClick={() => {
+              setDropDawn(
+                <VStack position={"relative"} top="50px">
+                  <Button>Профиль</Button>
+                  <Button>Настройки</Button>
+                </VStack>
+              );
+            }}
           />
+          {dropdawn}
         </HStack>
       </HStack>
     </HStack>
