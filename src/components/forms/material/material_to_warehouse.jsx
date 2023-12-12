@@ -11,7 +11,7 @@ import {
   Text,
 } from "@chakra-ui/react";
 import { Select } from "chakra-react-select";
-import WarehouseService from "../../../API/warehouse_service";
+import WarehouseService from "../../../API/services/warehouse_service";
 
 const validationSchema = Yup.object().shape({
   warehouseId: Yup.number().min(1, "Too Short!").required("Required"),

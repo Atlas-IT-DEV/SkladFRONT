@@ -3,22 +3,22 @@ import { Image } from "@chakra-ui/react";
 import edit from "../../../../images/edit.svg";
 import delete_svg from "../../../../images/delete.svg";
 import styles from "../../forTable/ul_to_click.module.css";
-import PropertyService from "../../../../API/services/property_service";
+import TmcTypeService from "../../../../API/services/tmcType_service";
 
-const UlToClickProperty = ({
-  propertyId,
-  setPropertyId,
+const UlToClickTmcType = ({
+  tmcTypeId,
+  setTmcTypeId,
   setVisibleEditModal,
-  getPropertyList,
+  getTmcTypeList,
 }) => {
-  const handleRemoveProperties = async (propertyId) => {
+  const handleRemoveTmcTypes = async (tmcTypeId) => {
     try {
       if (window.confirm("Вы уверенны, что хотите удалить свойство?")) {
-        await PropertyService.deleteProperty(propertyId);
-        getPropertyList();
+        await TmcTypeService.deleteTmcType(tmcTypeId);
+        getTmcTypeList();
       }
     } catch (error) {
-      console.error("Error deleting property:", error);
+      console.error("Error deleting tmcType:", error);
     }
   };
   return (
@@ -30,7 +30,7 @@ const UlToClickProperty = ({
           w="16px"
           h="16px"
           onClick={() => {
-            setPropertyId(propertyId);
+            setTmcTypeId(tmcTypeId);
             setVisibleEditModal(true);
           }}
         />
@@ -42,7 +42,7 @@ const UlToClickProperty = ({
           w="16px"
           h="16px"
           onClick={() => {
-            handleRemoveProperties(propertyId);
+            handleRemoveTmcTypes(tmcTypeId);
           }}
         />
       </li>
@@ -50,4 +50,4 @@ const UlToClickProperty = ({
   );
 };
 
-export default UlToClickProperty;
+export default UlToClickTmcType;

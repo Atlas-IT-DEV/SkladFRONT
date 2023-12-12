@@ -9,7 +9,7 @@ import {
   Text,
 } from "@chakra-ui/react";
 import * as Yup from "yup";
-import TmcService from "../../../API/services/tmc_service";
+import TmcTypeService from "../../../API/services/tmcType_service";
 import FormikInput from "../../UI/formik_input";
 import { Select } from "chakra-react-select";
 import PropertyService from "../../../API/services/property_service";
@@ -24,8 +24,8 @@ const validationSchema = Yup.object().shape({
   ).max(20, "Too Long!"),
 });
 
-const TmcCreateForm = ({ getTmcList, setVisibleModal }) => {
-  const [tmc, setTmc] = useState({
+const TmcTypeCreateForm = ({ getTmcTypeList, setVisibleModal }) => {
+  const [tmcType, setTmcType] = useState({
     name: "",
     propertyIdList: [],
   });
@@ -56,27 +56,25 @@ const TmcCreateForm = ({ getTmcList, setVisibleModal }) => {
     setVisibleModal(false);
   };
 
-  const createTmc = async (propety) => {
+  const createTmcType = async (propety) => {
     try {
-      await TmcService.createTmc(propety);
-      getTmcList();
+      await TmcTypeService.createTmcType(propety);
+      getTmcTypeList();
     } catch (error) {
-      console.error("Error createTmc:", error);
+      console.error("Error createTmcType:", error);
     }
   };
 
   const formik = useFormik({
-    initialValues: tmc,
+    initialValues: tmcType,
     validationSchema: validationSchema,
     onSubmit: (values, { setSubmitting }) => {
-      createTmc(values);
+      createTmcType(values);
       onClose();
       setSubmitting(false);
     },
     enableReinitialize: true,
   });
-  console.log(formik.errors);
-  console.log(formik.values);
   return (
     <FormikProvider value={formik}>
       <Flex
@@ -85,7 +83,7 @@ const TmcCreateForm = ({ getTmcList, setVisibleModal }) => {
         fontWeight="bold"
         mb={9}
       >
-        <Text fontSize="2xl">Создание ТМЦ</Text>
+        <Text fontSize="2xl">Создание типа ТМЦ</Text>
         <CloseButton onClick={onClose} />
       </Flex>
       <Box pb={6}>
@@ -140,4 +138,4 @@ const TmcCreateForm = ({ getTmcList, setVisibleModal }) => {
   );
 };
 
-export default TmcCreateForm;
+export default TmcTypeCreateForm;

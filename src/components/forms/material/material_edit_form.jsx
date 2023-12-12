@@ -13,10 +13,10 @@ import React, { useEffect, useRef, useState } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import EditMaterialDto from "../../../dto/edit_material_dto";
-import MaterialService from "../../../API/material_service";
-import ImageService from "../../../API/image_service";
+import MaterialService from "../../../API/services/material_service";
+import ImageService from "../../../API/services/image_service";
 import { Select } from "chakra-react-select";
-import CraftifyService from "../../../API/craftify_service";
+import CraftifyService from "../../../API/services/craftify_service";
 import usePropertyValidationById from "../../../hooks/property_validation_by_id";
 import {
   arrayBufferToBase64,

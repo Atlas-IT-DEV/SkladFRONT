@@ -9,7 +9,7 @@ import {
   Text,
 } from "@chakra-ui/react";
 import FormikInput from "../../UI/formik_input";
-import PurchaseService from "../../../API/purchase_service";
+import PurchaseService from "../../../API/services/purchase_service";
 import * as Yup from "yup";
 
 const validationSchema = Yup.object().shape({

@@ -3,15 +3,19 @@ import { Box } from "@chakra-ui/react";
 import MyModal from "../../myModal/my_modal";
 import UlForTable from "../forTable/ulForTable/ul_for_table";
 import styles from "../forTable/table.module.css";
-import UlToClickTmc from "./ulToClickTmcs/ul_to_click_tmcs";
 import { Select } from "chakra-react-select";
-import TmcEditForm from "../../forms/tmc/tmc_edit_form";
+import UlToClickTmcType from "./ulToClickTmcs/ul_to_click_tmc_type";
+import TmcTypeEditForm from "../../forms/tmcTypes/tmc_type_edit_form";
 
-const TableTmcs = ({ getTmcList, tmcList, setVisibleCreateModal }) => {
+const TableTmcTypes = ({
+  getTmcTypeList,
+  tmcTypeList,
+  setVisibleCreateModal,
+}) => {
   const [sort, setSort] = useState(false);
   const [visibleEditModal, setVisibleEditModal] = useState();
 
-  const [tmcId, setTmcId] = useState(-1);
+  const [tmcTypeId, setTmcTypeId] = useState(-1);
 
   return (
     <Box className={styles.table__Box}>
@@ -19,10 +23,10 @@ const TableTmcs = ({ getTmcList, tmcList, setVisibleCreateModal }) => {
         visibleModal={visibleEditModal}
         setVisibleModal={setVisibleEditModal}
       >
-        <TmcEditForm
+        <TmcTypeEditForm
           setVisibleModal={setVisibleEditModal}
-          getTmcList={getTmcList}
-          tmcId={tmcId}
+          getTmcTypeList={getTmcTypeList}
+          tmcTypeId={tmcTypeId}
         />
       </MyModal>
       <table className={styles.table}>
@@ -41,13 +45,13 @@ const TableTmcs = ({ getTmcList, tmcList, setVisibleCreateModal }) => {
           </tr>
         </thead>
         <tbody>
-          {tmcList?.map((tmc, index) => (
-            <tr className={styles.table__tbody_tr} key={tmc.id}>
+          {tmcTypeList?.map((tmcType, index) => (
+            <tr className={styles.table__tbody_tr} key={tmcType.id}>
               <td className={styles.table__td}>{index + 1}.</td>
-              <td className={styles.table__td}>{tmc.name}</td>
+              <td className={styles.table__td}>{tmcType.name}</td>
               <td className={styles.table__td}>
                 <ul>
-                  {/*{tmc.properties.map((property) => {*/}
+                  {/*{tmcType.properties.map((property) => {*/}
                   {/*  return (*/}
                   {/*    <li key={property.id}>*/}
                   {/*      {property.name} {property.type}*/}
@@ -57,7 +61,7 @@ const TableTmcs = ({ getTmcList, tmcList, setVisibleCreateModal }) => {
                   <Select
                     menuPortalTarget={document.body}
                     styles={{ menuPortal: (base) => ({ ...base, zIndex: 3 }) }}
-                    options={tmc.properties.map((property) => {
+                    options={tmcType.properties.map((property) => {
                       return {
                         label: property.name + " " + property.type,
                       };
@@ -65,15 +69,15 @@ const TableTmcs = ({ getTmcList, tmcList, setVisibleCreateModal }) => {
                     placeholder={"Свойства"}
                   />
                 </ul>
-                {tmc.type}
+                {tmcType.type}
               </td>
               <td className={styles.table__td}>
-                <UlToClickTmc
-                  tmcId={tmc.id}
-                  setTmcId={setTmcId}
+                <UlToClickTmcType
+                  tmcTypeId={tmcType.id}
+                  setTmcTypeId={setTmcTypeId}
                   setVisibleEditModal={setVisibleEditModal}
                   setVisibleCreateModal={setVisibleCreateModal}
-                  getTmcList={getTmcList}
+                  getTmcTypeList={getTmcTypeList}
                 />
               </td>
             </tr>
@@ -84,4 +88,4 @@ const TableTmcs = ({ getTmcList, tmcList, setVisibleCreateModal }) => {
   );
 };
 
-export default TableTmcs;
+export default TableTmcTypes;

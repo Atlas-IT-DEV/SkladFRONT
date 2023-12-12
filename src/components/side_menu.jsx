@@ -156,6 +156,17 @@ const SideMenu = () => {
             ТМЦ
           </Text>
         </NavLink>
+        <NavLink to="/tmctypes">
+          <Text
+            fontSize={[13, 13, 14, 15, 16]}
+            fontStyle="normal"
+            fontWeight="700"
+            textColor="#D3D2D2"
+            variant="side_menu_hover"
+          >
+            Типы ТМЦ
+          </Text>
+        </NavLink>
         <Text
           fontSize={[13, 13, 14, 15, 16]}
           fontStyle="normal"

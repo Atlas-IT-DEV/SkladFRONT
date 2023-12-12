@@ -9,10 +9,10 @@ import {
   Text,
 } from "@chakra-ui/react";
 import * as Yup from "yup";
-import TmcService from "../../../API/tmc_service";
+import TmcService from "../../../API/services/tmc_service";
 import FormikInput from "../../UI/formik_input";
 import { Select } from "chakra-react-select";
-import PropertyService from "../../../API/property_service";
+import PropertyService from "../../../API/services/property_service";
 
 const validationSchema = Yup.object().shape({
   name: Yup.string()
@@ -21,10 +21,7 @@ const validationSchema = Yup.object().shape({
     .required("Required"),
   propertyIdList: Yup.array(
     Yup.number().min(1, "Too Short!").required("Required"),
-  )
-    .min(1, "Too Short!")
-    .max(20, "Too Long!")
-    .required("Required"),
+  ).max(20, "Too Long!"),
 });
 
 const TmcEditForm = ({ getTmcList, setVisibleModal, tmcId }) => {
@@ -76,7 +73,6 @@ const TmcEditForm = ({ getTmcList, setVisibleModal, tmcId }) => {
   useEffect(() => {
     if (tmcId > 0) {
       getTmc(tmcId);
-      console.log(tmcId);
     }
   }, [tmcId]);
 
@@ -111,7 +107,7 @@ const TmcEditForm = ({ getTmcList, setVisibleModal, tmcId }) => {
         fontWeight="bold"
         mb={9}
       >
-        <Text fontSize="2xl">Редактирование свойства</Text>
+        <Text fontSize="2xl">Редактирование ТМЦ</Text>
         <CloseButton onClick={onClose} />
       </Flex>
       <Box pb={6}>

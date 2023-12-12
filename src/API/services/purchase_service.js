@@ -1,4 +1,5 @@
-import { Instance } from "./instance";
+import { Instance } from "../instance";
+import { purchasesUrl } from "../apiConsts";
 
 export default class PurchaseService {
   static async getPurchases(currentPage, currentPageSize) {
@@ -6,22 +7,22 @@ export default class PurchaseService {
       page: currentPage,
       size: currentPageSize,
     };
-    return Instance.get("/api/purchases", {
+    return Instance.get(purchasesUrl, {
       params,
     });
   }
   static async getPurchase(purchaseId) {
-    return Instance.get(`api/purchases/${purchaseId}`);
+    return Instance.get(`${purchasesUrl}/${purchaseId}`);
   }
   static async deletePurchase(purchaseId) {
-    return Instance.delete(`/api/purchases/${purchaseId}`);
+    return Instance.delete(`${purchasesUrl}/${purchaseId}`);
   }
 
   static async updatePurchase(purchaseId, data) {
-    return Instance.put(`api/purchases/${purchaseId}`, data);
+    return Instance.put(`${purchasesUrl}/${purchaseId}`, data);
   }
 
   static async createPurchase(data) {
-    return Instance.post("api/purchases", data);
+    return Instance.post(purchasesUrl, data);
   }
 }

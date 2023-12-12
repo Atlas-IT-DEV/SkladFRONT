@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { FormikProvider, useFormik } from "formik";
 import {
   Box,
@@ -9,7 +9,7 @@ import {
   Text,
 } from "@chakra-ui/react";
 import * as Yup from "yup";
-import TmcService from "../../../API/services/tmc_service";
+import TmcTypeService from "../../../API/services/tmcType_service";
 import FormikInput from "../../UI/formik_input";
 import { Select } from "chakra-react-select";
 import PropertyService from "../../../API/services/property_service";
@@ -24,13 +24,31 @@ const validationSchema = Yup.object().shape({
   ).max(20, "Too Long!"),
 });
 
-const TmcCreateForm = ({ getTmcList, setVisibleModal }) => {
-  const [tmc, setTmc] = useState({
+const TmcTypeEditForm = ({ getTmcTypeList, setVisibleModal, tmcTypeId }) => {
+  const [tmcType, setTmcType] = useState({
     name: "",
     propertyIdList: [],
   });
 
   const [propertyList, setPropertyList] = useState([]);
+
+  const selectPropertiesRef = useRef();
+  const getTmcType = async (tmcTypeId) => {
+    try {
+      const response = await TmcTypeService.getTmcType(tmcTypeId);
+      selectPropertiesRef.current?.setValue(
+        response.data.properties.map((property) => {
+          return {
+            value: property.id,
+            label: property.name,
+          };
+        }),
+      );
+      setTmcType(response.data);
+    } catch (error) {
+      console.error("Error getTmcType:", error);
+    }
+  };
 
   const getProperties = async () => {
     try {
@@ -52,31 +70,35 @@ const TmcCreateForm = ({ getTmcList, setVisibleModal }) => {
     getProperties();
   }, []);
 
+  useEffect(() => {
+    if (tmcTypeId > 0) {
+      getTmcType(tmcTypeId);
+    }
+  }, [tmcTypeId]);
+
   const onClose = () => {
     setVisibleModal(false);
   };
 
-  const createTmc = async (propety) => {
+  const editTmcType = async (propety) => {
     try {
-      await TmcService.createTmc(propety);
-      getTmcList();
+      await TmcTypeService.updateTmcType(tmcTypeId, propety);
+      getTmcTypeList();
     } catch (error) {
-      console.error("Error createTmc:", error);
+      console.error("Error createTmcType:", error);
     }
   };
 
   const formik = useFormik({
-    initialValues: tmc,
+    initialValues: tmcType,
     validationSchema: validationSchema,
     onSubmit: (values, { setSubmitting }) => {
-      createTmc(values);
+      editTmcType(values);
       onClose();
       setSubmitting(false);
     },
     enableReinitialize: true,
   });
-  console.log(formik.errors);
-  console.log(formik.values);
   return (
     <FormikProvider value={formik}>
       <Flex
@@ -85,7 +107,7 @@ const TmcCreateForm = ({ getTmcList, setVisibleModal }) => {
         fontWeight="bold"
         mb={9}
       >
-        <Text fontSize="2xl">Создание ТМЦ</Text>
+        <Text fontSize="2xl">Редактирование типа ТМЦ</Text>
         <CloseButton onClick={onClose} />
       </Flex>
       <Box pb={6}>
@@ -110,6 +132,7 @@ const TmcCreateForm = ({ getTmcList, setVisibleModal }) => {
             <Select
               isMulti
               closeMenuOnSelect={false}
+              ref={selectPropertiesRef}
               menuPortalTarget={document.body}
               styles={{ menuPortal: (base) => ({ ...base, zIndex: 3 }) }}
               isInvalid={
@@ -140,4 +163,4 @@ const TmcCreateForm = ({ getTmcList, setVisibleModal }) => {
   );
 };
 
-export default TmcCreateForm;
+export default TmcTypeEditForm;

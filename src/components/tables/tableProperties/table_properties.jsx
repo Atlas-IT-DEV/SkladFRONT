@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { Box } from "@chakra-ui/react";
 import MyModal from "../../myModal/my_modal";
-import UlForTable from "../tableMaterials/ulForTable/ul_for_table";
-import styles from "../tableMaterials/table_materials.module.css";
+import UlForTable from "../forTable/ulForTable/ul_for_table";
+import styles from "../forTable/table.module.css";
 import UlToClickProperty from "./ulToClickProperties/ul_to_click_property";
 import PropertyEditForm from "../../forms/property/property_edit_form";
 

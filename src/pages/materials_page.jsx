@@ -7,10 +7,10 @@ import Header from "../components/header/header";
 import Footer from "../components/footer";
 import TableMaterials from "../components/tables/tableMaterials/table_materials";
 import { useFetching } from "../hooks/useFetching";
-import MaterialService from "../API/material_service";
+import MaterialService from "../API/services/material_service";
 import SideMenu from "../components/side_menu";
 import { Select } from "chakra-react-select";
-import WarehouseService from "../API/warehouse_service";
+import WarehouseService from "../API/services/warehouse_service";
 import PurchaseCreateForm from "../components/forms/purchase/purchase_create_form";
 import MaterialToWarehouse from "../components/forms/material/material_to_warehouse";
 

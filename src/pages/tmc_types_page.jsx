@@ -1,25 +1,25 @@
 import React, { useEffect, useState } from "react";
+import { useFetching } from "../hooks/useFetching";
+import TmcTypeService from "../API/services/tmcType_service";
 import { Button, HStack, Stack, Text, VStack } from "@chakra-ui/react";
+import MyModal from "../components/myModal/my_modal";
 import SideMenu from "../components/side_menu";
 import Header from "../components/header/header";
 import Footer from "../components/footer";
-import TableProperties from "../components/tables/tableProperties/table_properties";
-import MyModal from "../components/myModal/my_modal";
-import PropertyCreateForm from "../components/forms/property/property_create_form";
-import { useFetching } from "../hooks/useFetching";
-import PropertyService from "../API/services/property_service";
+import TableTmcTypes from "../components/tables/tableTmcTypes/table_tmc_types";
+import TmcTypeCreateForm from "../components/forms/tmcTypes/tmc_type_create_form";
 
-const PropertyPage = () => {
+const TmcTypesPage = () => {
   const [visibleCreateModal, setVisibleCreateModal] = useState();
-  const [propertyList, setPropertyList] = useState([]);
+  const [tmcTypeList, setTmcTypeList] = useState([]);
 
-  const [getPropertyList, propertyListError] = useFetching(async () => {
-    const response = await PropertyService.getProperties();
-    setPropertyList(response.data);
+  const [getTmcTypeList, tmcTypeListError] = useFetching(async () => {
+    const response = await TmcTypeService.getTmcTypes();
+    setTmcTypeList(response.data);
   });
 
   useEffect(() => {
-    getPropertyList();
+    getTmcTypeList();
   }, []);
 
   return (
@@ -34,9 +34,9 @@ const PropertyPage = () => {
         visibleModal={visibleCreateModal}
         setVisibleModal={setVisibleCreateModal}
       >
-        <PropertyCreateForm
+        <TmcTypeCreateForm
           setVisibleModal={setVisibleCreateModal}
-          getPropertyList={getPropertyList}
+          getTmcTypeList={getTmcTypeList}
         />
       </MyModal>
       <SideMenu />
@@ -46,7 +46,7 @@ const PropertyPage = () => {
         backgroundColor="menu_white"
         width="100%"
       >
-        <Header title="Свойства" />
+        <Header title="Типы ТМЦ" />
         <VStack
           padding={25}
           alignItems="flex-start"
@@ -61,7 +61,7 @@ const PropertyPage = () => {
             lineHeight="normal"
             fontStyle="normal"
           >
-            Свойства
+            Типы ТМЦ
           </Text>
           <Text fontSize={14} fontWeight={400} marginBottom="20px">
             Возможно здеась будет тоже какой то поясняющий текст
@@ -76,13 +76,13 @@ const PropertyPage = () => {
               </Button>
             </HStack>
           </HStack>
-          {propertyListError ? (
-            <div>{propertyListError}</div>
+          {tmcTypeListError ? (
+            <div>{tmcTypeListError}</div>
           ) : (
-            <TableProperties
+            <TableTmcTypes
               setVisibleCreateModal={setVisibleCreateModal}
-              getPropertyList={getPropertyList}
-              propertyList={propertyList}
+              getTmcTypeList={getTmcTypeList}
+              tmcTypeList={tmcTypeList}
             />
           )}
         </VStack>
@@ -92,4 +92,4 @@ const PropertyPage = () => {
   );
 };
 
-export default PropertyPage;
+export default TmcTypesPage;

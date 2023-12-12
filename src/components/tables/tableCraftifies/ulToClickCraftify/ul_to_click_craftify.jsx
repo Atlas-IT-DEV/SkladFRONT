@@ -2,8 +2,8 @@ import React from "react";
 import { Image } from "@chakra-ui/react";
 import edit from "../../../../images/edit.svg";
 import delete_svg from "../../../../images/delete.svg";
-import styles from "./ul_to_click_craftify.module.css";
-import CraftifyService from "../../../../API/craftify_service";
+import styles from "../../forTable/ul_to_click.module.css";
+import CraftifyService from "../../../../API/services/craftify_service";
 
 const UlToClickCraftify = ({
   craftifyId,

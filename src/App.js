@@ -8,6 +8,7 @@ import PurchasesPage from "./pages/purchases_page";
 import PropertyPage from "./pages/property_page";
 import СraftifiesPage from "./pages/сraftifies_page";
 import TmcsPage from "./pages/tmcs_page";
+import TmcTypesPage from "./pages/tmc_types_page";
 
 const router = createHashRouter([
   {
@@ -34,6 +35,10 @@ const router = createHashRouter([
   {
     path: "/tmcs",
     element: <TmcsPage />,
+  },
+  {
+    path: "/tmctypes",
+    element: <TmcTypesPage />,
   },
   {
     path: "/login",

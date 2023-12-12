@@ -5,7 +5,7 @@ import MyModal from "../components/myModal/my_modal";
 import SideMenu from "../components/side_menu";
 import Header from "../components/header/header";
 import Footer from "../components/footer";
-import CraftifyService from "../API/craftify_service";
+import CraftifyService from "../API/services/craftify_service";
 import TableCraftifies from "../components/tables/tableCraftifies/table_craftifies";
 import CraftifyCreateForm from "../components/forms/craftify/craftify_create_form";
 
