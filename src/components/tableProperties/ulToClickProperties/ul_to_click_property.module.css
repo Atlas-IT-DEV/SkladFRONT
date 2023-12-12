@@ -1,0 +1,18 @@
+.UlToClick {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding-right: 10px;
+}
+.UlToClick__Icon {
+  cursor: pointer;
+}
+.UlToClick__li {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.UlToClick__li_first {
+  padding-right: 13px;
+}
+/*# sourceMappingURL=ul_to_click_property.module.css.map */

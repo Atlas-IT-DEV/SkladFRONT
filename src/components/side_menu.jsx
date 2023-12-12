@@ -120,7 +120,18 @@ const SideMenu = () => {
             textColor="#D3D2D2"
             variant="side_menu_hover"
           >
-            Покупки
+            Закупки
+          </Text>
+        </NavLink>
+        <NavLink to="/properties">
+          <Text
+            fontSize={[13, 13, 14, 15, 16]}
+            fontStyle="normal"
+            fontWeight="700"
+            textColor="#D3D2D2"
+            variant="side_menu_hover"
+          >
+            Свойства
           </Text>
         </NavLink>
         <Text

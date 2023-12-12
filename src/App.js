@@ -5,6 +5,7 @@ import MaterialsPage from "./pages/materials_page";
 import LoginPage from "./pages/login_page";
 import NotFoundPage from "./pages/notfound_page";
 import PurchasesPage from "./pages/purchases_page";
+import PropertyPage from "./pages/property_page";
 
 const router = createHashRouter([
   {
@@ -19,6 +20,10 @@ const router = createHashRouter([
   {
     path: "/purchases",
     element: <PurchasesPage />,
+  },
+  {
+    path: "/properties",
+    element: <PropertyPage />,
   },
   {
     path: "/login",

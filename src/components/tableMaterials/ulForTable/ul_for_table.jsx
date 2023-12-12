@@ -4,7 +4,7 @@ import chevronUp from "../../../images/chevron-up.svg";
 import noSort from "../../../images/no-sort.svg";
 import styles from "./ul_for_table.module.css";
 
-const UrForTable = ({ sort, setSort, name }) => {
+const UlForTable = ({ sort, setSort, name }) => {
   return (
     <ul className={styles.UlForTable}>
       <li className={`${styles.UlForTable__li_first} ${styles.UlForTable__li}`}>
@@ -37,4 +37,4 @@ const UrForTable = ({ sort, setSort, name }) => {
   );
 };
 
-export default UrForTable;
+export default UlForTable;

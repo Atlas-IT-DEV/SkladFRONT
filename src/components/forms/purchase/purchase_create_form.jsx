@@ -74,7 +74,6 @@ const PurchaseCreateForm = ({ setVisibleModal, materialId, userId }) => {
   const getDeliveryMethods = async () => {
     try {
       await DeliveryMethodService.getDeliveryMethods().then((response) => {
-        console.log(response.data);
         setDeliveryMethodList(
           response.data.map((deliveryMethod) => {
             return { value: deliveryMethod.id, label: deliveryMethod.name };
@@ -134,7 +133,7 @@ const PurchaseCreateForm = ({ setVisibleModal, materialId, userId }) => {
         fontWeight="bold"
         mb={9}
       >
-        <Text fontSize="2xl">Рулонные материалы</Text>
+        <Text fontSize="2xl">Создание закупки</Text>
         <CloseButton onClick={onClose} />
       </Flex>
       <Box pb={6}>

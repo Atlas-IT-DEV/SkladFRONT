@@ -12,12 +12,14 @@ import SideMenu from "../components/side_menu";
 import { Select } from "chakra-react-select";
 import WarehouseService from "../API/warehouse_service";
 import PurchaseCreateForm from "../components/forms/purchase/purchase_create_form";
+import MaterialToWarehouse from "../components/forms/material/material_to_warehouse";
 
 const MaterialsPage = () => {
   const [visibleEditModal, setVisibleEditModal] = useState();
   const [visibleCreateModal, setVisibleCreateModal] = useState();
   const [visibleCreatePurchaseModal, setVisibleCreatePurchaseModal] =
     useState();
+  const [visibleToWarehouse, setVisibleToWarehouse] = useState(false);
   const [userId, setUserId] = useState(1);
   const [materialId, setMaterialId] = useState(-1);
   const [materialList, setMaterialList] = useState([]);
@@ -42,7 +44,7 @@ const MaterialsPage = () => {
       setTotalCountMaterials(response.data.totalItems);
     });
   });
-  console.log(warehouseList);
+
   const [getWarehouseList, warehouseListError] = useFetching(async () => {
     await WarehouseService.getWarehouses().then((response) => {
       setWarehouseList([
@@ -100,6 +102,17 @@ const MaterialsPage = () => {
           materialId={materialId}
         />
       </MyModal>
+      <MyModal
+        visibleModal={visibleToWarehouse}
+        setVisibleModal={setVisibleToWarehouse}
+      >
+        <MaterialToWarehouse
+          visibleModal={visibleToWarehouse}
+          setVisibleModal={setVisibleToWarehouse}
+          materialId={materialId}
+          getMaterialList={getMaterialList}
+        />
+      </MyModal>
       <VStack
         overflowY="scroll"
         marginLeft={[200, 200, 200, 210, 220]}
@@ -140,7 +153,6 @@ const MaterialsPage = () => {
                 options={warehouseList}
                 onChange={(e) => {
                   setWarehouseId(e.value);
-                  console.log(e);
                 }}
                 placeholder="Склады"
               ></Select>
@@ -163,6 +175,7 @@ const MaterialsPage = () => {
               currentPage={currentPage}
               setCurrentPage={setCurrentPage}
               warehouseId={warehouseId}
+              setVisibleToWarehouse={setVisibleToWarehouse}
             />
           )}
         </VStack>

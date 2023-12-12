@@ -225,7 +225,7 @@ const MaterialCreateForm = ({ setVisibleModal, getMaterialList }) => {
         fontWeight="bold"
         mb={9}
       >
-        <Text fontSize="2xl">Рулонные материалы</Text>
+        <Text fontSize="2xl">Создание материала</Text>
         <CloseButton onClick={onClose} />
       </Flex>
       <Box pb={6}>
@@ -248,7 +248,7 @@ const MaterialCreateForm = ({ setVisibleModal, getMaterialList }) => {
           >
             <div>
               <HStack>
-                <label>Изображение</label>
+                <label>Изображения</label>
                 <CloseButton onClick={clearImages} />
               </HStack>
               <Input
@@ -347,7 +347,7 @@ const MaterialCreateForm = ({ setVisibleModal, getMaterialList }) => {
                   setMaterial({ ...material, trim: e.target.checked })
                 }
               >
-                Отделка
+                Обрезок
               </Checkbox>
             </Stack>
             {currentProperties?.map((item, index) => {

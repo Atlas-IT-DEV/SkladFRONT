@@ -2,21 +2,20 @@ import React from "react";
 import { Image } from "@chakra-ui/react";
 import edit from "../../../images/edit.svg";
 import delete_svg from "../../../images/delete.svg";
-import styles from "./ul_to_click_purchase.module.css";
-import PurchaseService from "../../../API/purchase_service";
+import styles from "./ul_to_click_property.module.css";
+import PropertyService from "../../../API/property_service";
 
-const UlToClickPurchase = ({
-  purchaseId,
-  setPurchaseId,
-  setVisibleEditPurchaseModal,
-  getPurchaseList,
+const UlToClickProperty = ({
+  propertyId,
+  setPropertyId,
+  setVisibleEditModal,
+  getPropertyList,
 }) => {
-  const handleRemovePurchase = async (purchaseId) => {
+  const handleRemoveProperties = async (purchaseId) => {
     try {
-      if (window.confirm("Вы уверенны, что хотите удалить закупку?")) {
-        await PurchaseService.deletePurchase(purchaseId).then(() => {
-          getPurchaseList();
-        });
+      if (window.confirm("Вы уверенны, что хотите удалить свойство?")) {
+        await PropertyService.deleteProperty(purchaseId);
+        getPropertyList();
       }
     } catch (error) {
       console.error("Error deleting purchase:", error);
@@ -31,8 +30,8 @@ const UlToClickPurchase = ({
           w="16px"
           h="16px"
           onClick={() => {
-            setPurchaseId(purchaseId);
-            setVisibleEditPurchaseModal(true);
+            setPropertyId(propertyId);
+            setVisibleEditModal(true);
           }}
         />
       </li>
@@ -43,7 +42,7 @@ const UlToClickPurchase = ({
           w="16px"
           h="16px"
           onClick={() => {
-            handleRemovePurchase(purchaseId);
+            handleRemoveProperties(propertyId);
           }}
         />
       </li>
@@ -51,4 +50,4 @@ const UlToClickPurchase = ({
   );
 };
 
-export default UlToClickPurchase;
+export default UlToClickProperty;

@@ -229,7 +229,7 @@ const MaterialEditForm = ({ setVisibleModal, materialId, getMaterialList }) => {
         fontWeight="bold"
         mb={9}
       >
-        <Text fontSize="2xl">Рулонные материалы</Text>
+        <Text fontSize="2xl">Редактироваие материала</Text>
         <CloseButton onClick={onClose} />
       </Flex>
       <Box pb={6}>

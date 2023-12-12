@@ -1,16 +1,17 @@
 import React, { useState } from "react";
 import { Box } from "@chakra-ui/react";
 import styles from "./table_materials.module.css";
-import UrForTable from "./ulForTable/ul_for_table";
-import UlToClick from "./ulToClickMaterial/ul_to_click_material";
 import Pagination from "../pagination/pagination";
 import MaterialService from "../../API/material_service";
+import UlToClickMaterial from "./ulToClickMaterial/ul_to_click_material";
+import UlForTable from "./ulForTable/ul_for_table";
 
 const TableMaterials = ({
   totalPages,
   materialList,
   setVisibleEditModal,
   setVisibleCreatePurchaseModal,
+  setVisibleToWarehouse,
   setMaterialId,
   getMaterialList,
   currentPage,
@@ -39,26 +40,26 @@ const TableMaterials = ({
         <thead>
           <tr className={styles.table__thead_tr}>
             <td className={styles.table__td}>
-              <UrForTable name="№" />
+              <UlForTable name="№" />
             </td>
             <td>
-              <UrForTable
+              <UlForTable
                 sort={sort}
                 setSort={setSort}
                 name="Название материала"
               />
             </td>
             <td className={styles.table__td}>
-              <UrForTable sort={sort} setSort={setSort} name="ТМЦ" />
+              <UlForTable sort={sort} setSort={setSort} name="ТМЦ" />
             </td>
             <td className={styles.table__td}>
-              <UrForTable sort={sort} setSort={setSort} name="Тип ТМЦ" />
+              <UlForTable sort={sort} setSort={setSort} name="Тип ТМЦ" />
             </td>
             <td className={styles.table__td}>
-              <UrForTable sort={sort} setSort={setSort} name="Поставщики" />
+              <UlForTable sort={sort} setSort={setSort} name="Поставщики" />
             </td>
             <td className={styles.table__td}>
-              <UrForTable
+              <UlForTable
                 sort={sort}
                 setSort={setSort}
                 name={
@@ -83,12 +84,13 @@ const TableMaterials = ({
               <td className={styles.table__td}>{material.supplierNames}</td>
               <td className={styles.table__td}>{material.count}</td>
               <td className={styles.table__td}>
-                <UlToClick
+                <UlToClickMaterial
                   materialId={material.id}
                   setMaterialId={setMaterialId}
                   setVisibleEditModal={setVisibleEditModal}
                   setVisibleCreatePurchaseModal={setVisibleCreatePurchaseModal}
                   handleRemoveMaterial={handleRemoveMaterial}
+                  setVisibleToWarehouse={setVisibleToWarehouse}
                 />
               </td>
             </tr>

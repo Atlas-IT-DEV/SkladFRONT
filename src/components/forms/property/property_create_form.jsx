@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { FormikProvider, useFormik } from "formik";
 import {
   Box,
@@ -8,70 +8,52 @@ import {
   SimpleGrid,
   Text,
 } from "@chakra-ui/react";
-import FormikInput from "../../UI/formik_input";
-import PurchaseService from "../../../API/purchase_service";
 import * as Yup from "yup";
+import PropertyService from "../../../API/property_service";
+import FormikSelect from "../../UI/formik_select";
+import { optionTypeList } from "./optionTypeList";
+import FormikInput from "../../UI/formik_input";
 
 const validationSchema = Yup.object().shape({
-  linkToMaterial: Yup.string()
-    .nullable()
+  name: Yup.string()
     .min(1, "Too Short!")
-    .max(100, "Too Long!")
+    .max(255, "Too Long!")
     .required("Required"),
-  comment: Yup.string()
-    .nullable()
+  type: Yup.string()
     .min(1, "Too Short!")
-    .max(100, "Too Long!")
+    .max(255, "Too Long!")
     .required("Required"),
 });
 
-const PurchaseEditForm = ({ setVisibleModal, purchaseId, getPurchaseList }) => {
-  const [purchase, setPurchase] = useState({
-    linkToMaterial: "",
-    comment: "",
+const PropertyCreateForm = ({ getPropertyList, setVisibleModal }) => {
+  const [property, setProperty] = useState({
+    name: "",
+    type: "",
   });
-
-  const getPurchase = async (purchaseId) => {
-    try {
-      const response = await PurchaseService.getPurchase(purchaseId);
-      setPurchase({
-        linkToMaterial: response.data.linkToMaterial || "",
-        comment: response.data.comment || "",
-      });
-    } catch (error) {
-      console.error("Error getMaterial:", error);
-    }
-  };
-
-  useEffect(() => {
-    if (purchaseId > 0) {
-      getPurchase(purchaseId);
-    }
-  }, [purchaseId]);
 
   const onClose = () => {
     setVisibleModal(false);
   };
 
-  const updatePurchase = async (purchase) => {
+  const createProperty = async (propety) => {
     try {
-      await PurchaseService.updatePurchase(purchaseId, purchase);
+      await PropertyService.createProperty(propety);
+      getPropertyList();
     } catch (error) {
-      console.error("Error createPurchase:", error);
+      console.error("Error createProperty:", error);
     }
   };
 
   const formik = useFormik({
-    initialValues: purchase,
+    initialValues: property,
     validationSchema: validationSchema,
     onSubmit: (values, { setSubmitting }) => {
-      updatePurchase(values);
+      createProperty(values);
       onClose();
       setSubmitting(false);
     },
     enableReinitialize: true,
   });
-
   return (
     <FormikProvider value={formik}>
       <Flex
@@ -80,7 +62,7 @@ const PurchaseEditForm = ({ setVisibleModal, purchaseId, getPurchaseList }) => {
         fontWeight="bold"
         mb={9}
       >
-        <Text fontSize="2xl">Редактирование закупки</Text>
+        <Text fontSize="2xl">Создание свойства</Text>
         <CloseButton onClick={onClose} />
       </Flex>
       <Box pb={6}>
@@ -101,15 +83,12 @@ const PurchaseEditForm = ({ setVisibleModal, purchaseId, getPurchaseList }) => {
               },
             }}
           >
-            <FormikInput
+            <FormikInput formik={formik} name={"name"} label={"Название"} />
+            <FormikSelect
               formik={formik}
-              name={"linkToMaterial"}
-              label={"Ссылка на материал"}
-            />
-            <FormikInput
-              formik={formik}
-              name={"comment"}
-              label={"Комментарий"}
+              name={"type"}
+              label={"Тип"}
+              options={optionTypeList}
             />
           </SimpleGrid>
           <Flex justifyContent="flex-end">
@@ -126,4 +105,4 @@ const PurchaseEditForm = ({ setVisibleModal, purchaseId, getPurchaseList }) => {
   );
 };
 
-export default PurchaseEditForm;
+export default PropertyCreateForm;

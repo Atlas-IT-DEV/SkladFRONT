@@ -9,6 +9,7 @@ const UlToClickMaterial = ({
   setMaterialId,
   setVisibleEditModal,
   setVisibleCreatePurchaseModal,
+  setVisibleToWarehouse,
   handleRemoveMaterial,
 }) => {
   return (
@@ -43,7 +44,17 @@ const UlToClickMaterial = ({
             setVisibleCreatePurchaseModal(true);
           }}
         >
-          Купить
+          Закупить
+        </button>
+      </li>
+      <li className={styles.UlToClick__li}>
+        <button
+          onClick={() => {
+            setMaterialId(materialId);
+            setVisibleToWarehouse(true);
+          }}
+        >
+          Закупить
         </button>
       </li>
     </ul>
