@@ -50,8 +50,6 @@ const DeliveryPlaceEditForm = ({
       const response = await DeliveryPlaceService.getDeliveryPlace(
         deliveryPlaceId,
       );
-      console.log(response.data);
-      console.log(formik.values);
       if (response.data.comment === null) {
         response.data.comment = "";
       }
@@ -60,7 +58,6 @@ const DeliveryPlaceEditForm = ({
       console.error("Error getDeliveryPlace:", error);
     }
   };
-  // console.log(formik.setValues());
   useEffect(() => {
     if (deliveryPlaceId > 0) {
       getDeliveryPlace(deliveryPlaceId);

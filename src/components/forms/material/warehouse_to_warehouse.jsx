@@ -44,14 +44,14 @@ const validationSchema = Yup.object().shape({
     })
     .required("Required"),
 });
-const MaterialToWarehouse = ({
+const WarehouseToWarehouse = ({
   visibleModal,
   setVisibleModal,
   materialId,
+  warehouseId,
   getMaterialList,
 }) => {
-  const materialTransfer = new MaterialFormTransferDto({ materialId });
-
+  const materialTransfer = new MaterialFormTransferDto(materialId);
   const formik = useFormik({
     initialValues: materialTransfer,
     validationSchema: validationSchema,
@@ -66,9 +66,9 @@ const MaterialToWarehouse = ({
 
   const [warehouseList, setWarehouseList] = useState([]);
 
-  const selectWarehouseIdRef = useRef();
-
   const selectPurchaseIdRef = useRef();
+
+  const selectWarehouseIdRef = useRef();
 
   const onClose = () => {
     setVisibleModal(false);
@@ -82,9 +82,12 @@ const MaterialToWarehouse = ({
     }
   };
 
-  const getMaterial = async (materialId) => {
+  const getMaterial = async () => {
     try {
-      const response = await MaterialService.getMaterial(materialId);
+      const response = await MaterialService.getMaterial(
+        materialId,
+        warehouseId,
+      );
       const newPurchaseList = await Promise.all(
         response.data.currentPurchaseMaterials.map(async (purchaseMaterial) => {
           const purchase = await PurchaseService.getPurchase(
@@ -102,14 +105,17 @@ const MaterialToWarehouse = ({
       console.error("Error getMaterial:", error);
     }
   };
+  console.log(purchaseList);
 
   const getWarehouses = async () => {
     try {
       await WarehouseService.getWarehouses().then((response) => {
         setWarehouseList(
-          response.data.map((warehouse) => {
-            return { value: warehouse.id, label: warehouse.name };
-          }),
+          response.data
+            .filter((warehouse) => warehouse.id !== warehouseId)
+            .map((warehouse) => {
+              return { value: warehouse.id, label: warehouse.name };
+            }),
         );
       });
     } catch (error) {
@@ -122,16 +128,16 @@ const MaterialToWarehouse = ({
       formik.setValues(new MaterialFormTransferDto(materialId));
       formik.setTouched({});
       selectPurchaseIdRef.current?.setValue();
-      selectWarehouseIdRef.current?.setValue();
+      getMaterial();
       getWarehouses();
-      getMaterial(materialId);
     }
-  }, [materialId, visibleModal]);
+  }, [visibleModal]);
 
   const Transfer = async (materialTransfer) => {
     try {
       delete materialTransfer.maxCount;
-      await WarehouseService.addMaterialToWarehouse(
+      await WarehouseService.moveMaterial(
+        warehouseId,
         materialTransfer.warehouseId,
         new MaterialTransferDto(materialTransfer),
       );
@@ -231,4 +237,4 @@ const MaterialToWarehouse = ({
   );
 };
 
-export default MaterialToWarehouse;
+export default WarehouseToWarehouse;

@@ -12,8 +12,13 @@ export default class MaterialService {
       params,
     });
   }
-  static async getMaterial(materialId) {
-    return Instance.get(`${materialsUrl}/${materialId}`);
+  static async getMaterial(materialId, warehouseId) {
+    const params = {
+      warehouseId,
+    };
+    return Instance.get(`${materialsUrl}/${materialId}`, {
+      params,
+    });
   }
 
   static async updateMaterial(materialId, material) {

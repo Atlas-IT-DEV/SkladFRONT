@@ -16,7 +16,6 @@ const DeliveryPlacesPage = () => {
   const [getDeliveryPlaceList, deliveryPlaceListError] = useFetching(
     async () => {
       const response = await DeliveryPlaceService.getDeliveryPlaces();
-      console.log(response.data);
       setDeliveryPlaceList(response.data);
     },
   );

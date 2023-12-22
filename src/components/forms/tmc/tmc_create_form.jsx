@@ -75,8 +75,6 @@ const TmcCreateForm = ({ getTmcList, setVisibleModal }) => {
     },
     enableReinitialize: true,
   });
-  console.log(formik.errors);
-  console.log(formik.values);
   return (
     <FormikProvider value={formik}>
       <Flex

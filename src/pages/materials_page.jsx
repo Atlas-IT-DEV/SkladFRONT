@@ -175,6 +175,7 @@ const MaterialsPage = () => {
               currentPage={currentPage}
               setCurrentPage={setCurrentPage}
               warehouseId={warehouseId}
+              materialId={materialId}
               setVisibleToWarehouse={setVisibleToWarehouse}
             />
           )}

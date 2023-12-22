@@ -41,7 +41,6 @@ const Pagination = ({
       );
     }
   };
-  console.log(totalCountItem);
   return (
     <div className={`${className} ${styles.Pagination}`}>
       <Text fontSize={[13, 14]}>

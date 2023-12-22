@@ -9,4 +9,8 @@ export const purchasesUrl = "purchases";
 export const contractorsUrl = "contractors";
 export const tmcsUrl = "tmcs";
 export const tmcTypesUrl = "tmctypes";
-export const warehousesUrl = "warehouses";
+export const warehousesUrl = {
+  warehouses: "warehouses",
+  update: "update_material",
+  move: "move_to",
+};

@@ -16,7 +16,6 @@ const DeliveryMethodsPage = () => {
   const [getDeliveryMethodList, deliveryMethodListError] = useFetching(
     async () => {
       const response = await DeliveryMethodService.getDeliveryMethods();
-      console.log(response.data);
       setDeliveryMethodList(response.data);
     },
   );
