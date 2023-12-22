@@ -9,7 +9,7 @@ import {
   Text,
 } from "@chakra-ui/react";
 import * as Yup from "yup";
-import PropertyService from "../../../API/property_service";
+import PropertyService from "../../../API/services/property_service";
 import FormikSelect from "../../UI/formik_select";
 import { optionTypeList } from "./optionTypeList";
 import FormikInput from "../../UI/formik_input";

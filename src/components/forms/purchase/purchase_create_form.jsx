@@ -9,9 +9,9 @@ import {
 } from "@chakra-ui/react";
 import { FormikProvider, useFormik } from "formik";
 import * as Yup from "yup";
-import SupplierService from "../../../API/supplier_service";
-import DeliveryMethodService from "../../../API/deliveryMethod_service";
-import PurchaseService from "../../../API/purchase_service";
+import SupplierService from "../../../API/services/supplier_service";
+import DeliveryMethodService from "../../../API/services/deliveryMethod_service";
+import PurchaseService from "../../../API/services/purchase_service";
 import FormikInput from "../../UI/formik_input";
 import FormikSelect from "../../UI/formik_select";
 import { getDate } from "../../../helperFunc/getDate";

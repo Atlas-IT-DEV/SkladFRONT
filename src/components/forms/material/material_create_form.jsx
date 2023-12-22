@@ -13,12 +13,12 @@ import {
 import React, { useEffect, useRef, useState } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import TmcService from "../../../API/tmc_service";
+import TmcService from "../../../API/services/tmc_service";
 import { Select } from "chakra-react-select";
-import TmcTypeService from "../../../API/tmcType_service";
-import TmcCraftifyService from "../../../API/tmcCraftify_service";
+import TmcTypeService from "../../../API/services/tmcType_service";
+import CraftifyService from "../../../API/services/craftify_service";
 import usePropertyValidationById from "../../../hooks/property_validation_by_id";
-import MaterialService from "../../../API/material_service";
+import MaterialService from "../../../API/services/material_service";
 import {
   mapPropertiesValidationToArray,
   materialPropertyDTOListToArray,
@@ -121,9 +121,9 @@ const MaterialCreateForm = ({ setVisibleModal, getMaterialList }) => {
     }
   };
 
-  const getTmcCraftifies = async () => {
+  const getCraftifies = async () => {
     try {
-      await TmcCraftifyService.getTmcCraftifies().then((response) => {
+      await CraftifyService.getCraftifies().then((response) => {
         setCraftifyTypeList(
           response.data.map((tmcType) => {
             return { value: tmcType.id, label: tmcType.name };
@@ -138,7 +138,7 @@ const MaterialCreateForm = ({ setVisibleModal, getMaterialList }) => {
   useEffect(() => {
     getTmcs();
     getTmcTypes();
-    getTmcCraftifies();
+    getCraftifies();
   }, []);
 
   const onClose = () => {

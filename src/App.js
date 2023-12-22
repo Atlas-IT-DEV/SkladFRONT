@@ -6,6 +6,11 @@ import LoginPage from "./pages/login_page";
 import NotFoundPage from "./pages/notfound_page";
 import PurchasesPage from "./pages/purchases_page";
 import PropertyPage from "./pages/property_page";
+import СraftifiesPage from "./pages/сraftifies_page";
+import TmcsPage from "./pages/tmcs_page";
+import TmcTypesPage from "./pages/tmc_types_page";
+import DeliveryMethodsPage from "./pages/delivery_methods_page";
+import DeliveryPlacesPage from "./pages/delivery_places_page";
 
 const router = createHashRouter([
   {
@@ -24,6 +29,26 @@ const router = createHashRouter([
   {
     path: "/properties",
     element: <PropertyPage />,
+  },
+  {
+    path: "/craftifies",
+    element: <СraftifiesPage />,
+  },
+  {
+    path: "/tmcs",
+    element: <TmcsPage />,
+  },
+  {
+    path: "/tmctypes",
+    element: <TmcTypesPage />,
+  },
+  {
+    path: "/delivery_methods",
+    element: <DeliveryMethodsPage />,
+  },
+  {
+    path: "/delivery_places",
+    element: <DeliveryPlacesPage />,
   },
   {
     path: "/login",

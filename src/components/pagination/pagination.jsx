@@ -12,26 +12,26 @@ const Pagination = ({
   totalPages,
   currentPageSize,
   setCurrentPageSize,
-  totalCountMaterials,
+  totalCountItem,
 }) => {
   const PaginationPages = usePagination(totalPages, currentPage);
 
   let pageSize =
     currentPageSize === ""
       ? 5
-      : currentPageSize > totalCountMaterials
-      ? totalCountMaterials
+      : currentPageSize > totalCountItem
+      ? totalCountItem
       : currentPageSize;
 
   const pageSizeСhangeability = (value) => {
     const validated = value.match(/^(\d*$)/);
     const currentMaterialCount = currentPage * pageSize;
-    const pageNumberByTotalCount = Math.floor(totalCountMaterials / value);
+    const pageNumberByTotalCount = Math.floor(totalCountItem / value);
     const pageNumberСalculable = Math.floor(currentMaterialCount / value);
     if ((validated && value[0] !== "0") || value === "") {
       setCurrentPageSize(value);
       setCurrentPage(
-        currentMaterialCount > totalCountMaterials
+        currentMaterialCount > totalCountItem
           ? isFinite(pageNumberByTotalCount) && pageNumberByTotalCount !== 0
             ? pageNumberByTotalCount
             : 1
@@ -41,15 +41,15 @@ const Pagination = ({
       );
     }
   };
-
+  console.log(totalCountItem);
   return (
     <div className={`${className} ${styles.Pagination}`}>
       <Text fontSize={[13, 14]}>
         Показано {(currentPage - 1) * pageSize + 1} –{" "}
-        {currentPage * pageSize > totalCountMaterials
-          ? totalCountMaterials
+        {currentPage * pageSize > totalCountItem
+          ? totalCountItem
           : currentPage * pageSize}{" "}
-        из {totalCountMaterials}
+        из {totalCountItem}
       </Text>
       <div className={styles.Pagination__buttons}>
         <button

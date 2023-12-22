@@ -3,11 +3,11 @@ import { Button, HStack, Stack, Text, VStack } from "@chakra-ui/react";
 import SideMenu from "../components/side_menu";
 import Header from "../components/header/header";
 import Footer from "../components/footer";
-import TableProperties from "../components/tableProperties/table_properties";
+import TableProperties from "../components/tables/tableProperties/table_properties";
 import MyModal from "../components/myModal/my_modal";
 import PropertyCreateForm from "../components/forms/property/property_create_form";
 import { useFetching } from "../hooks/useFetching";
-import PropertyService from "../API/property_service";
+import PropertyService from "../API/services/property_service";
 
 const PropertyPage = () => {
   const [visibleCreateModal, setVisibleCreateModal] = useState();
