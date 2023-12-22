@@ -6,24 +6,28 @@ import UlToClickMaterial from "./ulToClickMaterial/ul_to_click_material";
 import UlForTable from "../forTable/ulForTable/ul_for_table";
 import WarehouseToWarehouse from "../../forms/material/warehouse_to_warehouse";
 import MyModal from "../../myModal/my_modal";
+import MaterialEditForm from "../../forms/material/material_edit_form";
+import PurchaseCreateForm from "../../forms/purchase/purchase_create_form";
+import MaterialToWarehouse from "../../forms/material/material_to_warehouse";
 
 const TableMaterials = ({
   totalPages,
   materialList,
-  setVisibleEditModal,
-  setVisibleCreatePurchaseModal,
-  setVisibleToWarehouse,
-  setMaterialId,
   currentPage,
   setCurrentPage,
   currentPageSize,
   setCurrentPageSize,
   totalCountMaterials,
   warehouseId,
-  materialId,
   getMaterialList,
 }) => {
   const [sort, setSort] = useState(false);
+  const [materialId, setMaterialId] = useState(-1);
+  const [visibleEditModal, setVisibleEditModal] = useState();
+  const [visibleCreatePurchaseModal, setVisibleCreatePurchaseModal] =
+    useState();
+  const [visibleToWarehouse, setVisibleToWarehouse] = useState(false);
+  const [userId, setUserId] = useState(1);
   const [visibleWarehouseToWarehouse, setVisibleWarehouseToWarehouse] =
     useState(false);
 
@@ -39,6 +43,37 @@ const TableMaterials = ({
           setVisibleModal={setVisibleWarehouseToWarehouse}
           getMaterialList={getMaterialList}
           visibleModal={visibleWarehouseToWarehouse}
+        />
+      </MyModal>
+      <MyModal
+        visibleModal={visibleEditModal}
+        setVisibleModal={setVisibleEditModal}
+      >
+        <MaterialEditForm
+          setVisibleModal={setVisibleEditModal}
+          materialId={materialId}
+          getMaterialList={getMaterialList}
+        />
+      </MyModal>
+      <MyModal
+        visibleModal={visibleCreatePurchaseModal}
+        setVisibleModal={setVisibleCreatePurchaseModal}
+      >
+        <PurchaseCreateForm
+          userId={userId}
+          setVisibleModal={setVisibleCreatePurchaseModal}
+          materialId={materialId}
+        />
+      </MyModal>
+      <MyModal
+        visibleModal={visibleToWarehouse}
+        setVisibleModal={setVisibleToWarehouse}
+      >
+        <MaterialToWarehouse
+          visibleModal={visibleToWarehouse}
+          setVisibleModal={setVisibleToWarehouse}
+          materialId={materialId}
+          getMaterialList={getMaterialList}
         />
       </MyModal>
       <table className={styles.table}>
