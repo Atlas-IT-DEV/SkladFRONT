@@ -105,7 +105,6 @@ const WarehouseToWarehouse = ({
       console.error("Error getMaterial:", error);
     }
   };
-  console.log(purchaseList);
 
   const getWarehouses = async () => {
     try {
