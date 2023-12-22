@@ -195,9 +195,20 @@ const MaterialCreateForm = ({ setVisibleModal, getMaterialList }) => {
   };
 
   const imageChangedHandler = (event) => {
-    setImages(event.target.files);
+    try {
+      const dt = new DataTransfer();
+      for (let i = 0; i < event.target.files.length; i++) {
+        if (event.target.files[i].type === "image/jpeg") {
+          dt.items.add(event.target.files[i]);
+        }
+      }
+      event.target.files = dt.files;
+      setImages(dt.files);
+    } catch (error) {
+      console.error("Error imageChangedHandler:", error);
+    }
   };
-
+  console.log(images);
   const clearImages = () => {
     refImageInput.current.value = null;
     setImages(refImageInput.current.files);

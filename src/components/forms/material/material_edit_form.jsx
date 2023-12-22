@@ -118,7 +118,7 @@ const MaterialEditForm = ({ setVisibleModal, materialId, getMaterialList }) => {
         dt.items.add(image);
       });
       refImageInput.current.files = dt.files;
-      setImages(images);
+      setImages(dt.files);
     } catch (error) {
       console.error("Error getMaterial:", error);
     }
@@ -181,7 +181,20 @@ const MaterialEditForm = ({ setVisibleModal, materialId, getMaterialList }) => {
   };
 
   const imageChangedHandler = (event) => {
-    setImages(event.target.files);
+    try {
+      console.log(event.target.files);
+      const dt = new DataTransfer();
+      for (let i = 0; i < event.target.files.length; i++) {
+        console.log(event.target.files[i].type);
+        if (event.target.files[i].type === "image/jpeg") {
+          dt.items.add(event.target.files[i]);
+        }
+      }
+      event.target.files = dt.files;
+      setImages(dt.files);
+    } catch (error) {
+      console.error("Error imageChangedHandler:", error);
+    }
   };
 
   const changeTmCraftifyIdList = (e) => {
