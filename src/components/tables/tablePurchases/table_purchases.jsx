@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Box } from "@chakra-ui/react";
-import styles from "./table_purchases.module.css";
+import styles from "../forTable/table.module.css";
 import Pagination from "../../pagination/pagination";
 import PurchaseService from "../../../API/services/purchase_service";
 import UrForTable from "../forTable/ulForTable/ul_for_table";
