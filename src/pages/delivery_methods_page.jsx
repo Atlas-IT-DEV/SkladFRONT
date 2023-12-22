@@ -5,21 +5,24 @@ import MyModal from "../components/myModal/my_modal";
 import SideMenu from "../components/side_menu";
 import Header from "../components/header/header";
 import Footer from "../components/footer";
-import CraftifyService from "../API/services/craftify_service";
-import TableCraftifies from "../components/tables/tableCraftifies/table_craftifies";
-import CraftifyCreateForm from "../components/forms/craftify/craftify_create_form";
+import DeliveryMethodService from "../API/services/deliveryMethod_service";
+import TableDeliveryMethods from "../components/tables/tableDeliveryMethods/table_delivery_methods";
+import DeliveryMethodCreateForm from "../components/forms/deliveryMethod/delivery_method_create_form";
 
-const СraftifiesPage = () => {
+const DeliveryMethodsPage = () => {
   const [visibleCreateModal, setVisibleCreateModal] = useState();
-  const [craftifyList, setCraftifyList] = useState([]);
+  const [deliveryMethodList, setDeliveryMethodList] = useState([]);
 
-  const [getCraftifyList, craftifyListError] = useFetching(async () => {
-    const response = await CraftifyService.getCraftifies();
-    setCraftifyList(response.data);
-  });
+  const [getDeliveryMethodList, deliveryMethodListError] = useFetching(
+    async () => {
+      const response = await DeliveryMethodService.getDeliveryMethods();
+      console.log(response.data);
+      setDeliveryMethodList(response.data);
+    },
+  );
 
   useEffect(() => {
-    getCraftifyList();
+    getDeliveryMethodList();
   }, []);
 
   return (
@@ -34,9 +37,9 @@ const СraftifiesPage = () => {
         visibleModal={visibleCreateModal}
         setVisibleModal={setVisibleCreateModal}
       >
-        <CraftifyCreateForm
+        <DeliveryMethodCreateForm
           setVisibleModal={setVisibleCreateModal}
-          getCraftifyList={getCraftifyList}
+          getDeliveryMethodList={getDeliveryMethodList}
         />
       </MyModal>
       <SideMenu />
@@ -46,7 +49,7 @@ const СraftifiesPage = () => {
         backgroundColor="menu_white"
         width="100%"
       >
-        <Header title="Способы обработки ТМЦ" />
+        <Header title="Способы доставки" />
         <VStack
           padding={25}
           alignItems="flex-start"
@@ -61,7 +64,7 @@ const СraftifiesPage = () => {
             lineHeight="normal"
             fontStyle="normal"
           >
-            Способы обработки
+            Способы доставки
           </Text>
           <Text fontSize={14} fontWeight={400} marginBottom="20px">
             Возможно здеась будет тоже какой то поясняющий текст
@@ -72,17 +75,17 @@ const СraftifiesPage = () => {
                 variant="menu_yellow"
                 onClick={() => setVisibleCreateModal(true)}
               >
-                Добавить новую обработку
+                Добавить новый способ доставки
               </Button>
             </HStack>
           </HStack>
-          {craftifyListError ? (
-            <div>{craftifyListError}</div>
+          {deliveryMethodListError ? (
+            <div>{deliveryMethodListError}</div>
           ) : (
-            <TableCraftifies
+            <TableDeliveryMethods
               setVisibleCreateModal={setVisibleCreateModal}
-              getCraftifyList={getCraftifyList}
-              craftifyList={craftifyList}
+              getDeliveryMethodList={getDeliveryMethodList}
+              deliveryMethodList={deliveryMethodList}
             />
           )}
         </VStack>
@@ -92,4 +95,4 @@ const СraftifiesPage = () => {
   );
 };
 
-export default СraftifiesPage;
+export default DeliveryMethodsPage;

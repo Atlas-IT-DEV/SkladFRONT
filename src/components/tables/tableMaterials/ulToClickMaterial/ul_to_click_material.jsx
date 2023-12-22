@@ -1,7 +1,6 @@
 import React from "react";
 import { Image } from "@chakra-ui/react";
 import edit from "../../../../images/edit.svg";
-import delete_svg from "../../../../images/delete.svg";
 import styles from "../../forTable/ul_to_click.module.css";
 
 const UlToClickMaterial = ({
@@ -10,7 +9,6 @@ const UlToClickMaterial = ({
   setVisibleEditModal,
   setVisibleCreatePurchaseModal,
   setVisibleToWarehouse,
-  handleRemoveMaterial,
 }) => {
   return (
     <ul className={styles.UlToClick}>
@@ -23,17 +21,6 @@ const UlToClickMaterial = ({
           onClick={() => {
             setMaterialId(materialId);
             setVisibleEditModal(true);
-          }}
-        />
-      </li>
-      <li className={styles.UlToClick__li}>
-        <Image
-          className={styles.UlToClick__Icon}
-          src={delete_svg}
-          w="16px"
-          h="16px"
-          onClick={() => {
-            handleRemoveMaterial(materialId);
           }}
         />
       </li>
@@ -54,7 +41,7 @@ const UlToClickMaterial = ({
             setVisibleToWarehouse(true);
           }}
         >
-          Закупить
+          Перемещение
         </button>
       </li>
     </ul>

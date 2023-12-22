@@ -84,6 +84,7 @@ const MaterialEditForm = ({ setVisibleModal, materialId, getMaterialList }) => {
     const imagesArray = [];
     for (const image of images) {
       await ImageService.getImage(image.path).then((response) => {
+        console.log(response.data);
         imagesArray.push(
           base64ToFile(arrayBufferToBase64(response.data), image.path),
         );

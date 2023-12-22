@@ -1,6 +1,7 @@
 export const baseUrl = "http://localhost:8080/api/";
 export const craftifyUrl = "tmcCraftifies";
-export const deliveryMethodsyUrl = "delivery_methods";
+export const deliveryMethodsUrl = "delivery_methods";
+export const deliveryPlacesUrl = "delivery_places";
 export const imagesUrl = "images";
 export const materialsUrl = "materials";
 export const propertiesUrl = "properties";

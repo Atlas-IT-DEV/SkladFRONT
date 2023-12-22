@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { FormikProvider, useFormik } from "formik";
 import {
   Box,
@@ -9,8 +9,8 @@ import {
   Text,
 } from "@chakra-ui/react";
 import * as Yup from "yup";
-import CraftifyService from "../../../API/services/craftify_service";
 import FormikInput from "../../UI/formik_input";
+import CraftifyService from "../../../API/services/craftify_service";
 
 const validationSchema = Yup.object().shape({
   name: Yup.string()
@@ -19,21 +19,36 @@ const validationSchema = Yup.object().shape({
     .required("Required"),
 });
 
-const CraftifyCreateForm = ({ getCraftifyList, setVisibleModal }) => {
-  const craftify = {
+const CraftifyEditForm = ({ getCraftifyList, setVisibleModal, craftifyId }) => {
+  const [craftify, setCraftify] = useState({
     name: "",
+  });
+
+  const getCraftify = async (craftifyId) => {
+    try {
+      const response = await CraftifyService.getCraftify(craftifyId);
+      setCraftify(response.data);
+    } catch (error) {
+      console.error("Error getCraftify:", error);
+    }
   };
+
+  useEffect(() => {
+    if (craftifyId > 0) {
+      getCraftify(craftifyId);
+    }
+  }, [craftifyId]);
 
   const onClose = () => {
     setVisibleModal(false);
   };
 
-  const createCraftify = async (propety) => {
+  const editCraftify = async (craftify) => {
     try {
-      await CraftifyService.createCraftify(propety);
+      await CraftifyService.updateCraftify(craftifyId, craftify);
       getCraftifyList();
     } catch (error) {
-      console.error("Error createCraftify:", error);
+      console.error("Error editCraftify:", error);
     }
   };
 
@@ -41,13 +56,12 @@ const CraftifyCreateForm = ({ getCraftifyList, setVisibleModal }) => {
     initialValues: craftify,
     validationSchema: validationSchema,
     onSubmit: (values, { setSubmitting }) => {
-      createCraftify(values);
+      editCraftify(values);
       onClose();
       setSubmitting(false);
     },
     enableReinitialize: true,
   });
-
   return (
     <FormikProvider value={formik}>
       <Flex
@@ -56,7 +70,7 @@ const CraftifyCreateForm = ({ getCraftifyList, setVisibleModal }) => {
         fontWeight="bold"
         mb={9}
       >
-        <Text fontSize="2xl">Создание обработки</Text>
+        <Text fontSize="2xl">Редактирование метода доставки</Text>
         <CloseButton onClick={onClose} />
       </Flex>
       <Box pb={6}>
@@ -93,4 +107,4 @@ const CraftifyCreateForm = ({ getCraftifyList, setVisibleModal }) => {
   );
 };
 
-export default CraftifyCreateForm;
+export default CraftifyEditForm;

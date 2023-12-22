@@ -101,7 +101,6 @@ const TablePurchases = () => {
                     purchaseId={purchase.id}
                     setPurchaseId={setPurchaseId}
                     setVisibleEditPurchaseModal={setVisibleEditPurchaseModal}
-                    getPurchaseList={getPurchaseList}
                   />
                 </td>
               </tr>
@@ -110,7 +109,7 @@ const TablePurchases = () => {
         </table>
       )}
       <Pagination
-        totalCountPurchases={totalCountPurchases}
+        totalCountItem={totalCountPurchases}
         className={styles.table__footer}
         currentPageSize={currentPageSize}
         setCurrentPageSize={setCurrentPageSize}

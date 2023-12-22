@@ -10,15 +10,11 @@ export default class PropertyService {
     return Instance.get(`${propertiesUrl}/${propertyId}`);
   }
 
-  static async deleteProperty(propertyId) {
-    return Instance.delete(`${propertiesUrl}/${propertyId}`);
+  static async updateProperty(propertyId, property) {
+    return Instance.put(`${propertiesUrl}/${propertyId}`, property);
   }
 
-  static async updateProperty(propertyId, data) {
-    return Instance.put(`${propertiesUrl}/${propertyId}`, data);
-  }
-
-  static async createProperty(data) {
-    return Instance.post(propertiesUrl, data);
+  static async createProperty(property) {
+    return Instance.post(propertiesUrl, property);
   }
 }

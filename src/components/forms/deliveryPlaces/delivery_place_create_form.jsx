@@ -9,45 +9,44 @@ import {
   Text,
 } from "@chakra-ui/react";
 import * as Yup from "yup";
-import CraftifyService from "../../../API/services/craftify_service";
 import FormikInput from "../../UI/formik_input";
+import DeliveryPlaceService from "../../../API/services/deliveryPlaces_service";
 
 const validationSchema = Yup.object().shape({
-  name: Yup.string()
+  address: Yup.string()
     .min(1, "Too Short!")
     .max(255, "Too Long!")
     .required("Required"),
 });
 
-const CraftifyCreateForm = ({ getCraftifyList, setVisibleModal }) => {
-  const craftify = {
-    name: "",
+const DeliveryPlaceCreateForm = ({ getDeliveryPlaceList, setVisibleModal }) => {
+  const deliveryPlace = {
+    address: "",
   };
 
   const onClose = () => {
     setVisibleModal(false);
   };
 
-  const createCraftify = async (propety) => {
+  const createDeliveryPlace = async (deliveryPlace) => {
     try {
-      await CraftifyService.createCraftify(propety);
-      getCraftifyList();
+      await DeliveryPlaceService.createDeliveryPlace(deliveryPlace);
+      getDeliveryPlaceList();
     } catch (error) {
-      console.error("Error createCraftify:", error);
+      console.error("Error createDeliveryPlace:", error);
     }
   };
 
   const formik = useFormik({
-    initialValues: craftify,
+    initialValues: deliveryPlace,
     validationSchema: validationSchema,
     onSubmit: (values, { setSubmitting }) => {
-      createCraftify(values);
+      createDeliveryPlace(values);
       onClose();
       setSubmitting(false);
     },
     enableReinitialize: true,
   });
-
   return (
     <FormikProvider value={formik}>
       <Flex
@@ -56,7 +55,7 @@ const CraftifyCreateForm = ({ getCraftifyList, setVisibleModal }) => {
         fontWeight="bold"
         mb={9}
       >
-        <Text fontSize="2xl">Создание обработки</Text>
+        <Text fontSize="2xl">Создание метода доставки</Text>
         <CloseButton onClick={onClose} />
       </Flex>
       <Box pb={6}>
@@ -77,7 +76,7 @@ const CraftifyCreateForm = ({ getCraftifyList, setVisibleModal }) => {
               },
             }}
           >
-            <FormikInput formik={formik} name={"name"} label={"Название"} />
+            <FormikInput formik={formik} name={"address"} label={"Адрес"} />
           </SimpleGrid>
           <Flex justifyContent="flex-end">
             <Button variant="menu_red" onClick={onClose} mr={3}>
@@ -93,4 +92,4 @@ const CraftifyCreateForm = ({ getCraftifyList, setVisibleModal }) => {
   );
 };
 
-export default CraftifyCreateForm;
+export default DeliveryPlaceCreateForm;

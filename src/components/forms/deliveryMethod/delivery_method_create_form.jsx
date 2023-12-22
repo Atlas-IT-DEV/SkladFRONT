@@ -9,8 +9,8 @@ import {
   Text,
 } from "@chakra-ui/react";
 import * as Yup from "yup";
-import CraftifyService from "../../../API/services/craftify_service";
 import FormikInput from "../../UI/formik_input";
+import DeliveryMethodService from "../../../API/services/deliveryMethod_service";
 
 const validationSchema = Yup.object().shape({
   name: Yup.string()
@@ -19,8 +19,11 @@ const validationSchema = Yup.object().shape({
     .required("Required"),
 });
 
-const CraftifyCreateForm = ({ getCraftifyList, setVisibleModal }) => {
-  const craftify = {
+const DeliveryMethodCreateForm = ({
+  getDeliveryMethodList,
+  setVisibleModal,
+}) => {
+  const deliveryMethod = {
     name: "",
   };
 
@@ -28,26 +31,25 @@ const CraftifyCreateForm = ({ getCraftifyList, setVisibleModal }) => {
     setVisibleModal(false);
   };
 
-  const createCraftify = async (propety) => {
+  const createDeliveryMethod = async (deliveryMethod) => {
     try {
-      await CraftifyService.createCraftify(propety);
-      getCraftifyList();
+      await DeliveryMethodService.createDeliveryMethod(deliveryMethod);
+      getDeliveryMethodList();
     } catch (error) {
-      console.error("Error createCraftify:", error);
+      console.error("Error createDeliveryMethod:", error);
     }
   };
 
   const formik = useFormik({
-    initialValues: craftify,
+    initialValues: deliveryMethod,
     validationSchema: validationSchema,
     onSubmit: (values, { setSubmitting }) => {
-      createCraftify(values);
+      createDeliveryMethod(values);
       onClose();
       setSubmitting(false);
     },
     enableReinitialize: true,
   });
-
   return (
     <FormikProvider value={formik}>
       <Flex
@@ -56,7 +58,7 @@ const CraftifyCreateForm = ({ getCraftifyList, setVisibleModal }) => {
         fontWeight="bold"
         mb={9}
       >
-        <Text fontSize="2xl">Создание обработки</Text>
+        <Text fontSize="2xl">Создание метода доставки</Text>
         <CloseButton onClick={onClose} />
       </Flex>
       <Box pb={6}>
@@ -93,4 +95,4 @@ const CraftifyCreateForm = ({ getCraftifyList, setVisibleModal }) => {
   );
 };
 
-export default CraftifyCreateForm;
+export default DeliveryMethodCreateForm;

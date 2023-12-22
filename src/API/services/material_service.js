@@ -15,12 +15,9 @@ export default class MaterialService {
   static async getMaterial(materialId) {
     return Instance.get(`${materialsUrl}/${materialId}`);
   }
-  static async deleteMaterial(materialId) {
-    return Instance.delete(`${materialsUrl}/${materialId}`);
-  }
 
-  static async updateMaterial(materialId, data) {
-    return Instance.put(`${materialsUrl}/${materialId}`, data, {
+  static async updateMaterial(materialId, material) {
+    return Instance.put(`${materialsUrl}/${materialId}`, material, {
       timeout: 5000,
       headers: {
         "Content-Type": "multipart/form-data",
@@ -29,8 +26,8 @@ export default class MaterialService {
     });
   }
 
-  static async createMaterial(data) {
-    return Instance.post(materialsUrl, data, {
+  static async createMaterial(material) {
+    return Instance.post(materialsUrl, material, {
       timeout: 5000,
       headers: {
         "Content-Type": "multipart/form-data",

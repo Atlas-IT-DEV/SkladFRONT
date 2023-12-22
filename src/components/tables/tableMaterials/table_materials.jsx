@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { Box } from "@chakra-ui/react";
 import styles from "../forTable/table.module.css";
 import Pagination from "../../pagination/pagination";
-import MaterialService from "../../../API/services/material_service";
 import UlToClickMaterial from "./ulToClickMaterial/ul_to_click_material";
 import UlForTable from "../forTable/ulForTable/ul_for_table";
 
@@ -13,7 +12,6 @@ const TableMaterials = ({
   setVisibleCreatePurchaseModal,
   setVisibleToWarehouse,
   setMaterialId,
-  getMaterialList,
   currentPage,
   setCurrentPage,
   currentPageSize,
@@ -22,17 +20,6 @@ const TableMaterials = ({
   warehouseId,
 }) => {
   const [sort, setSort] = useState(false);
-  const handleRemoveMaterial = async (materialId) => {
-    try {
-      if (window.confirm("Вы уверенны, что хотите удалить материал?")) {
-        await MaterialService.deleteMaterial(materialId).then(() => {
-          getMaterialList();
-        });
-      }
-    } catch (error) {
-      console.error("Error deleting material:", error);
-    }
-  };
 
   return (
     <Box className={styles.table__Box}>
@@ -89,7 +76,6 @@ const TableMaterials = ({
                   setMaterialId={setMaterialId}
                   setVisibleEditModal={setVisibleEditModal}
                   setVisibleCreatePurchaseModal={setVisibleCreatePurchaseModal}
-                  handleRemoveMaterial={handleRemoveMaterial}
                   setVisibleToWarehouse={setVisibleToWarehouse}
                 />
               </td>
@@ -98,7 +84,7 @@ const TableMaterials = ({
         </tbody>
       </table>
       <Pagination
-        totalCountMaterials={totalCountMaterials}
+        totalCountItem={totalCountMaterials}
         className={styles.table__footer}
         currentPageSize={currentPageSize}
         setCurrentPageSize={setCurrentPageSize}
