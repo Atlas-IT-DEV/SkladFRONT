@@ -92,8 +92,8 @@ const MaterialToWarehouse = ({
           );
           return {
             value: purchaseMaterial.purchaseId,
-            maxCount: purchaseMaterial.countOnWarehouse,
-            label: `${purchase.data.price} ${purchaseMaterial.countOnWarehouse} ${purchase.data.supplier.name}`,
+            maxCount: purchaseMaterial.unallocatedCount,
+            label: `${purchase.data.price} ${purchaseMaterial.unallocatedCount} ${purchase.data.supplier.name}`,
           };
         }),
       );
