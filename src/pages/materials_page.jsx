@@ -20,8 +20,8 @@ const MaterialsPage = () => {
   const [totalPages, setTotalPages] = useState(0);
   const [totalCountMaterials, setTotalCountMaterials] = useState(0);
   const [warehouseList, setWarehouseList] = useState([
-    { value: -1, label: "Все склады" },
-    { value: null, label: "Нераспределенные" },
+    { value: -1, label: "Нераспределенные" },
+    { value: null, label: "Все склады" },
   ]);
 
   const [getMaterialList, materialListError] = useFetching(async () => {
