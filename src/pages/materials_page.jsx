@@ -1,7 +1,6 @@
 import { Button, HStack, Stack, Text, VStack } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 import MyModal from "../components/myModal/my_modal";
-import MaterialEditForm from "../components/forms/material/material_edit_form";
 import MaterialCreateForm from "../components/forms/material/material_create_form";
 import Header from "../components/header/header";
 import Footer from "../components/footer";
@@ -11,17 +10,9 @@ import MaterialService from "../API/services/material_service";
 import SideMenu from "../components/side_menu";
 import { Select } from "chakra-react-select";
 import WarehouseService from "../API/services/warehouse_service";
-import PurchaseCreateForm from "../components/forms/purchase/purchase_create_form";
-import MaterialToWarehouse from "../components/forms/material/material_to_warehouse";
 
 const MaterialsPage = () => {
-  const [visibleEditModal, setVisibleEditModal] = useState();
   const [visibleCreateModal, setVisibleCreateModal] = useState();
-  const [visibleCreatePurchaseModal, setVisibleCreatePurchaseModal] =
-    useState();
-  const [visibleToWarehouse, setVisibleToWarehouse] = useState(false);
-  const [userId, setUserId] = useState(1);
-  const [materialId, setMaterialId] = useState(-1);
   const [materialList, setMaterialList] = useState([]);
   const [currentPageSize, setCurrentPageSize] = useState(10);
   const [currentPage, setCurrentPage] = useState(1);
@@ -29,8 +20,8 @@ const MaterialsPage = () => {
   const [totalPages, setTotalPages] = useState(0);
   const [totalCountMaterials, setTotalCountMaterials] = useState(0);
   const [warehouseList, setWarehouseList] = useState([
-    { value: -1, label: "Все склады" },
-    { value: null, label: "Нераспределенные" },
+    { value: -1, label: "Нераспределенные" },
+    { value: null, label: "Все склады" },
   ]);
 
   const [getMaterialList, materialListError] = useFetching(async () => {
@@ -73,43 +64,11 @@ const MaterialsPage = () => {
     >
       <SideMenu />
       <MyModal
-        visibleModal={visibleEditModal}
-        setVisibleModal={setVisibleEditModal}
-      >
-        <MaterialEditForm
-          setVisibleModal={setVisibleEditModal}
-          materialId={materialId}
-          getMaterialList={getMaterialList}
-        />
-      </MyModal>
-      <MyModal
         visibleModal={visibleCreateModal}
         setVisibleModal={setVisibleCreateModal}
       >
         <MaterialCreateForm
           setVisibleModal={setVisibleCreateModal}
-          materialId={materialId}
-          getMaterialList={getMaterialList}
-        />
-      </MyModal>
-      <MyModal
-        visibleModal={visibleCreatePurchaseModal}
-        setVisibleModal={setVisibleCreatePurchaseModal}
-      >
-        <PurchaseCreateForm
-          userId={userId}
-          setVisibleModal={setVisibleCreatePurchaseModal}
-          materialId={materialId}
-        />
-      </MyModal>
-      <MyModal
-        visibleModal={visibleToWarehouse}
-        setVisibleModal={setVisibleToWarehouse}
-      >
-        <MaterialToWarehouse
-          visibleModal={visibleToWarehouse}
-          setVisibleModal={setVisibleToWarehouse}
-          materialId={materialId}
           getMaterialList={getMaterialList}
         />
       </MyModal>
@@ -168,14 +127,10 @@ const MaterialsPage = () => {
               setCurrentPageSize={setCurrentPageSize}
               totalPages={totalPages}
               materialList={materialList}
-              setVisibleEditModal={setVisibleEditModal}
-              setVisibleCreatePurchaseModal={setVisibleCreatePurchaseModal}
-              setMaterialId={setMaterialId}
               getMaterialList={getMaterialList}
               currentPage={currentPage}
               setCurrentPage={setCurrentPage}
               warehouseId={warehouseId}
-              setVisibleToWarehouse={setVisibleToWarehouse}
             />
           )}
         </VStack>

@@ -4,12 +4,9 @@ import MyModal from "../../myModal/my_modal";
 import UlForTable from "../forTable/ulForTable/ul_for_table";
 import styles from "../forTable/table.module.css";
 import UlToClickCraftify from "./ulToClickCraftify/ul_to_click_craftify";
+import CraftifyEditForm from "../../forms/craftify/craftify_edit_form";
 
-const TableCraftifies = ({
-  getCraftifyList,
-  craftifyList,
-  setVisibleCreateModal,
-}) => {
+const TableCraftifies = ({ getCraftifyList, craftifyList }) => {
   const [sort, setSort] = useState(false);
   const [visibleEditModal, setVisibleEditModal] = useState();
 
@@ -21,11 +18,11 @@ const TableCraftifies = ({
         visibleModal={visibleEditModal}
         setVisibleModal={setVisibleEditModal}
       >
-        {/*<CraftifyEditForm*/}
-        {/*  setVisibleModal={setVisibleEditModal}*/}
-        {/*  getCraftifyList={getCraftifyList}*/}
-        {/*  craftifyId={craftifyId}*/}
-        {/*/>*/}
+        <CraftifyEditForm
+          setVisibleModal={setVisibleEditModal}
+          getCraftifyList={getCraftifyList}
+          craftifyId={craftifyId}
+        />
       </MyModal>
       <table className={styles.table}>
         <thead>
@@ -49,8 +46,6 @@ const TableCraftifies = ({
                   craftifyId={craftify.id}
                   setCraftifyId={setCraftifyId}
                   setVisibleEditModal={setVisibleEditModal}
-                  setVisibleCreateModal={setVisibleCreateModal}
-                  getCraftifyList={getCraftifyList}
                 />
               </td>
             </tr>

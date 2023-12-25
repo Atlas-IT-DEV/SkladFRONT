@@ -7,11 +7,7 @@ import { Select } from "chakra-react-select";
 import UlToClickTmcType from "./ulToClickTmcs/ul_to_click_tmc_type";
 import TmcTypeEditForm from "../../forms/tmcTypes/tmc_type_edit_form";
 
-const TableTmcTypes = ({
-  getTmcTypeList,
-  tmcTypeList,
-  setVisibleCreateModal,
-}) => {
+const TableTmcTypes = ({ getTmcTypeList, tmcTypeList }) => {
   const [sort, setSort] = useState(false);
   const [visibleEditModal, setVisibleEditModal] = useState();
 
@@ -76,8 +72,6 @@ const TableTmcTypes = ({
                   tmcTypeId={tmcType.id}
                   setTmcTypeId={setTmcTypeId}
                   setVisibleEditModal={setVisibleEditModal}
-                  setVisibleCreateModal={setVisibleCreateModal}
-                  getTmcTypeList={getTmcTypeList}
                 />
               </td>
             </tr>

@@ -19,8 +19,6 @@ import { Select } from "chakra-react-select";
 import CraftifyService from "../../../API/services/craftify_service";
 import usePropertyValidationById from "../../../hooks/property_validation_by_id";
 import {
-  arrayBufferToBase64,
-  base64ToFile,
   mapPropertiesValidationToArray,
   materialPropertyDTOListToArray,
 } from "./support/conversion_functions";
@@ -81,15 +79,18 @@ const MaterialEditForm = ({ setVisibleModal, materialId, getMaterialList }) => {
   };
 
   const getImages = async (images) => {
-    const imagesArray = [];
+    const dt = new DataTransfer();
     for (const image of images) {
       await ImageService.getImage(image.path).then((response) => {
-        imagesArray.push(
-          base64ToFile(arrayBufferToBase64(response.data), image.path),
+        console.log(response.data);
+        dt.items.add(
+          new File([response.data], image.path, {
+            type: response.data.type,
+          }),
         );
       });
     }
-    return imagesArray;
+    return dt;
   };
 
   const getMaterial = async (materialId) => {
@@ -113,12 +114,8 @@ const MaterialEditForm = ({ setVisibleModal, materialId, getMaterialList }) => {
       setMapPropertiesValidation(generateBooleanMap(response.data.properties));
       setIsSubmit(false);
       const images = await getImages(response.data.images);
-      const dt = new DataTransfer();
-      images.forEach((image) => {
-        dt.items.add(image);
-      });
-      refImageInput.current.files = dt.files;
-      setImages(images);
+      refImageInput.current.files = images.files;
+      setImages(images.files);
     } catch (error) {
       console.error("Error getMaterial:", error);
     }
@@ -181,7 +178,22 @@ const MaterialEditForm = ({ setVisibleModal, materialId, getMaterialList }) => {
   };
 
   const imageChangedHandler = (event) => {
-    setImages(event.target.files);
+    try {
+      const dt = new DataTransfer();
+      for (let i = 0; i < event.target.files.length; i++) {
+        console.log(event.target.files[i].type);
+        if (
+          event.target.files[i].type === "image/jpeg" ||
+          event.target.files[i].type === "image/png"
+        ) {
+          dt.items.add(event.target.files[i]);
+        }
+      }
+      event.target.files = dt.files;
+      setImages(dt.files);
+    } catch (error) {
+      console.error("Error imageChangedHandler:", error);
+    }
   };
 
   const changeTmCraftifyIdList = (e) => {
@@ -263,7 +275,7 @@ const MaterialEditForm = ({ setVisibleModal, materialId, getMaterialList }) => {
                 height={8}
                 ref={refImageInput}
                 type="file"
-                accept=".jpg, .jpeg"
+                accept=".jpg, .jpeg, .png"
                 onChange={imageChangedHandler}
                 placeholder="Изображение"
               />

@@ -5,21 +5,23 @@ import MyModal from "../components/myModal/my_modal";
 import SideMenu from "../components/side_menu";
 import Header from "../components/header/header";
 import Footer from "../components/footer";
-import CraftifyService from "../API/services/craftify_service";
-import TableCraftifies from "../components/tables/tableCraftifies/table_craftifies";
-import CraftifyCreateForm from "../components/forms/craftify/craftify_create_form";
+import DeliveryPlaceService from "../API/services/deliveryPlaces_service";
+import DeliveryPlaceCreateForm from "../components/forms/deliveryPlaces/delivery_place_create_form";
+import TableDeliveryPlaces from "../components/tables/tableDeliveryPlaces/table_delivery_places";
 
-const СraftifiesPage = () => {
+const DeliveryPlacesPage = () => {
   const [visibleCreateModal, setVisibleCreateModal] = useState();
-  const [craftifyList, setCraftifyList] = useState([]);
+  const [deliveryPlaceList, setDeliveryPlaceList] = useState([]);
 
-  const [getCraftifyList, craftifyListError] = useFetching(async () => {
-    const response = await CraftifyService.getCraftifies();
-    setCraftifyList(response.data);
-  });
+  const [getDeliveryPlaceList, deliveryPlaceListError] = useFetching(
+    async () => {
+      const response = await DeliveryPlaceService.getDeliveryPlaces();
+      setDeliveryPlaceList(response.data);
+    },
+  );
 
   useEffect(() => {
-    getCraftifyList();
+    getDeliveryPlaceList();
   }, []);
 
   return (
@@ -34,9 +36,9 @@ const СraftifiesPage = () => {
         visibleModal={visibleCreateModal}
         setVisibleModal={setVisibleCreateModal}
       >
-        <CraftifyCreateForm
+        <DeliveryPlaceCreateForm
           setVisibleModal={setVisibleCreateModal}
-          getCraftifyList={getCraftifyList}
+          getDeliveryPlaceList={getDeliveryPlaceList}
         />
       </MyModal>
       <SideMenu />
@@ -46,7 +48,7 @@ const СraftifiesPage = () => {
         backgroundColor="menu_white"
         width="100%"
       >
-        <Header title="Способы обработки ТМЦ" />
+        <Header title="Места отгрузки" />
         <VStack
           padding={25}
           alignItems="flex-start"
@@ -61,7 +63,7 @@ const СraftifiesPage = () => {
             lineHeight="normal"
             fontStyle="normal"
           >
-            Способы обработки
+            Места отгрузки
           </Text>
           <Text fontSize={14} fontWeight={400} marginBottom="20px">
             Возможно здеась будет тоже какой то поясняющий текст
@@ -72,17 +74,17 @@ const СraftifiesPage = () => {
                 variant="menu_yellow"
                 onClick={() => setVisibleCreateModal(true)}
               >
-                Добавить новую обработку
+                Добавить новый адрес отгрузки
               </Button>
             </HStack>
           </HStack>
-          {craftifyListError ? (
-            <div>{craftifyListError}</div>
+          {deliveryPlaceListError ? (
+            <div>{deliveryPlaceListError}</div>
           ) : (
-            <TableCraftifies
+            <TableDeliveryPlaces
               setVisibleCreateModal={setVisibleCreateModal}
-              getCraftifyList={getCraftifyList}
-              craftifyList={craftifyList}
+              getDeliveryPlaceList={getDeliveryPlaceList}
+              deliveryPlaceList={deliveryPlaceList}
             />
           )}
         </VStack>
@@ -92,4 +94,4 @@ const СraftifiesPage = () => {
   );
 };
 
-export default СraftifiesPage;
+export default DeliveryPlacesPage;

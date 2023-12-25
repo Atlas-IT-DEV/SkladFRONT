@@ -2,40 +2,80 @@ import React, { useState } from "react";
 import { Box } from "@chakra-ui/react";
 import styles from "../forTable/table.module.css";
 import Pagination from "../../pagination/pagination";
-import MaterialService from "../../../API/services/material_service";
 import UlToClickMaterial from "./ulToClickMaterial/ul_to_click_material";
 import UlForTable from "../forTable/ulForTable/ul_for_table";
+import WarehouseToWarehouse from "../../forms/material/warehouse_to_warehouse";
+import MyModal from "../../myModal/my_modal";
+import MaterialEditForm from "../../forms/material/material_edit_form";
+import PurchaseCreateForm from "../../forms/purchase/purchase_create_form";
+import MaterialToWarehouse from "../../forms/material/material_to_warehouse";
 
 const TableMaterials = ({
   totalPages,
   materialList,
-  setVisibleEditModal,
-  setVisibleCreatePurchaseModal,
-  setVisibleToWarehouse,
-  setMaterialId,
-  getMaterialList,
   currentPage,
   setCurrentPage,
   currentPageSize,
   setCurrentPageSize,
   totalCountMaterials,
   warehouseId,
+  getMaterialList,
 }) => {
   const [sort, setSort] = useState(false);
-  const handleRemoveMaterial = async (materialId) => {
-    try {
-      if (window.confirm("Вы уверенны, что хотите удалить материал?")) {
-        await MaterialService.deleteMaterial(materialId).then(() => {
-          getMaterialList();
-        });
-      }
-    } catch (error) {
-      console.error("Error deleting material:", error);
-    }
-  };
+  const [materialId, setMaterialId] = useState(-1);
+  const [visibleEditModal, setVisibleEditModal] = useState();
+  const [visibleCreatePurchaseModal, setVisibleCreatePurchaseModal] =
+    useState();
+  const [visibleToWarehouse, setVisibleToWarehouse] = useState(false);
+  const [userId, setUserId] = useState(1);
+  const [visibleWarehouseToWarehouse, setVisibleWarehouseToWarehouse] =
+    useState(false);
 
   return (
     <Box className={styles.table__Box}>
+      <MyModal
+        visibleModal={visibleWarehouseToWarehouse}
+        setVisibleModal={setVisibleWarehouseToWarehouse}
+      >
+        <WarehouseToWarehouse
+          materialId={materialId}
+          warehouseId={warehouseId}
+          setVisibleModal={setVisibleWarehouseToWarehouse}
+          getMaterialList={getMaterialList}
+          visibleModal={visibleWarehouseToWarehouse}
+        />
+      </MyModal>
+      <MyModal
+        visibleModal={visibleEditModal}
+        setVisibleModal={setVisibleEditModal}
+      >
+        <MaterialEditForm
+          setVisibleModal={setVisibleEditModal}
+          materialId={materialId}
+          getMaterialList={getMaterialList}
+        />
+      </MyModal>
+      <MyModal
+        visibleModal={visibleCreatePurchaseModal}
+        setVisibleModal={setVisibleCreatePurchaseModal}
+      >
+        <PurchaseCreateForm
+          userId={userId}
+          setVisibleModal={setVisibleCreatePurchaseModal}
+          materialId={materialId}
+        />
+      </MyModal>
+      <MyModal
+        visibleModal={visibleToWarehouse}
+        setVisibleModal={setVisibleToWarehouse}
+      >
+        <MaterialToWarehouse
+          visibleModal={visibleToWarehouse}
+          setVisibleModal={setVisibleToWarehouse}
+          materialId={materialId}
+          getMaterialList={getMaterialList}
+        />
+      </MyModal>
       <table className={styles.table}>
         <thead>
           <tr className={styles.table__thead_tr}>
@@ -64,10 +104,10 @@ const TableMaterials = ({
                 setSort={setSort}
                 name={
                   warehouseId === null
-                    ? "Количество нераспределенных"
+                    ? "Количество на всех складах"
                     : warehouseId > 0
                     ? "Количество на складе"
-                    : "Количество на всех складах"
+                    : "Количество нераспределенных"
                 }
               />
             </td>
@@ -83,14 +123,17 @@ const TableMaterials = ({
               <td className={styles.table__td}>{material.tmcTypeName}</td>
               <td className={styles.table__td}>{material.supplierNames}</td>
               <td className={styles.table__td}>{material.count}</td>
-              <td className={styles.table__td}>
+              <td>
                 <UlToClickMaterial
+                  warehouseId={warehouseId}
                   materialId={material.id}
                   setMaterialId={setMaterialId}
                   setVisibleEditModal={setVisibleEditModal}
                   setVisibleCreatePurchaseModal={setVisibleCreatePurchaseModal}
-                  handleRemoveMaterial={handleRemoveMaterial}
                   setVisibleToWarehouse={setVisibleToWarehouse}
+                  setVisibleWarehouseToWarehouse={
+                    setVisibleWarehouseToWarehouse
+                  }
                 />
               </td>
             </tr>
@@ -98,7 +141,7 @@ const TableMaterials = ({
         </tbody>
       </table>
       <Pagination
-        totalCountMaterials={totalCountMaterials}
+        totalCountItem={totalCountMaterials}
         className={styles.table__footer}
         currentPageSize={currentPageSize}
         setCurrentPageSize={setCurrentPageSize}
