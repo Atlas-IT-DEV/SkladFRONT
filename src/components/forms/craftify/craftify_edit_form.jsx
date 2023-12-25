@@ -9,67 +9,54 @@ import {
   Text,
 } from "@chakra-ui/react";
 import * as Yup from "yup";
-import TmcService from "../../../API/services/tmc_service";
 import FormikInput from "../../UI/formik_input";
-import { Select } from "chakra-react-select";
-import PropertyService from "../../../API/services/property_service";
+import CraftifyService from "../../../API/services/craftify_service";
 
 const validationSchema = Yup.object().shape({
   name: Yup.string()
     .min(1, "Too Short!")
     .max(255, "Too Long!")
     .required("Required"),
-  propertyIdList: Yup.array(
-    Yup.number().min(1, "Too Short!").required("Required"),
-  ).max(20, "Too Long!"),
 });
 
-const TmcCreateForm = ({ getTmcList, setVisibleModal }) => {
-  const [tmc, setTmc] = useState({
+const CraftifyEditForm = ({ getCraftifyList, setVisibleModal, craftifyId }) => {
+  const [craftify, setCraftify] = useState({
     name: "",
-    propertyIdList: [],
   });
 
-  const [propertyList, setPropertyList] = useState([]);
-
-  const getProperties = async () => {
+  const getCraftify = async (craftifyId) => {
     try {
-      const response = await PropertyService.getProperties();
-      setPropertyList(
-        response.data.map((property) => {
-          return {
-            value: property.id,
-            label: property.name,
-          };
-        }),
-      );
+      const response = await CraftifyService.getCraftify(craftifyId);
+      setCraftify(response.data);
     } catch (error) {
-      console.error("Error getProperties:", error);
+      console.error("Error getCraftify:", error);
     }
   };
 
   useEffect(() => {
-    getProperties();
-  }, []);
+    if (craftifyId > 0) {
+      getCraftify(craftifyId);
+    }
+  }, [craftifyId]);
 
   const onClose = () => {
     setVisibleModal(false);
   };
 
-  const createTmc = async (propety) => {
+  const editCraftify = async (craftify) => {
     try {
-      await TmcService.createTmc(propety);
-      getTmcList();
+      await CraftifyService.updateCraftify(craftifyId, craftify);
+      getCraftifyList();
     } catch (error) {
-      console.error("Error createTmc:", error);
+      console.error("Error editCraftify:", error);
     }
   };
 
   const formik = useFormik({
-    initialValues: tmc,
+    initialValues: craftify,
     validationSchema: validationSchema,
     onSubmit: (values, { setSubmitting }) => {
-      createTmc(values);
+      editCraftify(values);
       onClose();
       setSubmitting(false);
     },
@@ -83,7 +70,7 @@ const TmcCreateForm = ({ getTmcList, setVisibleModal }) => {
         fontWeight="bold"
         mb={9}
       >
-        <Text fontSize="2xl">Создание ТМЦ</Text>
+        <Text fontSize="2xl">Редактирование метода доставки</Text>
         <CloseButton onClick={onClose} />
       </Flex>
       <Box pb={6}>
@@ -105,24 +92,6 @@ const TmcCreateForm = ({ getTmcList, setVisibleModal }) => {
             }}
           >
             <FormikInput formik={formik} name={"name"} label={"Название"} />
-            <Select
-              isMulti
-              closeMenuOnSelect={false}
-              menuPortalTarget={document.body}
-              styles={{ menuPortal: (base) => ({ ...base, zIndex: 3 }) }}
-              isInvalid={
-                formik.errors.propertyIdList && formik.touched.propertyIdList
-              }
-              errorBorderColor="crimson"
-              options={propertyList}
-              onChange={(e) => {
-                formik.setFieldValue(
-                  "propertyIdList",
-                  e.map((property) => property.value),
-                );
-              }}
-              placeholder={"Закупки"}
-            ></Select>
           </SimpleGrid>
           <Flex justifyContent="flex-end">
             <Button variant="menu_red" onClick={onClose} mr={3}>
@@ -138,4 +107,4 @@ const TmcCreateForm = ({ getTmcList, setVisibleModal }) => {
   );
 };
 
-export default TmcCreateForm;
+export default CraftifyEditForm;

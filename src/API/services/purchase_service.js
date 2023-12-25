@@ -11,18 +11,16 @@ export default class PurchaseService {
       params,
     });
   }
+
   static async getPurchase(purchaseId) {
     return Instance.get(`${purchasesUrl}/${purchaseId}`);
   }
-  static async deletePurchase(purchaseId) {
-    return Instance.delete(`${purchasesUrl}/${purchaseId}`);
+
+  static async updatePurchase(purchaseId, purchase) {
+    return Instance.put(`${purchasesUrl}/${purchaseId}`, purchase);
   }
 
-  static async updatePurchase(purchaseId, data) {
-    return Instance.put(`${purchasesUrl}/${purchaseId}`, data);
-  }
-
-  static async createPurchase(data) {
-    return Instance.post(purchasesUrl, data);
+  static async createPurchase(purchase) {
+    return Instance.post(purchasesUrl, purchase);
   }
 }

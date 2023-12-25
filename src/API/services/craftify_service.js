@@ -8,15 +8,12 @@ export default class CraftifyService {
   static async getCraftify(craftifyId) {
     return Instance.get(`${craftifyUrl}/${craftifyId}`);
   }
-  static async deleteCraftify(craftifyId) {
-    return Instance.delete(`${craftifyUrl}/${craftifyId}`);
+
+  static async updateCraftify(craftifyId, craftify) {
+    return Instance.put(`${craftifyUrl}/${craftifyId}`, craftify);
   }
 
-  static async updateCraftify(craftifyId, data) {
-    return Instance.put(`${craftifyUrl}/${craftifyId}`, data);
-  }
-
-  static async createCraftify(data) {
-    return Instance.post(craftifyUrl, data);
+  static async createCraftify(craftify) {
+    return Instance.post(craftifyUrl, craftify);
   }
 }

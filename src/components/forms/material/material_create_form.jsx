@@ -195,7 +195,21 @@ const MaterialCreateForm = ({ setVisibleModal, getMaterialList }) => {
   };
 
   const imageChangedHandler = (event) => {
-    setImages(event.target.files);
+    try {
+      const dt = new DataTransfer();
+      for (let i = 0; i < event.target.files.length; i++) {
+        if (
+          event.target.files[i].type === "image/jpeg" ||
+          event.target.files[i].type === "image/png"
+        ) {
+          dt.items.add(event.target.files[i]);
+        }
+      }
+      event.target.files = dt.files;
+      setImages(dt.files);
+    } catch (error) {
+      console.error("Error imageChangedHandler:", error);
+    }
   };
 
   const clearImages = () => {
@@ -258,7 +272,7 @@ const MaterialCreateForm = ({ setVisibleModal, getMaterialList }) => {
                 focusBorderColor="white"
                 _hover={{ borderColor: "white" }}
                 type="file"
-                accept=".jpg, .jpeg"
+                accept=".jpg, .jpeg, .png"
                 onChange={imageChangedHandler}
                 multiple
                 placeholder="Изображение"

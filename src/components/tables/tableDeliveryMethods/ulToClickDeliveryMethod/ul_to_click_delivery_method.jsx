@@ -3,7 +3,11 @@ import { Image } from "@chakra-ui/react";
 import edit from "../../../../images/edit.svg";
 import styles from "../../forTable/ul_to_click.module.css";
 
-const UlToClickTmcType = ({ tmcTypeId, setTmcTypeId, setVisibleEditModal }) => {
+const UlToClickDeliveryMethod = ({
+  deliveryMethodId,
+  setDeliveryMethodId,
+  setVisibleEditModal,
+}) => {
   return (
     <ul className={styles.UlToClick}>
       <li className={`${styles.UlToClick__li} ${styles.UlToClick__li_first}`}>
@@ -13,7 +17,7 @@ const UlToClickTmcType = ({ tmcTypeId, setTmcTypeId, setVisibleEditModal }) => {
           w="16px"
           h="16px"
           onClick={() => {
-            setTmcTypeId(tmcTypeId);
+            setDeliveryMethodId(deliveryMethodId);
             setVisibleEditModal(true);
           }}
         />
@@ -22,4 +26,4 @@ const UlToClickTmcType = ({ tmcTypeId, setTmcTypeId, setVisibleEditModal }) => {
   );
 };
 
-export default UlToClickTmcType;
+export default UlToClickDeliveryMethod;

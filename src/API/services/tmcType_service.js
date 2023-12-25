@@ -10,15 +10,11 @@ export default class TmcTypeService {
     return Instance.get(`${tmcTypesUrl}/${tmcId}`);
   }
 
-  static async deleteTmcType(tmcId) {
-    return Instance.delete(`${tmcTypesUrl}/${tmcId}`);
+  static async updateTmcType(tmcId, tmc) {
+    return Instance.put(`${tmcTypesUrl}/${tmcId}`, tmc);
   }
 
-  static async updateTmcType(tmcId, data) {
-    return Instance.put(`${tmcTypesUrl}/${tmcId}`, data);
-  }
-
-  static async createTmcType(data) {
-    return Instance.post(tmcTypesUrl, data);
+  static async createTmcType(tmc) {
+    return Instance.post(tmcTypesUrl, tmc);
   }
 }
