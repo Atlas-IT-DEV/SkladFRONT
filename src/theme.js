@@ -40,6 +40,32 @@ const theme = extendTheme({
         },
       },
     },
+    Link: {
+      variants: {
+        light_gray: {
+          fontColor: "light_dark",
+          fontSize: ["12px", "13px", "14px"],
+        },
+      },
+    },
+    Text: {
+      variants: {
+        light_gray: {
+          fontColor: "light_dark",
+          fontSize: ["12px", "13px", "14px"],
+        },
+      },
+    },
+    HStack: {
+      variants: {
+        menu_yellow_hover: {
+          height: "100%",
+          _hover: {
+            borderBottom: "2px solid #FFBF00",
+          },
+        },
+      },
+    },
   },
   colors: {
     menu_gray: "#CCC3C2",

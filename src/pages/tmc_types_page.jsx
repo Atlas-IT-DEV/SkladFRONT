@@ -39,10 +39,8 @@ const TmcTypesPage = () => {
           getTmcTypeList={getTmcTypeList}
         />
       </MyModal>
-      <SideMenu />
       <VStack
         overflowY="scroll"
-        marginLeft={[200, 200, 200, 210, 220]}
         backgroundColor="menu_white"
         width="100%"
       >
