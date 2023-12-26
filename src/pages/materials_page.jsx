@@ -10,6 +10,7 @@ import MaterialService from "../API/services/material_service";
 import SideMenu from "../components/side_menu";
 import { Select } from "chakra-react-select";
 import WarehouseService from "../API/services/warehouse_service";
+import useWindowDimensions from "../hooks/window_dimensions";
 
 const MaterialsPage = () => {
   const [visibleCreateModal, setVisibleCreateModal] = useState();
@@ -23,12 +24,13 @@ const MaterialsPage = () => {
     { value: -1, label: "Нераспределенные" },
     { value: null, label: "Все склады" },
   ]);
+  const { width, height } = useWindowDimensions();
 
   const [getMaterialList, materialListError] = useFetching(async () => {
     await MaterialService.getMaterials(
       warehouseId,
       currentPage,
-      currentPageSize,
+      currentPageSize
     ).then((response) => {
       setMaterialList(response.data.materials);
       setTotalPages(response.data.totalPages);
@@ -71,11 +73,7 @@ const MaterialsPage = () => {
           getMaterialList={getMaterialList}
         />
       </MyModal>
-      <VStack
-        overflowY="scroll"
-        backgroundColor="menu_white"
-        width="100%"
-      >
+      <VStack backgroundColor="menu_white" width="100%">
         <Header title="Материалы" />
         <VStack
           padding={25}
@@ -94,28 +92,54 @@ const MaterialsPage = () => {
             Материалы
           </Text>
           <Text fontSize={14} fontWeight={400} marginBottom="20px">
-            Возможно здеась будет тоже какой то поясняющий текст
+            Возможно здесь будет тоже какой то поясняющий текст
           </Text>
-          <HStack color={"black"} width="100%">
-            <HStack color={"black"} width="100%">
-              <Button variant="menu_yellow">Рулонные материалы</Button>
+          <Stack
+            color={"black"}
+            width="100%"
+            direction={width >= 935 ? "row" : "row"}
+            align="flex-start"
+          >
+            <Stack
+              color={"black"}
+              spacing="25px"
+              direction={width >= 935 ? "row" : "column"}
+            >
               <Button
                 variant="menu_yellow"
+                fontSize={["14px", "14px", "16px", "16px", "16px"]}
+              >
+                Рулонные материалы
+              </Button>
+              <Button
+                variant="menu_yellow"
+                fontSize={["14px", "14px", "16px", "16px", "16px"]}
                 onClick={() => setVisibleCreateModal(true)}
               >
                 Добавить новый
               </Button>
-              <Button variant="menu_yellow">Скрытые</Button>
+              <Button
+                variant="menu_yellow"
+                fontSize={["14px", "14px", "16px", "16px", "16px"]}
+              >
+                Скрытые
+              </Button>
               <Select
+                fontSize={["14px", "14px", "16px", "16px", "16px"]}
                 options={warehouseList}
                 onChange={(e) => {
                   setWarehouseId(e.value);
                 }}
                 placeholder="Склады"
               ></Select>
-            </HStack>
-            <Button variant="menu_yellow">Рулонные материалы</Button>
-          </HStack>
+            </Stack>
+            <Button
+              variant="menu_yellow"
+              fontSize={["14px", "14px", "16px", "16px", "16px"]}
+            >
+              Рулонные материалы
+            </Button>
+          </Stack>
           {materialListError ? (
             <div>{materialListError}</div>
           ) : (

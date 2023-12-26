@@ -9,6 +9,7 @@ import { useFetching } from "../../../hooks/useFetching";
 import MyModal from "../../myModal/my_modal";
 import PurchaseEditForm from "../../forms/purchase/purchase_edit_form";
 import { convertDateToYesterday } from "../../../helperFunc/convertDateToYesterday";
+import useWindowDimensions from "../../../hooks/window_dimensions";
 
 const TablePurchases = () => {
   const [sort, setSort] = useState(false);
@@ -19,6 +20,7 @@ const TablePurchases = () => {
   const [totalCountPurchases, setTotalCountPurchases] = useState(0);
   const [visibleEditPurchaseModal, setVisibleEditPurchaseModal] = useState();
   const [purchaseId, setPurchaseId] = useState(-1);
+  const { width, height } = useWindowDimensions();
 
   const [getPurchaseList, purchaseListError] = useFetching(async () => {
     await PurchaseService.getPurchases(currentPage, currentPageSize).then(
@@ -26,7 +28,7 @@ const TablePurchases = () => {
         setPurchaseList(response.data.purchases);
         setTotalPages(response.data.totalPages);
         setTotalCountPurchases(response.data.totalItems);
-      },
+      }
     );
   });
 
@@ -35,7 +37,11 @@ const TablePurchases = () => {
   }, [currentPage, currentPageSize]);
 
   return (
-    <Box className={styles.table__Box}>
+    <Box
+      overflowX={width <= 944 ? "scroll" : "auto"}
+      display="block"
+      width={width <= 944 ? "100%" : "100%"}
+    >
       <MyModal
         visibleModal={visibleEditPurchaseModal}
         setVisibleModal={setVisibleEditPurchaseModal}
@@ -49,7 +55,7 @@ const TablePurchases = () => {
       {purchaseListError ? (
         <div>{purchaseListError}</div>
       ) : (
-        <table className={styles.table}>
+        <table className={styles.table} width={width <= 944 ? "944px" : "100%"}>
           <thead>
             <tr className={styles.table__thead_tr}>
               <td className={styles.table__td}>

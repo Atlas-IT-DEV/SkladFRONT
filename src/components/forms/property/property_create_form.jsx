@@ -69,7 +69,7 @@ const PropertyCreateForm = ({ getPropertyList, setVisibleModal }) => {
         <form onSubmit={formik.handleSubmit}>
           <SimpleGrid
             maxH="500px"
-            width="500px"
+            width={["300px", "350px", "400px", "450px", "500px"]}
             overflowX="scroll"
             spacing={5}
             p={1}
@@ -92,10 +92,22 @@ const PropertyCreateForm = ({ getPropertyList, setVisibleModal }) => {
             />
           </SimpleGrid>
           <Flex justifyContent="flex-end">
-            <Button variant="menu_red" onClick={onClose} mr={3}>
+            <Button
+              variant="menu_red"
+              onClick={onClose}
+              mr={3}
+              maxWidth="100%"
+              fontSize={["14px", "14px", "16px", "16px", "16px"]}
+            >
               Отмена
             </Button>
-            <Button variant="menu_yellow" type="submit" me={1}>
+            <Button
+              variant="menu_yellow"
+              type="submit"
+              me={1}
+              maxWidth="100%"
+              fontSize={["14px", "14px", "16px", "16px", "16px"]}
+            >
               Сохранить
             </Button>
           </Flex>

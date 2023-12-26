@@ -6,15 +6,18 @@ import styles from "../forTable/table.module.css";
 import UlToClickTmc from "./ulToClickTmcs/ul_to_click_tmcs";
 import { Select } from "chakra-react-select";
 import TmcEditForm from "../../forms/tmc/tmc_edit_form";
+import useWindowDimensions from "../../../hooks/window_dimensions";
 
 const TableTmcs = ({ getTmcList, tmcList }) => {
   const [sort, setSort] = useState(false);
   const [visibleEditModal, setVisibleEditModal] = useState();
-
+  const {width, height} = useWindowDimensions();
   const [tmcId, setTmcId] = useState(-1);
 
   return (
-    <Box className={styles.table__Box}>
+    <Box overflowX={width <= 944 ? "scroll" : "auto"}
+    display="block"
+    width={width <= 944 ? "100%" : "100%"}>
       <MyModal
         visibleModal={visibleEditModal}
         setVisibleModal={setVisibleEditModal}
@@ -25,7 +28,7 @@ const TableTmcs = ({ getTmcList, tmcList }) => {
           tmcId={tmcId}
         />
       </MyModal>
-      <table className={styles.table}>
+      <table className={styles.table} width={width <= 944 ? "944px" : "100%"}>
         <thead>
           <tr className={styles.table__thead_tr}>
             <td className={styles.table__td}>

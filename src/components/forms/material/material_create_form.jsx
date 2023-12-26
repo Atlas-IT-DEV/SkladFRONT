@@ -32,7 +32,7 @@ const validationSchema = Yup.object().shape({
   tmcId: Yup.number().min(1, "Too Short!").required("Required"),
   tmcTypeId: Yup.number().min(1, "Too Short!").required("Required"),
   tmCraftifyIdList: Yup.array(
-    Yup.number().min(1, "Too Short!").required("Required"),
+    Yup.number().min(1, "Too Short!").required("Required")
   ).max(20, "Too Long!"),
   show: Yup.boolean().required("Required"),
   trim: Yup.boolean().required("Required"),
@@ -57,7 +57,7 @@ const MaterialCreateForm = ({ setVisibleModal, getMaterialList }) => {
   const [craftifyList, setCraftifyTypeList] = useState([]);
 
   const [mapPropertiesValidation, setMapPropertiesValidation] = useState(
-    new Map(),
+    new Map()
   );
 
   const [currentProperties, setCurrentProperties] = useState([]);
@@ -71,7 +71,7 @@ const MaterialCreateForm = ({ setVisibleModal, getMaterialList }) => {
   const [propertyChangeability, changeMapPropertiesValidation] =
     usePropertyValidationById(
       mapPropertiesValidation,
-      setMapPropertiesValidation,
+      setMapPropertiesValidation
     );
 
   const createMaterial = async () => {
@@ -82,9 +82,9 @@ const MaterialCreateForm = ({ setVisibleModal, getMaterialList }) => {
         JSON.stringify({
           ...material,
           materialPropertyDTOList: materialPropertyDTOListToArray(
-            material.materialPropertyDTOList,
+            material.materialPropertyDTOList
           ),
-        }),
+        })
       );
       for (let i = 0; i < images?.length; i++) {
         formData.append("files", images[i]);
@@ -113,7 +113,7 @@ const MaterialCreateForm = ({ setVisibleModal, getMaterialList }) => {
         setTmcTypeList(
           response.data.map((craftify) => {
             return { value: craftify.id, label: craftify.name };
-          }),
+          })
         );
       });
     } catch (error) {
@@ -127,7 +127,7 @@ const MaterialCreateForm = ({ setVisibleModal, getMaterialList }) => {
         setCraftifyTypeList(
           response.data.map((tmcType) => {
             return { value: tmcType.id, label: tmcType.name };
-          }),
+          })
         );
       });
     } catch (error) {
@@ -174,7 +174,7 @@ const MaterialCreateForm = ({ setVisibleModal, getMaterialList }) => {
       if (material.materialPropertyDTOList.has(property.id)) {
         newMaterialPropertyDTOList.set(
           property.id,
-          material.materialPropertyDTOList.get(property.id),
+          material.materialPropertyDTOList.get(property.id)
         );
       } else {
         newMaterialPropertyDTOList.set(property.id, "");
@@ -246,7 +246,7 @@ const MaterialCreateForm = ({ setVisibleModal, getMaterialList }) => {
         <form onSubmit={formik.handleSubmit}>
           <SimpleGrid
             maxH="500px"
-            width="500px"
+            width={["300px", "350px", "400px", "450px", "500px"]}
             overflowX="scroll"
             spacing={5}
             p={1}
@@ -275,6 +275,8 @@ const MaterialCreateForm = ({ setVisibleModal, getMaterialList }) => {
                 accept=".jpg, .jpeg, .png"
                 onChange={imageChangedHandler}
                 multiple
+                maxWidth="100%"
+                fontSize={["14px", "14px", "16px", "16px", "16px"]}
                 placeholder="Изображение"
               />
             </div>
@@ -291,6 +293,8 @@ const MaterialCreateForm = ({ setVisibleModal, getMaterialList }) => {
                 }
                 height="40px"
                 placeholder="Название"
+                maxWidth="100%"
+                fontSize={["14px", "14px", "16px", "16px", "16px"]}
               />
             </div>
             <div>
@@ -307,6 +311,7 @@ const MaterialCreateForm = ({ setVisibleModal, getMaterialList }) => {
                 name="tmcId"
                 onChange={(e) => changeTmcId(e)}
                 placeholder="Тип"
+                fontSize={["14px", "14px", "16px", "16px", "16px"]}
               ></Select>
             </div>
             <div>
@@ -323,6 +328,7 @@ const MaterialCreateForm = ({ setVisibleModal, getMaterialList }) => {
                   setMaterial({ ...material, tmcTypeId: e.value })
                 }
                 placeholder="Тип ТМЦ"
+                fontSize={["14px", "14px", "16px", "16px", "16px"]}
               ></Select>
             </div>
             <div>
@@ -339,14 +345,16 @@ const MaterialCreateForm = ({ setVisibleModal, getMaterialList }) => {
                 errorBorderColor="crimson"
                 options={craftifyList}
                 onChange={(e) => changeTmCraftifyIdList(e)}
+                fontSize={["14px", "14px", "16px", "16px", "16px"]}
                 placeholder="Способы обработки"
               ></Select>
             </div>
-            <Stack spacing={[1, 5]} direction={["column", "row"]}>
+            <Stack spacing={[1, 5]} direction={["column", "row"]} >
               <Checkbox
                 size="md"
                 colorScheme="green"
                 isChecked={material.show}
+                fontSize={["14px", "14px", "16px", "16px", "16px"]}
                 onChange={(e) =>
                   setMaterial({ ...material, show: e.target.checked })
                 }
@@ -357,6 +365,7 @@ const MaterialCreateForm = ({ setVisibleModal, getMaterialList }) => {
                 size="md"
                 colorScheme="green"
                 isChecked={material.trim}
+                fontSize={["14px", "14px", "16px", "16px", "16px"]}
                 onChange={(e) =>
                   setMaterial({ ...material, trim: e.target.checked })
                 }
@@ -394,6 +403,8 @@ const MaterialCreateForm = ({ setVisibleModal, getMaterialList }) => {
                         type={item.type === "DATE" ? "date" : ""}
                         height="40px"
                         placeholder={item.name}
+                        maxWidth="100%"
+                fontSize={["14px", "14px", "16px", "16px", "16px"]}
                       />
                     </div>
                   )}
