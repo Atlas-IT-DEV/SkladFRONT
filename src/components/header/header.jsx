@@ -1,22 +1,19 @@
 import {
-  Button,
   HStack,
   Image,
   Link,
-  useColorMode,
-  VStack,
   Stack,
+  useDimensions,
+  VStack,
 } from "@chakra-ui/react";
 import starbucks from "../../images/starbucks.svg";
 import logo from "./../../images/Logotype.svg";
 import { useNavigate } from "react-router";
 import useWindowDimensions from "../../hooks/window_dimensions";
 import { GoChevronDown } from "react-icons/go";
-import { GoChevronUp } from "react-icons/go";
-import { useEffect, useState } from "react";
-import { useContainerDimensions } from "../../hooks/useDimensions";
-import { useDimensions } from "@chakra-ui/react";
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
+import { NavLink } from "react-router-dom";
+
 const Header = ({ title }) => {
   const { width, height } = useWindowDimensions();
   const navigate = useNavigate();
@@ -47,14 +44,9 @@ const Header = ({ title }) => {
       {width >= 1280 ? (
         <HStack spacing={5}>
           <HStack variant="menu_yellow_hover">
-            <Link
-              onClick={() => {
-                navigate("/");
-              }}
-              variant="light_gray"
-            >
+            <NavLink to="/" variant="light_gray">
               Поставщики
-            </Link>
+            </NavLink>
           </HStack>
           <HStack>
             <Link

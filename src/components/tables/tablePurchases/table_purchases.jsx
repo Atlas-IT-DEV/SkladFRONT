@@ -28,7 +28,7 @@ const TablePurchases = () => {
         setPurchaseList(response.data.purchases);
         setTotalPages(response.data.totalPages);
         setTotalCountPurchases(response.data.totalItems);
-      }
+      },
     );
   });
 
@@ -38,6 +38,7 @@ const TablePurchases = () => {
 
   return (
     <Box
+      className={styles.table__Box}
       overflowX={width <= 944 ? "scroll" : "auto"}
       display="block"
       width={width <= 944 ? "100%" : "100%"}

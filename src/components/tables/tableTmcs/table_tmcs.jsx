@@ -11,13 +11,16 @@ import useWindowDimensions from "../../../hooks/window_dimensions";
 const TableTmcs = ({ getTmcList, tmcList }) => {
   const [sort, setSort] = useState(false);
   const [visibleEditModal, setVisibleEditModal] = useState();
-  const {width, height} = useWindowDimensions();
+  const { width, height } = useWindowDimensions();
   const [tmcId, setTmcId] = useState(-1);
 
   return (
-    <Box overflowX={width <= 944 ? "scroll" : "auto"}
-    display="block"
-    width={width <= 944 ? "100%" : "100%"}>
+    <Box
+      overflowX={width <= 944 ? "scroll" : "auto"}
+      className={styles.table__Box}
+      display="block"
+      width={width <= 944 ? "100%" : "100%"}
+    >
       <MyModal
         visibleModal={visibleEditModal}
         setVisibleModal={setVisibleEditModal}

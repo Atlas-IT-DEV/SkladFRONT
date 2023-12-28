@@ -5,15 +5,22 @@ import UlForTable from "../forTable/ulForTable/ul_for_table";
 import styles from "../forTable/table.module.css";
 import UlToClickProperty from "./ulToClickProperties/ul_to_click_property";
 import PropertyEditForm from "../../forms/property/property_edit_form";
+import useWindowDimensions from "../../../hooks/window_dimensions";
 
 const TableProperties = ({ getPropertyList, propertyList }) => {
   const [sort, setSort] = useState(false);
   const [visibleEditModal, setVisibleEditModal] = useState();
 
   const [propertyId, setPropertyId] = useState(-1);
+  const { width, height } = useWindowDimensions();
 
   return (
-    <Box className={styles.table__Box}>
+    <Box
+      className={styles.table__Box}
+      overflowX={width <= 944 ? "scroll" : "auto"}
+      display="block"
+      width={width <= 944 ? "100%" : "100%"}
+    >
       <MyModal
         visibleModal={visibleEditModal}
         setVisibleModal={setVisibleEditModal}
@@ -24,7 +31,7 @@ const TableProperties = ({ getPropertyList, propertyList }) => {
           propertyId={propertyId}
         />
       </MyModal>
-      <table className={styles.table}>
+      <table className={styles.table} width={width <= 944 ? "944px" : "100%"}>
         <thead>
           <tr className={styles.table__thead_tr}>
             <td className={styles.table__td}>

@@ -16,6 +16,7 @@ const TableCraftifies = ({ getCraftifyList, craftifyList }) => {
 
   return (
     <Box
+      className={styles.table__Box}
       overflowX={width <= 944 ? "scroll" : "auto"}
       display="block"
       width={width <= 944 ? "100%" : "100%"}
