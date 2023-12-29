@@ -146,7 +146,6 @@ const WarehouseToWarehouseNotification = ({
           purchaseId: materialTransfer.purchaseId,
           count: materialTransfer.count,
         }),
-        token.token,
       );
       getMaterialList();
     } catch (error) {
@@ -162,7 +161,7 @@ const WarehouseToWarehouseNotification = ({
         fontWeight="bold"
         mb={9}
       >
-        <Text fontSize="2xl">Перемещение со склада на склад (Уведомление)</Text>
+        <Text fontSize="2xl">Перемещение со склада на склад</Text>
         <CloseButton onClick={onClose} />
       </Flex>
       <Box pb={6}>
