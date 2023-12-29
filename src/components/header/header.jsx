@@ -1,11 +1,10 @@
 import {
-  Button,
   HStack,
   Image,
   Link,
-  useColorMode,
-  VStack,
   Stack,
+  useDimensions,
+  VStack,
 } from "@chakra-ui/react";
 import starbucks from "../../images/starbucks.svg";
 import logo from "./../../images/Logotype.svg";
@@ -46,14 +45,9 @@ const Header = ({ title }) => {
       {width >= 1280 ? (
         <HStack spacing={5}>
           <HStack variant="menu_yellow_hover">
-            <Link
-              onClick={() => {
-                navigate("/");
-              }}
-              variant="light_gray"
-            >
+            <NavLink to="/" variant="light_gray">
               Поставщики
-            </Link>
+            </NavLink>
           </HStack>
           <HStack>
             <Link
