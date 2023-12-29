@@ -13,7 +13,6 @@ import useWindowDimensions from "../../hooks/window_dimensions";
 import { GoChevronDown } from "react-icons/go";
 import { GoChevronUp } from "react-icons/go";
 import { useEffect, useState } from "react";
-import { useDimensions } from "@chakra-ui/react";
 import { useRef } from "react";
 const Header = ({ title }) => {
   const { width, height } = useWindowDimensions();
@@ -45,9 +44,9 @@ const Header = ({ title }) => {
       {width >= 1280 ? (
         <HStack spacing={5}>
           <HStack variant="menu_yellow_hover">
-            <NavLink to="/" variant="light_gray">
+            <Link to="/" variant="light_gray">
               Поставщики
-            </NavLink>
+            </Link>
           </HStack>
           <HStack>
             <Link
