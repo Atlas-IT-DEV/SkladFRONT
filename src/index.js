@@ -9,5 +9,5 @@ root.render(
   <ChakraProvider theme={theme}>
     <ColorModeScript initialColorMode={theme.config.initialColorMode} />
     <App />
-  </ChakraProvider>
+  </ChakraProvider>,
 );

@@ -15,7 +15,8 @@ import WarehouseService from "../../../API/services/warehouse_service";
 import MaterialService from "../../../API/services/material_service";
 import PurchaseService from "../../../API/services/purchase_service";
 import MaterialFormTransferDto from "../../../dto/material_form_transfer_dto";
-import MaterialTransferDto from "../../../dto/material_transfer_dto";
+import NotificationService from "../../../API/services/notification_service";
+import WarehouseToWarehouseDto from "../../../dto/warehouse_to_warehouse_dto";
 
 const validationSchema = Yup.object().shape({
   warehouseId: Yup.number().min(1, "Too Short!").required("Required"),
@@ -44,7 +45,7 @@ const validationSchema = Yup.object().shape({
     })
     .required("Required"),
 });
-const WarehouseToWarehouse = ({
+const WarehouseToWarehouseNotification = ({
   visibleModal,
   setVisibleModal,
   materialId,
@@ -136,14 +137,20 @@ const WarehouseToWarehouse = ({
   const Transfer = async (materialTransfer) => {
     try {
       delete materialTransfer.maxCount;
-      await WarehouseService.moveMaterial(
-        warehouseId,
-        materialTransfer.warehouseId,
-        new MaterialTransferDto(materialTransfer),
+
+      await NotificationService.createNotification(
+        new WarehouseToWarehouseDto({
+          currentWarehouseId: warehouseId,
+          newWarehouseId: materialTransfer.warehouseId,
+          materialId: materialTransfer.materialId,
+          purchaseId: materialTransfer.purchaseId,
+          count: materialTransfer.count,
+        }),
+        token.token,
       );
       getMaterialList();
     } catch (error) {
-      console.error("Error getSuppliers:", error);
+      console.error("Error Transfer:", error);
     }
   };
 
@@ -155,7 +162,7 @@ const WarehouseToWarehouse = ({
         fontWeight="bold"
         mb={9}
       >
-        <Text fontSize="2xl">Перемещение со склада на склад</Text>
+        <Text fontSize="2xl">Перемещение со склада на склад (Уведомление)</Text>
         <CloseButton onClick={onClose} />
       </Flex>
       <Box pb={6}>
@@ -237,4 +244,4 @@ const WarehouseToWarehouse = ({
   );
 };
 
-export default WarehouseToWarehouse;
+export default WarehouseToWarehouseNotification;

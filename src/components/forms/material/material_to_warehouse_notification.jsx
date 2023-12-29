@@ -15,7 +15,8 @@ import WarehouseService from "../../../API/services/warehouse_service";
 import MaterialService from "../../../API/services/material_service";
 import PurchaseService from "../../../API/services/purchase_service";
 import MaterialFormTransferDto from "../../../dto/material_form_transfer_dto";
-import MaterialTransferDto from "../../../dto/material_transfer_dto";
+import NotificationService from "../../../API/services/notification_service";
+import WarehouseToWarehouseDto from "../../../dto/warehouse_to_warehouse_dto";
 
 const validationSchema = Yup.object().shape({
   warehouseId: Yup.number().min(1, "Too Short!").required("Required"),
@@ -44,14 +45,14 @@ const validationSchema = Yup.object().shape({
     })
     .required("Required"),
 });
-const WarehouseToWarehouse = ({
+const MaterialToWarehouseNotification = ({
   visibleModal,
   setVisibleModal,
   materialId,
-  warehouseId,
   getMaterialList,
 }) => {
-  const materialTransfer = new MaterialFormTransferDto(materialId);
+  const materialTransfer = new MaterialFormTransferDto({ materialId });
+
   const formik = useFormik({
     initialValues: materialTransfer,
     validationSchema: validationSchema,
@@ -66,9 +67,9 @@ const WarehouseToWarehouse = ({
 
   const [warehouseList, setWarehouseList] = useState([]);
 
-  const selectPurchaseIdRef = useRef();
-
   const selectWarehouseIdRef = useRef();
+
+  const selectPurchaseIdRef = useRef();
 
   const onClose = () => {
     setVisibleModal(false);
@@ -82,12 +83,9 @@ const WarehouseToWarehouse = ({
     }
   };
 
-  const getMaterial = async () => {
+  const getMaterial = async (materialId) => {
     try {
-      const response = await MaterialService.getMaterial(
-        materialId,
-        warehouseId,
-      );
+      const response = await MaterialService.getMaterial(materialId);
       const newPurchaseList = await Promise.all(
         response.data.currentPurchaseMaterials.map(async (purchaseMaterial) => {
           const purchase = await PurchaseService.getPurchase(
@@ -95,8 +93,8 @@ const WarehouseToWarehouse = ({
           );
           return {
             value: purchaseMaterial.purchaseId,
-            maxCount: purchaseMaterial.countOnWarehouse,
-            label: `${purchase.data.price} ${purchaseMaterial.countOnWarehouse} ${purchase.data.supplier.name}`,
+            maxCount: purchaseMaterial.unallocatedCount,
+            label: `${purchase.data.price} ${purchaseMaterial.unallocatedCount} ${purchase.data.supplier.name}`,
           };
         }),
       );
@@ -110,11 +108,9 @@ const WarehouseToWarehouse = ({
     try {
       await WarehouseService.getWarehouses().then((response) => {
         setWarehouseList(
-          response.data
-            .filter((warehouse) => warehouse.id !== warehouseId)
-            .map((warehouse) => {
-              return { value: warehouse.id, label: warehouse.name };
-            }),
+          response.data.map((warehouse) => {
+            return { value: warehouse.id, label: warehouse.name };
+          }),
         );
       });
     } catch (error) {
@@ -128,18 +124,22 @@ const WarehouseToWarehouse = ({
       formik.setTouched({});
       selectPurchaseIdRef.current?.setValue();
       selectWarehouseIdRef.current?.setValue();
-      getMaterial();
       getWarehouses();
+      getMaterial(materialId);
     }
-  }, [visibleModal]);
+  }, [materialId, visibleModal]);
 
   const Transfer = async (materialTransfer) => {
     try {
       delete materialTransfer.maxCount;
-      await WarehouseService.moveMaterial(
-        warehouseId,
-        materialTransfer.warehouseId,
-        new MaterialTransferDto(materialTransfer),
+      await NotificationService.createNotification(
+        new WarehouseToWarehouseDto({
+          currentWarehouseId: -1,
+          newWarehouseId: materialTransfer.warehouseId,
+          materialId: materialTransfer.materialId,
+          purchaseId: materialTransfer.purchaseId,
+          count: materialTransfer.count,
+        }),
       );
       getMaterialList();
     } catch (error) {
@@ -155,7 +155,7 @@ const WarehouseToWarehouse = ({
         fontWeight="bold"
         mb={9}
       >
-        <Text fontSize="2xl">Перемещение со склада на склад</Text>
+        <Text fontSize="2xl">Перемещение на склад</Text>
         <CloseButton onClick={onClose} />
       </Flex>
       <Box pb={6}>
@@ -237,4 +237,4 @@ const WarehouseToWarehouse = ({
   );
 };
 
-export default WarehouseToWarehouse;
+export default MaterialToWarehouseNotification;

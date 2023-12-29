@@ -14,3 +14,8 @@ export const warehousesUrl = {
   update: "update_material",
   move: "move_to",
 };
+export const notificationsUrl = "notifications";
+export const usersUrl = {
+  users: "users",
+  signIn: "signIn",
+};

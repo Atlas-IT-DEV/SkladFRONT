@@ -4,12 +4,12 @@ import styles from "../forTable/table.module.css";
 import Pagination from "../../pagination/pagination";
 import UlToClickMaterial from "./ulToClickMaterial/ul_to_click_material";
 import UlForTable from "../forTable/ulForTable/ul_for_table";
-import WarehouseToWarehouse from "../../forms/material/warehouse_to_warehouse";
 import MyModal from "../../myModal/my_modal";
 import MaterialEditForm from "../../forms/material/material_edit_form";
 import PurchaseCreateForm from "../../forms/purchase/purchase_create_form";
-import MaterialToWarehouse from "../../forms/material/material_to_warehouse";
 import useWindowDimensions from "../../../hooks/window_dimensions";
+import WarehouseToWarehouseNotification from "../../forms/material/warehouse_to_warehouse_notification";
+import MaterialToWarehouseNotification from "../../forms/material/material_to_warehouse_notification";
 
 const TableMaterials = ({
   totalPages,
@@ -44,7 +44,14 @@ const TableMaterials = ({
         visibleModal={visibleWarehouseToWarehouse}
         setVisibleModal={setVisibleWarehouseToWarehouse}
       >
-        <WarehouseToWarehouse
+        {/*<WarehouseToWarehouse*/}
+        {/*  materialId={materialId}*/}
+        {/*  warehouseId={warehouseId}*/}
+        {/*  setVisibleModal={setVisibleWarehouseToWarehouse}*/}
+        {/*  getMaterialList={getMaterialList}*/}
+        {/*  visibleModal={visibleWarehouseToWarehouse}*/}
+        {/*/>*/}
+        <WarehouseToWarehouseNotification
           materialId={materialId}
           warehouseId={warehouseId}
           setVisibleModal={setVisibleWarehouseToWarehouse}
@@ -76,7 +83,8 @@ const TableMaterials = ({
         visibleModal={visibleToWarehouse}
         setVisibleModal={setVisibleToWarehouse}
       >
-        <MaterialToWarehouse
+        {/*<MaterialToWarehouse*/}
+        <MaterialToWarehouseNotification
           visibleModal={visibleToWarehouse}
           setVisibleModal={setVisibleToWarehouse}
           materialId={materialId}

@@ -11,6 +11,7 @@ import TmcsPage from "./pages/tmcs_page";
 import TmcTypesPage from "./pages/tmc_types_page";
 import DeliveryMethodsPage from "./pages/delivery_methods_page";
 import DeliveryPlacesPage from "./pages/delivery_places_page";
+import NotificationPage from "./pages/notifications_page";
 
 const router = createHashRouter([
   {
@@ -49,6 +50,10 @@ const router = createHashRouter([
   {
     path: "/delivery_places",
     element: <DeliveryPlacesPage />,
+  },
+  {
+    path: "/notification_page",
+    element: <NotificationPage />,
   },
   {
     path: "/login",
