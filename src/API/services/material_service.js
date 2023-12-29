@@ -8,7 +8,7 @@ export default class MaterialService {
       size: currentPageSize,
       warehouseId: warehouseId,
     };
-    return Instance.get(materialsUrl, {
+    return Instance.get(`${materialsUrl}`, {
       params,
     });
   }

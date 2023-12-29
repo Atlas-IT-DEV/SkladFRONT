@@ -1,4 +1,4 @@
-import { Button, HStack, Stack, Text, VStack } from "@chakra-ui/react";
+import { Button, Stack, Text, VStack } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 import MyModal from "../components/myModal/my_modal";
 import MaterialCreateForm from "../components/forms/material/material_create_form";
@@ -7,7 +7,6 @@ import Footer from "../components/footer";
 import TableMaterials from "../components/tables/tableMaterials/table_materials";
 import { useFetching } from "../hooks/useFetching";
 import MaterialService from "../API/services/material_service";
-import SideMenu from "../components/side_menu";
 import { Select } from "chakra-react-select";
 import WarehouseService from "../API/services/warehouse_service";
 import useWindowDimensions from "../hooks/window_dimensions";
@@ -30,7 +29,7 @@ const MaterialsPage = () => {
     await MaterialService.getMaterials(
       warehouseId,
       currentPage,
-      currentPageSize
+      currentPageSize,
     ).then((response) => {
       setMaterialList(response.data.materials);
       setTotalPages(response.data.totalPages);

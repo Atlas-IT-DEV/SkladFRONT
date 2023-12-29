@@ -3,7 +3,6 @@ import { useFetching } from "../hooks/useFetching";
 import TmcTypeService from "../API/services/tmcType_service";
 import { Button, HStack, Stack, Text, VStack } from "@chakra-ui/react";
 import MyModal from "../components/myModal/my_modal";
-import SideMenu from "../components/side_menu";
 import Header from "../components/header/header";
 import Footer from "../components/footer";
 import TableTmcTypes from "../components/tables/tableTmcTypes/table_tmc_types";
@@ -39,11 +38,7 @@ const TmcTypesPage = () => {
           getTmcTypeList={getTmcTypeList}
         />
       </MyModal>
-      <VStack
-        overflowY="scroll"
-        backgroundColor="menu_white"
-        width="100%"
-      >
+      <VStack overflowY="scroll" backgroundColor="menu_white" width="100%">
         <Header title="Типы ТМЦ" />
         <VStack
           padding={25}
@@ -70,7 +65,7 @@ const TmcTypesPage = () => {
                 variant="menu_yellow"
                 onClick={() => setVisibleCreateModal(true)}
               >
-                Добавить новое свойство
+                Добавить новый ТМЦ
               </Button>
             </HStack>
           </HStack>

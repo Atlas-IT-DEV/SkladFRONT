@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { useFetching } from "../hooks/useFetching";
 import { Button, HStack, Stack, Text, VStack } from "@chakra-ui/react";
 import MyModal from "../components/myModal/my_modal";
-import SideMenu from "../components/side_menu";
 import Header from "../components/header/header";
 import Footer from "../components/footer";
 import DeliveryMethodService from "../API/services/deliveryMethod_service";
@@ -41,13 +40,7 @@ const DeliveryMethodsPage = () => {
           getDeliveryMethodList={getDeliveryMethodList}
         />
       </MyModal>
-      <SideMenu />
-      <VStack
-        overflowY="scroll"
-        marginLeft={[200, 200, 200, 210, 220]}
-        backgroundColor="menu_white"
-        width="100%"
-      >
+      <VStack backgroundColor="menu_white" width="100%">
         <Header title="Способы доставки" />
         <VStack
           padding={25}

@@ -87,7 +87,7 @@ const DeliveryPlaceEditForm = ({
         fontWeight="bold"
         mb={9}
       >
-        <Text fontSize="2xl">Редактирование места отгрузки</Text>
+        <Text fontSize="2xl">Редактирование адреса отгрузки</Text>
         <CloseButton onClick={onClose} />
       </Flex>
       <Box pb={6}>
