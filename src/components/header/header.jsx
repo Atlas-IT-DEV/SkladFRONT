@@ -14,7 +14,6 @@ import useWindowDimensions from "../../hooks/window_dimensions";
 import { GoChevronDown } from "react-icons/go";
 import { GoChevronUp } from "react-icons/go";
 import { useEffect, useState } from "react";
-import { useContainerDimensions } from "../../hooks/useDimensions";
 import { useDimensions } from "@chakra-ui/react";
 import { useRef } from "react";
 const Header = ({ title }) => {
@@ -215,6 +214,7 @@ const Header = ({ title }) => {
                     position="absolute"
                     top={dimensions.borderBox.height}
                     right="0px"
+                    zIndex='20'
                     backgroundColor="white"
                   >
                     <HStack variant="menu_yellow_hover">

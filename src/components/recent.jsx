@@ -1,14 +1,22 @@
 import { HStack, Image, Text, VStack } from "@chakra-ui/react";
 import edit from "./../images/edit.svg";
 import delete_svg from "./../images/delete.svg";
+import useWindowDimensions from "../hooks/window_dimensions";
 
 const Recent = () => {
+  const {width, height} = useWindowDimensions();
   return (
-    <VStack alignContent="flex-start" alignItems="flex-start" width="100%">
+    <VStack
+      alignContent="flex-start"
+      alignItems="flex-start"
+      overflowX={width <= 944 ? "scroll" : "auto"}
+      display="block"
+      width={width <= 944 ? ['350px', '400px', '450px', '500px', '600px'] : "100%"}
+    >
       <Text fontWeight={700} fontSize={24} color="black">
         Недавнее
       </Text>
-      <VStack width="100%" spacing="2px">
+      <VStack >
         <HStack
           backgroundColor="white"
           justify="space-between"
