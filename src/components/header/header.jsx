@@ -11,10 +11,9 @@ import logo from "./../../images/Logotype.svg";
 import { useNavigate } from "react-router";
 import useWindowDimensions from "../../hooks/window_dimensions";
 import { GoChevronDown } from "react-icons/go";
-import { GoChevronUp } from "react-icons/go";
-import { useEffect, useState } from "react";
-import { useRef } from "react";
-const Header = ({ title }) => {
+import { useEffect, useRef, useState } from "react";
+
+const Header = () => {
   const { width, height } = useWindowDimensions();
   const navigate = useNavigate();
   const [modalMenu, setModalMenu] = useState([false, null]);
@@ -44,7 +43,12 @@ const Header = ({ title }) => {
       {width >= 1280 ? (
         <HStack spacing={5}>
           <HStack variant="menu_yellow_hover">
-            <Link to="/" variant="light_gray">
+            <Link
+              onClick={() => {
+                navigate("/");
+              }}
+              variant="light_gray"
+            >
               Поставщики
             </Link>
           </HStack>
@@ -106,6 +110,26 @@ const Header = ({ title }) => {
               variant="light_gray"
             >
               Типы тмц
+            </Link>
+          </HStack>
+          <HStack>
+            <Link
+              onClick={() => {
+                navigate("/delivery_methods");
+              }}
+              variant="light_gray"
+            >
+              Способы доставки
+            </Link>
+          </HStack>
+          <HStack>
+            <Link
+              onClick={() => {
+                navigate("/delivery_places");
+              }}
+              variant="light_gray"
+            >
+              Адреса отгрузки
             </Link>
           </HStack>
           <HStack>
@@ -181,6 +205,26 @@ const Header = ({ title }) => {
               </Link>
             </HStack>
             <HStack>
+              <Link
+                onClick={() => {
+                  navigate("/delivery_methods");
+                }}
+                variant="light_gray"
+              >
+                Способы доставки
+              </Link>
+            </HStack>
+            <HStack>
+              <Link
+                onClick={() => {
+                  navigate("/delivery_places");
+                }}
+                variant="light_gray"
+              >
+                Адреса отгрузки
+              </Link>
+            </HStack>
+            <HStack>
               <Link variant="light_gray">Перемещения</Link>
             </HStack>
             <HStack>
@@ -207,7 +251,7 @@ const Header = ({ title }) => {
                     position="absolute"
                     top={dimensions.borderBox.height}
                     right="0px"
-                    zIndex='20'
+                    zIndex="20"
                     backgroundColor="white"
                   >
                     <HStack variant="menu_yellow_hover">
@@ -278,6 +322,26 @@ const Header = ({ title }) => {
                         variant="light_gray"
                       >
                         Типы тмц
+                      </Link>
+                    </HStack>
+                    <HStack>
+                      <Link
+                        onClick={() => {
+                          navigate("/delivery_methods");
+                        }}
+                        variant="light_gray"
+                      >
+                        Способы доставки
+                      </Link>
+                    </HStack>
+                    <HStack>
+                      <Link
+                        onClick={() => {
+                          navigate("/delivery_places");
+                        }}
+                        variant="light_gray"
+                      >
+                        Адреса отгрузки
                       </Link>
                     </HStack>
                     <HStack>

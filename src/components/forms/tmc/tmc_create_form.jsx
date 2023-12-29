@@ -121,7 +121,7 @@ const TmcCreateForm = ({ getTmcList, setVisibleModal }) => {
                   e.map((property) => property.value),
                 );
               }}
-              placeholder={"Закупки"}
+              placeholder={"Свойства"}
             ></Select>
           </SimpleGrid>
           <Flex justifyContent="flex-end">

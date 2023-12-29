@@ -5,15 +5,21 @@ import UlForTable from "../forTable/ulForTable/ul_for_table";
 import MyModal from "../../myModal/my_modal";
 import DeliveryPlaceEditForm from "../../forms/deliveryPlaces/delivery_place_edit_form";
 import UlToClickDeliveryPlace from "./ulToClickDeliveryPlaces/ul_to_click_delivery_place";
+import useWindowDimensions from "../../../hooks/window_dimensions";
 
 const TableDeliveryPlaces = ({ getDeliveryPlaceList, deliveryPlaceList }) => {
   const [sort, setSort] = useState(false);
   const [visibleEditModal, setVisibleEditModal] = useState();
 
   const [deliveryPlaceId, setDeliveryPlaceId] = useState(-1);
-
+  const { width, height } = useWindowDimensions();
   return (
-    <Box className={styles.table__Box}>
+    <Box
+      className={styles.table__Box}
+      overflowX={width <= 944 ? "scroll" : "auto"}
+      display="block"
+      width={width <= 944 ? "100%" : "100%"}
+    >
       <MyModal
         visibleModal={visibleEditModal}
         setVisibleModal={setVisibleEditModal}
@@ -24,7 +30,7 @@ const TableDeliveryPlaces = ({ getDeliveryPlaceList, deliveryPlaceList }) => {
           getDeliveryPlaceList={getDeliveryPlaceList}
         />
       </MyModal>
-      <table className={styles.table}>
+      <table className={styles.table} width={width <= 944 ? "944px" : "100%"}>
         <thead>
           <tr className={styles.table__thead_tr}>
             <td className={styles.table__td}>

@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { Button, HStack, Stack, Text, VStack } from "@chakra-ui/react";
-import SideMenu from "../components/side_menu";
 import Header from "../components/header/header";
 import Footer from "../components/footer";
 import TableProperties from "../components/tables/tableProperties/table_properties";
@@ -39,11 +38,7 @@ const PropertyPage = () => {
           getPropertyList={getPropertyList}
         />
       </MyModal>
-      <VStack
-        overflowY="scroll"
-        backgroundColor="menu_white"
-        width="100%"
-      >
+      <VStack overflowY="scroll" backgroundColor="menu_white" width="100%">
         <Header title="Свойства" />
         <VStack
           padding={25}

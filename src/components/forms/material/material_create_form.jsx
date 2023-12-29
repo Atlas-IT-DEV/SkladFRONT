@@ -32,7 +32,7 @@ const validationSchema = Yup.object().shape({
   tmcId: Yup.number().min(1, "Too Short!").required("Required"),
   tmcTypeId: Yup.number().min(1, "Too Short!").required("Required"),
   tmCraftifyIdList: Yup.array(
-    Yup.number().min(1, "Too Short!").required("Required")
+    Yup.number().min(1, "Too Short!").required("Required"),
   ).max(20, "Too Long!"),
   show: Yup.boolean().required("Required"),
   trim: Yup.boolean().required("Required"),
@@ -57,7 +57,7 @@ const MaterialCreateForm = ({ setVisibleModal, getMaterialList }) => {
   const [craftifyList, setCraftifyTypeList] = useState([]);
 
   const [mapPropertiesValidation, setMapPropertiesValidation] = useState(
-    new Map()
+    new Map(),
   );
 
   const [currentProperties, setCurrentProperties] = useState([]);
@@ -71,7 +71,7 @@ const MaterialCreateForm = ({ setVisibleModal, getMaterialList }) => {
   const [propertyChangeability, changeMapPropertiesValidation] =
     usePropertyValidationById(
       mapPropertiesValidation,
-      setMapPropertiesValidation
+      setMapPropertiesValidation,
     );
 
   const createMaterial = async () => {
@@ -82,9 +82,9 @@ const MaterialCreateForm = ({ setVisibleModal, getMaterialList }) => {
         JSON.stringify({
           ...material,
           materialPropertyDTOList: materialPropertyDTOListToArray(
-            material.materialPropertyDTOList
+            material.materialPropertyDTOList,
           ),
-        })
+        }),
       );
       for (let i = 0; i < images?.length; i++) {
         formData.append("files", images[i]);
@@ -113,7 +113,7 @@ const MaterialCreateForm = ({ setVisibleModal, getMaterialList }) => {
         setTmcTypeList(
           response.data.map((craftify) => {
             return { value: craftify.id, label: craftify.name };
-          })
+          }),
         );
       });
     } catch (error) {
@@ -127,7 +127,7 @@ const MaterialCreateForm = ({ setVisibleModal, getMaterialList }) => {
         setCraftifyTypeList(
           response.data.map((tmcType) => {
             return { value: tmcType.id, label: tmcType.name };
-          })
+          }),
         );
       });
     } catch (error) {
@@ -174,10 +174,16 @@ const MaterialCreateForm = ({ setVisibleModal, getMaterialList }) => {
       if (material.materialPropertyDTOList.has(property.id)) {
         newMaterialPropertyDTOList.set(
           property.id,
-          material.materialPropertyDTOList.get(property.id)
+          material.materialPropertyDTOList.get(property.id),
         );
       } else {
-        newMaterialPropertyDTOList.set(property.id, "");
+        console.log(property.type);
+        if (property.type === "BOOLEAN") {
+          propertyChangeability(false, property.id, property.type);
+          newMaterialPropertyDTOList.set(property.id, false);
+        } else {
+          newMaterialPropertyDTOList.set(property.id, "");
+        }
       }
       newCurrentProperties.push({
         id: property.id,
@@ -349,7 +355,7 @@ const MaterialCreateForm = ({ setVisibleModal, getMaterialList }) => {
                 placeholder="Способы обработки"
               ></Select>
             </div>
-            <Stack spacing={[1, 5]} direction={["column", "row"]} >
+            <Stack spacing={[1, 5]} direction={["column", "row"]}>
               <Checkbox
                 size="md"
                 colorScheme="green"
@@ -404,7 +410,7 @@ const MaterialCreateForm = ({ setVisibleModal, getMaterialList }) => {
                         height="40px"
                         placeholder={item.name}
                         maxWidth="100%"
-                fontSize={["14px", "14px", "16px", "16px", "16px"]}
+                        fontSize={["14px", "14px", "16px", "16px", "16px"]}
                       />
                     </div>
                   )}

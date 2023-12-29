@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { useFetching } from "../hooks/useFetching";
 import { Button, HStack, Stack, Text, VStack } from "@chakra-ui/react";
 import MyModal from "../components/myModal/my_modal";
-import SideMenu from "../components/side_menu";
 import Header from "../components/header/header";
 import Footer from "../components/footer";
 import DeliveryPlaceService from "../API/services/deliveryPlaces_service";
@@ -32,23 +31,17 @@ const DeliveryPlacesPage = () => {
       backgroundColor="menu_white"
       width="100%"
     >
-      <MyModal
-        visibleModal={visibleCreateModal}
-        setVisibleModal={setVisibleCreateModal}
-      >
-        <DeliveryPlaceCreateForm
+      <VStack backgroundColor="menu_white" width="100%">
+        <MyModal
+          visibleModal={visibleCreateModal}
           setVisibleModal={setVisibleCreateModal}
-          getDeliveryPlaceList={getDeliveryPlaceList}
-        />
-      </MyModal>
-      <SideMenu />
-      <VStack
-        overflowY="scroll"
-        marginLeft={[200, 200, 200, 210, 220]}
-        backgroundColor="menu_white"
-        width="100%"
-      >
-        <Header title="Места отгрузки" />
+        >
+          <DeliveryPlaceCreateForm
+            setVisibleModal={setVisibleCreateModal}
+            getDeliveryPlaceList={getDeliveryPlaceList}
+          />
+        </MyModal>
+        <Header />
         <VStack
           padding={25}
           alignItems="flex-start"
@@ -63,7 +56,7 @@ const DeliveryPlacesPage = () => {
             lineHeight="normal"
             fontStyle="normal"
           >
-            Места отгрузки
+            Адреса отгрузки
           </Text>
           <Text fontSize={14} fontWeight={400} marginBottom="20px">
             Возможно здеась будет тоже какой то поясняющий текст

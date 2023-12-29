@@ -3,7 +3,6 @@ import React from "react";
 import Header from "../components/header/header";
 import Footer from "../components/footer";
 import TablePurchases from "../components/tables/tablePurchases/table_purchases";
-import SideMenu from "../components/side_menu";
 
 const PurchasesPage = () => {
   return (
@@ -14,11 +13,7 @@ const PurchasesPage = () => {
       backgroundColor="menu_white"
       width="100%"
     >
-      <VStack
-        overflowY="scroll"
-        backgroundColor="menu_white"
-        width="100%"
-      >
+      <VStack overflowY="scroll" backgroundColor="menu_white" width="100%">
         <Header title="Закупки" />
         <VStack
           padding={25}

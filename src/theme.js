@@ -7,16 +7,6 @@ const theme = extendTheme({
   },
   //варианты для различных компонентов
   components: {
-    Text: {
-      variants: {
-        side_menu_hover: {
-          color: "menu_gray",
-          _hover: {
-            color: "main_yellow",
-          },
-        },
-      },
-    },
     Button: {
       variants: {
         menu_yellow: {
@@ -41,6 +31,14 @@ const theme = extendTheme({
       },
     },
     Link: {
+      variants: {
+        light_gray: {
+          fontColor: "light_dark",
+          fontSize: ["12px", "13px", "14px"],
+        },
+      },
+    },
+    NavLink: {
       variants: {
         light_gray: {
           fontColor: "light_dark",
