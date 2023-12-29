@@ -133,10 +133,30 @@ const Header = () => {
             </Link>
           </HStack>
           <HStack>
+            <Link
+              onClick={() => {
+                navigate("/notification_page");
+              }}
+              variant="light_gray"
+            >
+              Уведомления
+            </Link>
+          </HStack>
+          <HStack>
             <Link variant="light_gray">Перемещения</Link>
           </HStack>
           <HStack>
             <Link variant="light_gray">Доступ</Link>
+          </HStack>
+          <HStack>
+            <Link
+              onClick={() => {
+                navigate("/login");
+              }}
+              variant="light_gray"
+            >
+              Вход
+            </Link>
           </HStack>
         </HStack>
       ) : width >= 768 ? (
@@ -217,6 +237,16 @@ const Header = () => {
             <HStack>
               <Link
                 onClick={() => {
+                  navigate("/notification_page");
+                }}
+                variant="light_gray"
+              >
+                Уведомления
+              </Link>
+            </HStack>
+            <HStack>
+              <Link
+                onClick={() => {
                   navigate("/delivery_places");
                 }}
                 variant="light_gray"
@@ -229,6 +259,16 @@ const Header = () => {
             </HStack>
             <HStack>
               <Link variant="light_gray">Доступ</Link>
+            </HStack>
+            <HStack>
+              <Link
+                onClick={() => {
+                  navigate("/login");
+                }}
+                variant="light_gray"
+              >
+                Вход
+              </Link>
             </HStack>
           </HStack>
         </VStack>
@@ -345,10 +385,30 @@ const Header = () => {
                       </Link>
                     </HStack>
                     <HStack>
+                      <Link
+                        onClick={() => {
+                          navigate("/notification_page");
+                        }}
+                        variant="light_gray"
+                      >
+                        Уведомления
+                      </Link>
+                    </HStack>
+                    <HStack>
                       <Link variant="light_gray">Перемещения</Link>
                     </HStack>
                     <HStack>
                       <Link variant="light_gray">Доступ</Link>
+                    </HStack>
+                    <HStack>
+                      <Link
+                        onClick={() => {
+                          navigate("/login");
+                        }}
+                        variant="light_gray"
+                      >
+                        Вход
+                      </Link>
                     </HStack>
                   </VStack>
                 );
