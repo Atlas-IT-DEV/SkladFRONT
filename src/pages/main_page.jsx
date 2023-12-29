@@ -3,6 +3,7 @@ import MainInfo from "../components/main_info";
 import Recent from "../components/recent";
 import Header from "../components/header/header";
 import Footer from "../components/footer";
+import MaterialSearch from "../components/material_search";
 
 const MainPage = () => {
   return (
@@ -23,6 +24,7 @@ const MainPage = () => {
         >
           Главная страница
         </Text>
+        <MaterialSearch />
         <Text fontSize={14} fontWeight={400} marginBottom="20px">
           Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
           eiusmod tempor incididunt ut labore et dolore magna aliqua. Dignissim
