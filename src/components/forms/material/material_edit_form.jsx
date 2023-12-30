@@ -37,7 +37,7 @@ const validationSchema = Yup.object().shape({
           .min(1, "Too Short!")
           .max(50, "Too Long!")
           .required("Required"),
-      })
+      }),
     )
     .max(20, "Too Long!"),
   show: Yup.boolean().required("Required"),
@@ -48,7 +48,7 @@ const MaterialEditForm = ({ setVisibleModal, materialId, getMaterialList }) => {
   const [material, setMaterial] = useState(new EditMaterialDto());
 
   const [mapPropertiesValidation, setMapPropertiesValidation] = useState(
-    new Map()
+    new Map(),
   );
 
   const [images, setImages] = useState(null);
@@ -61,7 +61,7 @@ const MaterialEditForm = ({ setVisibleModal, materialId, getMaterialList }) => {
 
   const [propertyChangeability] = usePropertyValidationById(
     mapPropertiesValidation,
-    setMapPropertiesValidation
+    setMapPropertiesValidation,
   );
 
   const refImageInput = useRef();
@@ -82,11 +82,10 @@ const MaterialEditForm = ({ setVisibleModal, materialId, getMaterialList }) => {
     const dt = new DataTransfer();
     for (const image of images) {
       await ImageService.getImage(image.path).then((response) => {
-        console.log(response.data);
         dt.items.add(
           new File([response.data], image.path, {
             type: response.data.type,
-          })
+          }),
         );
       });
     }
@@ -99,7 +98,7 @@ const MaterialEditForm = ({ setVisibleModal, materialId, getMaterialList }) => {
       selectCraftifiesRef.current?.setValue(
         response.data.tmCraftifies.map((crafty) => {
           return { value: crafty.id, label: crafty.name };
-        })
+        }),
       );
       setMaterial(new EditMaterialDto(response.data));
       setCurrentProperties(
@@ -109,7 +108,7 @@ const MaterialEditForm = ({ setVisibleModal, materialId, getMaterialList }) => {
             name: item.property.name,
             type: item.property.type,
           };
-        })
+        }),
       );
       setMapPropertiesValidation(generateBooleanMap(response.data.properties));
       setIsSubmit(false);
@@ -129,12 +128,12 @@ const MaterialEditForm = ({ setVisibleModal, materialId, getMaterialList }) => {
         JSON.stringify({
           ...material,
           tmCraftifyIdList: material.tmCraftifyIdList.map(
-            (craftify) => craftify.id
+            (craftify) => craftify.id,
           ),
           materialPropertyDTOList: materialPropertyDTOListToArray(
-            material.materialPropertyDTOList
+            material.materialPropertyDTOList,
           ),
-        })
+        }),
       );
       for (let i = 0; i < images?.length; i++) {
         formData.append("files", images[i]);
@@ -153,7 +152,7 @@ const MaterialEditForm = ({ setVisibleModal, materialId, getMaterialList }) => {
         setCraftifyList(
           response.data.map((tmcType) => {
             return { value: tmcType.id, label: tmcType.name };
-          })
+          }),
         );
       });
     } catch (error) {
@@ -181,7 +180,6 @@ const MaterialEditForm = ({ setVisibleModal, materialId, getMaterialList }) => {
     try {
       const dt = new DataTransfer();
       for (let i = 0; i < event.target.files.length; i++) {
-        console.log(event.target.files[i].type);
         if (
           event.target.files[i].type === "image/jpeg" ||
           event.target.files[i].type === "image/png"

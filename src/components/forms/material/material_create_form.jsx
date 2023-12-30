@@ -177,7 +177,6 @@ const MaterialCreateForm = ({ setVisibleModal, getMaterialList }) => {
           material.materialPropertyDTOList.get(property.id),
         );
       } else {
-        console.log(property.type);
         if (property.type === "BOOLEAN") {
           propertyChangeability(false, property.id, property.type);
           newMaterialPropertyDTOList.set(property.id, false);

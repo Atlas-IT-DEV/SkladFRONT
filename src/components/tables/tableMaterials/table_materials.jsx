@@ -28,7 +28,6 @@ const TableMaterials = ({
   const [visibleCreatePurchaseModal, setVisibleCreatePurchaseModal] =
     useState();
   const [visibleToWarehouse, setVisibleToWarehouse] = useState(false);
-  const [userId, setUserId] = useState(1);
   const [visibleWarehouseToWarehouse, setVisibleWarehouseToWarehouse] =
     useState(false);
   const { width, height } = useWindowDimensions();
@@ -74,7 +73,6 @@ const TableMaterials = ({
         setVisibleModal={setVisibleCreatePurchaseModal}
       >
         <PurchaseCreateForm
-          userId={userId}
           setVisibleModal={setVisibleCreatePurchaseModal}
           materialId={materialId}
         />

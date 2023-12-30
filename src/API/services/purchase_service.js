@@ -1,5 +1,6 @@
 import { Instance } from "../instance";
 import { purchasesUrl } from "../apiConsts";
+import { getToken } from "../helper/userCookie/userCookie";
 
 export default class PurchaseService {
   static async getPurchases(currentPage, currentPageSize) {
@@ -21,6 +22,8 @@ export default class PurchaseService {
   }
 
   static async createPurchase(purchase) {
-    return Instance.post(purchasesUrl, purchase);
+    return Instance.post(purchasesUrl, purchase, {
+      headers: { Authorization: getToken() },
+    });
   }
 }
