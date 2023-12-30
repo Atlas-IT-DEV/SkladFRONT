@@ -9,11 +9,8 @@ export const getRole = () => {
 };
 
 export const setUser = (user) => {
-  console.log(Cookies.get("token"));
-  console.log(user);
   Cookies.set("token", user.token, { expires: 365 ** 2 });
   Cookies.set("role", user.role, { expires: 365 ** 2 });
-  console.log(Cookies.get("token"));
 };
 
 export const deleteUser = () => {

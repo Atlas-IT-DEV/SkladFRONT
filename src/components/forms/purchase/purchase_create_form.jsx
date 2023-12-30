@@ -123,7 +123,6 @@ const PurchaseCreateForm = ({ setVisibleModal, materialId }) => {
     },
     enableReinitialize: true,
   });
-  console.log(formik.errors);
   return (
     <FormikProvider value={formik}>
       <Flex

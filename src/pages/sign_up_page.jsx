@@ -98,8 +98,7 @@ const SignUpPage = () => {
   useEffect(() => {
     getWarehouses();
   }, []);
-  console.log(formik.values);
-  console.log(formik.errors);
+
   return (
     <Stack
       direction={"column"}
@@ -166,7 +165,6 @@ const SignUpPage = () => {
                 id="role"
                 name="role"
                 onChange={(e) => {
-                  console.log(e);
                   formik.setFieldValue("role", e.value);
                 }}
                 placeholder="Роль"

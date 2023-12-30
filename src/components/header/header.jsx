@@ -12,7 +12,7 @@ import { useNavigate } from "react-router";
 import useWindowDimensions from "../../hooks/window_dimensions";
 import { GoChevronDown } from "react-icons/go";
 import { useEffect, useRef, useState } from "react";
-import { deleteUser, getRole } from "../../API/helper/userCookie/userCookie";
+import { deleteUser } from "../../API/helper/userCookie/userCookie";
 import { useCookies } from "react-cookie";
 
 const Header = () => {
@@ -26,9 +26,7 @@ const Header = () => {
       setModalMenu([false, null]);
     }
   }, [width]);
-  const role = "";
   const [cookie, setCookie] = useCookies(["token"]);
-  console.log(cookie);
   return (
     <Stack
       bg="white"
@@ -153,7 +151,7 @@ const Header = () => {
           <HStack>
             <Link variant="light_gray">Доступ</Link>
           </HStack>
-          {role === undefined ? (
+          {cookie.role === undefined ? (
             <HStack>
               <Link
                 onClick={() => {
@@ -289,7 +287,7 @@ const Header = () => {
             <HStack>
               <Link variant="light_gray">Доступ</Link>
             </HStack>
-            {getRole() === undefined ? (
+            {cookie.role === undefined ? (
               <HStack>
                 <Link
                   onClick={() => {
@@ -452,7 +450,7 @@ const Header = () => {
                     <HStack>
                       <Link variant="light_gray">Доступ</Link>
                     </HStack>
-                    {getRole() === undefined ? (
+                    {cookie.role === undefined ? (
                       <HStack>
                         <Link
                           onClick={() => {
