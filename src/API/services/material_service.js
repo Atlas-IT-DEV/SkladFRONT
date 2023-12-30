@@ -40,4 +40,21 @@ export default class MaterialService {
       },
     });
   }
+
+  static async searchMaterial(
+    currentPage,
+    currentPageSize,
+    warehouseId,
+    searchString
+  ) {
+    const params = {
+      page: currentPage,
+      size: currentPageSize,
+      warehouseId: warehouseId,
+      search: searchString,
+    };
+    return Instance.get(`${materialsUrl}`, {
+      params,
+    });
+  }
 }

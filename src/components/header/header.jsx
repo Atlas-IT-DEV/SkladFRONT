@@ -20,7 +20,7 @@ const Header = () => {
   const componentRef = useRef(null);
   const dimensions = useDimensions(componentRef, true);
   useEffect(() => {
-    if (width >= 768) {
+    if (width >= 966) {
       setModalMenu([false, null]);
     }
   }, [width]);
@@ -40,7 +40,7 @@ const Header = () => {
       ref={componentRef}
     >
       <Image src={logo} />
-      {width >= 1280 ? (
+      {width >= 1488 ? (
         <HStack spacing={5}>
           <HStack variant="menu_yellow_hover">
             <Link
@@ -159,7 +159,7 @@ const Header = () => {
             </Link>
           </HStack>
         </HStack>
-      ) : width >= 768 ? (
+      ) : width >= 966 ? (
         <VStack spacing="20px">
           <HStack spacing="15px">
             <HStack variant="menu_yellow_hover">
@@ -275,7 +275,7 @@ const Header = () => {
       ) : null}
       <HStack>
         <Image src={starbucks} borderRadius="50%" border="2px solid #FFBF00" />
-        {width <= 768 ? (
+        {width <= 966 ? (
           <GoChevronDown
             width="20px"
             onClick={() => {

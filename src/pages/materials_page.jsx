@@ -1,4 +1,4 @@
-import { Button, Stack, Text, VStack } from "@chakra-ui/react";
+import { Button, HStack, Stack, Text, VStack } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 import MyModal from "../components/myModal/my_modal";
 import MaterialCreateForm from "../components/forms/material/material_create_form";
@@ -10,12 +10,14 @@ import MaterialService from "../API/services/material_service";
 import { Select } from "chakra-react-select";
 import WarehouseService from "../API/services/warehouse_service";
 import useWindowDimensions from "../hooks/window_dimensions";
+import { ReactSearchAutocomplete } from "react-search-autocomplete";
 
 const MaterialsPage = () => {
   const [visibleCreateModal, setVisibleCreateModal] = useState();
   const [materialList, setMaterialList] = useState([]);
   const [currentPageSize, setCurrentPageSize] = useState(10);
   const [currentPage, setCurrentPage] = useState(1);
+  const [searchStr, setSearchStr] = useState("");
   const [warehouseId, setWarehouseId] = useState();
   const [totalPages, setTotalPages] = useState(0);
   const [totalCountMaterials, setTotalCountMaterials] = useState(0);
@@ -29,13 +31,27 @@ const MaterialsPage = () => {
     await MaterialService.getMaterials(
       warehouseId,
       currentPage,
-      currentPageSize,
+      currentPageSize
     ).then((response) => {
       setMaterialList(response.data.materials);
       setTotalPages(response.data.totalPages);
       setTotalCountMaterials(response.data.totalItems);
     });
   });
+  const [getMaterialListSearch, materialListErrorSearch] = useFetching(
+    async () => {
+      await MaterialService.searchMaterial(
+        1,
+        currentPageSize,
+        warehouseId,
+        searchStr
+      ).then((response) => {
+        setMaterialList(response.data.materials);
+        setTotalPages(response.data.totalPages);
+        setTotalCountMaterials(response.data.totalItems);
+      });
+    }
+  );
 
   const [getWarehouseList, warehouseListError] = useFetching(async () => {
     await WarehouseService.getWarehouses().then((response) => {
@@ -55,6 +71,41 @@ const MaterialsPage = () => {
   useEffect(() => {
     getMaterialList();
   }, [warehouseId, currentPage, currentPageSize]);
+
+  useEffect(() => {
+    getMaterialListSearch();
+  }, [searchStr]);
+
+  const formatResult = (item) => {
+    return (
+      <>
+        <span style={{ display: "block", textAlign: "left" }}>
+          id: {item.id}
+        </span>
+        <span style={{ display: "block", textAlign: "left" }}>
+          name: {item.name}
+        </span>
+      </>
+    );
+  };
+  const handleOnSearch = (string, results) => {
+    string == "" ? setSearchStr("") : setSearchStr(`name:*${string}*`);
+  };
+  const handleOnSelect = (item) => {
+    console.log();
+    // async () => {
+    //   await MaterialService.getMaterials(
+    //     warehouseId,
+    //     currentPage,
+    //     currentPageSize,
+
+    //   ).then((response) => {
+    //     setMaterialList(response.data.materials);
+    //     setTotalPages(response.data.totalPages);
+    //     setTotalCountMaterials(response.data.totalItems);
+    //   });
+    // }
+  };
   return (
     <Stack
       direction={"row"}
@@ -93,6 +144,15 @@ const MaterialsPage = () => {
           <Text fontSize={14} fontWeight={400} marginBottom="20px">
             Возможно здесь будет тоже какой то поясняющий текст
           </Text>
+          <div style={{ width: 400 }}>
+            <ReactSearchAutocomplete
+              items={materialList}
+              formatResult={formatResult}
+              onSelect={handleOnSelect}
+              onSearch={handleOnSearch}
+            />
+          </div>
+
           <Stack
             color={"black"}
             width="100%"
