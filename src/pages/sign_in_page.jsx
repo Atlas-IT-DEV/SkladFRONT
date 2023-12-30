@@ -3,8 +3,9 @@ import { useFormik } from "formik";
 import Header from "../components/header/header";
 import React from "react";
 import UserService from "../API/services/user_service";
+import { setUser } from "../API/helper/userCookie/userCookie";
 
-const LoginPage = () => {
+const SignInPage = () => {
   const validate = (values) => {
     const errors = {};
 
@@ -19,6 +20,15 @@ const LoginPage = () => {
 
     return errors;
   };
+  const signIn = async (values) => {
+    try {
+      const response = await UserService.signIn(values.login, values.password);
+      setUser(response.data);
+    } catch (error) {
+      console.error("Error signIn:", error);
+    }
+  };
+
   const formik = useFormik({
     initialValues: {
       login: "",
@@ -26,7 +36,7 @@ const LoginPage = () => {
     },
     validate,
     onSubmit: (values) => {
-      UserService.signIn(values.login, values.password);
+      signIn(values);
     },
   });
 
@@ -47,6 +57,7 @@ const LoginPage = () => {
                 id="login"
                 name="login"
                 type="login"
+                placeholder="Логин"
                 onChange={formik.handleChange}
                 value={formik.values.login}
               />
@@ -57,6 +68,7 @@ const LoginPage = () => {
                 id="password"
                 name="password"
                 type="password"
+                placeholder="Пароль"
                 onChange={formik.handleChange}
                 value={formik.values.password}
               />
@@ -73,4 +85,4 @@ const LoginPage = () => {
     </Stack>
   );
 };
-export default LoginPage;
+export default SignInPage;

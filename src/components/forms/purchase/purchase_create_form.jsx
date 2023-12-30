@@ -37,11 +37,10 @@ const validationSchema = Yup.object().shape({
     .required("Required"),
   supplierId: Yup.number().min(1, "Too Short!").required("Required"),
   deliveryMethodId: Yup.number().min(1, "Too Short!").required("Required"),
-  userId: Yup.number().min(1, "Too Short!").required("Required"),
   materialId: Yup.number().min(1, "Too Short!").required("Required"),
 });
 
-const PurchaseCreateForm = ({ setVisibleModal, materialId, userId }) => {
+const PurchaseCreateForm = ({ setVisibleModal, materialId }) => {
   const [purchase, setPurchase] = useState({
     dateTime: new Date(),
     linkToMaterial: "",
@@ -50,7 +49,6 @@ const PurchaseCreateForm = ({ setVisibleModal, materialId, userId }) => {
     price: "",
     supplierId: "",
     deliveryMethodId: "",
-    userId: userId,
     materialId: materialId,
   });
 
@@ -95,8 +93,8 @@ const PurchaseCreateForm = ({ setVisibleModal, materialId, userId }) => {
   }, []);
 
   useEffect(() => {
-    setPurchase({ ...purchase, materialId: materialId, userId: userId });
-  }, [materialId, userId]);
+    setPurchase({ ...purchase, materialId: materialId });
+  }, [materialId]);
 
   const createPurchase = async (purchase) => {
     try {
@@ -125,6 +123,7 @@ const PurchaseCreateForm = ({ setVisibleModal, materialId, userId }) => {
     },
     enableReinitialize: true,
   });
+  console.log(formik.errors);
   return (
     <FormikProvider value={formik}>
       <Flex

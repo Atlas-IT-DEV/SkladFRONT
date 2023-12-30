@@ -18,4 +18,5 @@ export const notificationsUrl = "notifications";
 export const usersUrl = {
   users: "users",
   signIn: "signIn",
+  signUp: "signUp",
 };

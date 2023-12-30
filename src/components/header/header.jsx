@@ -12,6 +12,8 @@ import { useNavigate } from "react-router";
 import useWindowDimensions from "../../hooks/window_dimensions";
 import { GoChevronDown } from "react-icons/go";
 import { useEffect, useRef, useState } from "react";
+import { deleteUser, getRole } from "../../API/helper/userCookie/userCookie";
+import { useCookies } from "react-cookie";
 
 const Header = () => {
   const { width, height } = useWindowDimensions();
@@ -24,6 +26,9 @@ const Header = () => {
       setModalMenu([false, null]);
     }
   }, [width]);
+  const role = "";
+  const [cookie, setCookie] = useCookies(["token"]);
+  console.log(cookie);
   return (
     <Stack
       bg="white"
@@ -148,14 +153,38 @@ const Header = () => {
           <HStack>
             <Link variant="light_gray">Доступ</Link>
           </HStack>
+          {role === undefined ? (
+            <HStack>
+              <Link
+                onClick={() => {
+                  navigate("/sign_in");
+                }}
+                variant="light_gray"
+              >
+                Вход
+              </Link>
+            </HStack>
+          ) : (
+            <HStack>
+              <Link
+                onClick={() => {
+                  deleteUser();
+                }}
+                variant="light_gray"
+              >
+                Выход
+              </Link>
+            </HStack>
+          )}
+
           <HStack>
             <Link
               onClick={() => {
-                navigate("/login");
+                navigate("/signup_page");
               }}
               variant="light_gray"
             >
-              Вход
+              Регистрация
             </Link>
           </HStack>
         </HStack>
@@ -260,14 +289,37 @@ const Header = () => {
             <HStack>
               <Link variant="light_gray">Доступ</Link>
             </HStack>
+            {getRole() === undefined ? (
+              <HStack>
+                <Link
+                  onClick={() => {
+                    navigate("/sign_in");
+                  }}
+                  variant="light_gray"
+                >
+                  Вход
+                </Link>
+              </HStack>
+            ) : (
+              <HStack>
+                <Link
+                  onClick={() => {
+                    deleteUser();
+                  }}
+                  variant="light_gray"
+                >
+                  Выход
+                </Link>
+              </HStack>
+            )}
             <HStack>
               <Link
                 onClick={() => {
-                  navigate("/login");
+                  navigate("/signup_page");
                 }}
                 variant="light_gray"
               >
-                Вход
+                Регистрация
               </Link>
             </HStack>
           </HStack>
@@ -400,14 +452,37 @@ const Header = () => {
                     <HStack>
                       <Link variant="light_gray">Доступ</Link>
                     </HStack>
+                    {getRole() === undefined ? (
+                      <HStack>
+                        <Link
+                          onClick={() => {
+                            navigate("/sign_in");
+                          }}
+                          variant="light_gray"
+                        >
+                          Вход
+                        </Link>
+                      </HStack>
+                    ) : (
+                      <HStack>
+                        <Link
+                          onClick={() => {
+                            deleteUser();
+                          }}
+                          variant="light_gray"
+                        >
+                          Выход
+                        </Link>
+                      </HStack>
+                    )}
                     <HStack>
                       <Link
                         onClick={() => {
-                          navigate("/login");
+                          navigate("/signup_page");
                         }}
                         variant="light_gray"
                       >
-                        Вход
+                        Регистрация
                       </Link>
                     </HStack>
                   </VStack>

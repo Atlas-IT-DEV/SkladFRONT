@@ -2,7 +2,7 @@ import { createHashRouter, RouterProvider } from "react-router-dom";
 
 import MainPage from "./pages/main_page";
 import MaterialsPage from "./pages/materials_page";
-import LoginPage from "./pages/login_page";
+import SignInPage from "./pages/sign_in_page";
 import NotFoundPage from "./pages/notfound_page";
 import PurchasesPage from "./pages/purchases_page";
 import PropertyPage from "./pages/property_page";
@@ -12,6 +12,7 @@ import TmcTypesPage from "./pages/tmc_types_page";
 import DeliveryMethodsPage from "./pages/delivery_methods_page";
 import DeliveryPlacesPage from "./pages/delivery_places_page";
 import NotificationPage from "./pages/notifications_page";
+import SignUpPage from "./pages/sign_up_page";
 
 const router = createHashRouter([
   {
@@ -56,8 +57,13 @@ const router = createHashRouter([
     element: <NotificationPage />,
   },
   {
-    path: "/login",
-    element: <LoginPage />,
+    path: "/signup_page",
+    element: <SignUpPage />,
+  },
+
+  {
+    path: "/sign_in",
+    element: <SignInPage />,
   },
 ]);
 

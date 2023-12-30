@@ -17,6 +17,8 @@ import PurchaseService from "../../../API/services/purchase_service";
 import MaterialFormTransferDto from "../../../dto/material_form_transfer_dto";
 import NotificationService from "../../../API/services/notification_service";
 import WarehouseToWarehouseDto from "../../../dto/warehouse_to_warehouse_dto";
+import MaterialTransferDto from "../../../dto/material_transfer_dto";
+import { getRole } from "../../../API/helper/userCookie/userCookie";
 
 const validationSchema = Yup.object().shape({
   warehouseId: Yup.number().min(1, "Too Short!").required("Required"),
@@ -132,15 +134,23 @@ const MaterialToWarehouseNotification = ({
   const Transfer = async (materialTransfer) => {
     try {
       delete materialTransfer.maxCount;
-      await NotificationService.createNotification(
-        new WarehouseToWarehouseDto({
-          currentWarehouseId: -1,
-          newWarehouseId: materialTransfer.warehouseId,
-          materialId: materialTransfer.materialId,
-          purchaseId: materialTransfer.purchaseId,
-          count: materialTransfer.count,
-        }),
-      );
+      if (getRole() === "ADMIN") {
+        await WarehouseService.addMaterialToWarehouse(
+          materialTransfer.warehouseId,
+          new MaterialTransferDto(materialTransfer),
+        );
+      } else {
+        await NotificationService.createNotification(
+          new WarehouseToWarehouseDto({
+            currentWarehouseId: -1,
+            newWarehouseId: materialTransfer.warehouseId,
+            materialId: materialTransfer.materialId,
+            purchaseId: materialTransfer.purchaseId,
+            count: materialTransfer.count,
+          }),
+        );
+      }
+
       getMaterialList();
     } catch (error) {
       console.error("Error getSuppliers:", error);
