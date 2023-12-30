@@ -11,7 +11,6 @@ import Header from "../components/header/header";
 import { useFormik } from "formik";
 import { Select } from "chakra-react-select";
 import WarehouseService from "../API/services/warehouse_service";
-import { getRole } from "../API/helper/userCookie/userCookie";
 import UserService from "../API/services/user_service";
 
 const SignUpPage = () => {
@@ -46,8 +45,12 @@ const SignUpPage = () => {
     ) {
       errors.role = "Required";
     }
-    if (values.warehouseDTO.name === undefined) {
-      errors.warehouseDTO = "Required";
+    if (values.role === "MASTER" || values.role === "WAREHOUSE_RESPONSIBLE") {
+      if (values.warehouseDTO.name === undefined) {
+        errors.warehouseDTO = "Required";
+      }
+    } else {
+      delete errors.warehouseDTO;
     }
 
     return errors;
@@ -169,7 +172,8 @@ const SignUpPage = () => {
                 placeholder="Роль"
                 fontSize={["14px", "14px", "16px", "16px", "16px"]}
               ></Select>
-              {getRole() === "ADMIN" ? (
+              {formik.values.role === "MASTER" ||
+              formik.values.role === "WAREHOUSE_RESPONSIBLE" ? (
                 <>
                   <Select
                     menuPortalTarget={document.body}
