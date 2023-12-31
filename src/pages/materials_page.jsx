@@ -2,8 +2,6 @@ import { Button, Stack, Text, VStack } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 import MyModal from "../components/myModal/my_modal";
 import MaterialCreateForm from "../components/forms/material/material_create_form";
-import Header from "../components/header/header";
-import Footer from "../components/footer";
 import TableMaterials from "../components/tables/tableMaterials/table_materials";
 import { useFetching } from "../hooks/useFetching";
 import MaterialService from "../API/services/material_service";
@@ -107,7 +105,13 @@ const MaterialsPage = () => {
     // }
   };
   return (
-    <VStack backgroundColor="menu_white" height="100vh" width="100%">
+    <VStack
+      padding={25}
+      alignItems="flex-start"
+      spacing="40px"
+      flexGrow={1}
+      width="100%"
+    >
       <MyModal
         visibleModal={visibleCreateModal}
         setVisibleModal={setVisibleCreateModal}
@@ -117,98 +121,83 @@ const MaterialsPage = () => {
           getMaterialList={getMaterialList}
         />
       </MyModal>
-      <Header />
-      <VStack
-        padding={25}
-        alignItems="flex-start"
-        spacing="40px"
-        flexGrow={1}
-        width="100%"
+      <Text
+        color="#000"
+        fontSize={[24, 26, 28, 32, 36]}
+        fontWeight={700}
+        lineHeight="normal"
+        fontStyle="normal"
       >
-        <Text
-          color="#000"
-          fontSize={[24, 26, 28, 32, 36]}
-          fontWeight={700}
-          lineHeight="normal"
-          fontStyle="normal"
-        >
-          Материалы
-        </Text>
-        <Text fontSize={14} fontWeight={400} marginBottom="20px">
-          Возможно здесь будет тоже какой то поясняющий текст
-        </Text>
-        <div style={{ width: 400 }}>
-          <ReactSearchAutocomplete
-            items={materialList}
-            formatResult={formatResult}
-            onSelect={handleOnSelect}
-            onSearch={handleOnSearch}
-          />
-        </div>
+        Материалы
+      </Text>
+      <Text fontSize={14} fontWeight={400} marginBottom="20px">
+        Возможно здесь будет тоже какой то поясняющий текст
+      </Text>
+      <div style={{ width: 400 }}>
+        <ReactSearchAutocomplete
+          items={materialList}
+          formatResult={formatResult}
+          onSelect={handleOnSelect}
+          onSearch={handleOnSearch}
+        />
+      </div>
 
+      <Stack color={"black"} width="100%" direction={"row"} align="flex-start">
         <Stack
           color={"black"}
-          width="100%"
-          direction={"row"}
-          align="flex-start"
+          spacing="25px"
+          direction={width >= 935 ? "row" : "column"}
         >
-          <Stack
-            color={"black"}
-            spacing="25px"
-            direction={width >= 935 ? "row" : "column"}
-          >
-            <Button
-              variant="menu_yellow"
-              fontSize={["14px", "14px", "16px", "16px", "16px"]}
-            >
-              Рулонные материалы
-            </Button>
-            <Button
-              variant="menu_yellow"
-              fontSize={["14px", "14px", "16px", "16px", "16px"]}
-              onClick={() => setVisibleCreateModal(true)}
-            >
-              Добавить новый
-            </Button>
-            <Button
-              variant="menu_yellow"
-              fontSize={["14px", "14px", "16px", "16px", "16px"]}
-            >
-              Скрытые
-            </Button>
-            <Select
-              fontSize={["14px", "14px", "16px", "16px", "16px"]}
-              options={warehouseList}
-              onChange={(e) => {
-                setWarehouseId(e.value);
-              }}
-              placeholder="Склады"
-            ></Select>
-          </Stack>
           <Button
             variant="menu_yellow"
             fontSize={["14px", "14px", "16px", "16px", "16px"]}
           >
             Рулонные материалы
           </Button>
+          <Button
+            variant="menu_yellow"
+            fontSize={["14px", "14px", "16px", "16px", "16px"]}
+            onClick={() => setVisibleCreateModal(true)}
+          >
+            Добавить новый
+          </Button>
+          <Button
+            variant="menu_yellow"
+            fontSize={["14px", "14px", "16px", "16px", "16px"]}
+          >
+            Скрытые
+          </Button>
+          <Select
+            fontSize={["14px", "14px", "16px", "16px", "16px"]}
+            options={warehouseList}
+            onChange={(e) => {
+              setWarehouseId(e.value);
+            }}
+            placeholder="Склады"
+          ></Select>
         </Stack>
-        {materialListError ? (
-          <div>{materialListError}</div>
-        ) : (
-          <TableMaterials
-            totalCountMaterials={totalCountMaterials}
-            currentPageSize={currentPageSize}
-            setCurrentPageSize={setCurrentPageSize}
-            totalPages={totalPages}
-            materialList={materialList}
-            getMaterialList={getMaterialList}
-            currentPage={currentPage}
-            setCurrentPage={setCurrentPage}
-            warehouseId={warehouseId}
-          />
-        )}
-      </VStack>
-      <Footer />
+        <Button
+          variant="menu_yellow"
+          fontSize={["14px", "14px", "16px", "16px", "16px"]}
+        >
+          Рулонные материалы
+        </Button>
+      </Stack>
+      {materialListError ? (
+        <div>{materialListError}</div>
+      ) : (
+        <TableMaterials
+          totalCountMaterials={totalCountMaterials}
+          currentPageSize={currentPageSize}
+          setCurrentPageSize={setCurrentPageSize}
+          totalPages={totalPages}
+          materialList={materialList}
+          getMaterialList={getMaterialList}
+          currentPage={currentPage}
+          setCurrentPage={setCurrentPage}
+          warehouseId={warehouseId}
+        />
+      )}
     </VStack>
   );
 };

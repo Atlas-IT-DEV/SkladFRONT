@@ -14,60 +14,66 @@ import DeliveryPlacesPage from "./pages/delivery_places_page";
 import NotificationPage from "./pages/notifications_page";
 import SignUpPage from "./pages/sign_up_page";
 import WarehousePage from "./pages/warehouse_page";
+import Layout from "./Layout";
 
 const router = createHashRouter([
   {
-    path: "/",
-    element: <MainPage />,
-    errorElement: <NotFoundPage />,
-  },
-  {
-    path: "/materials",
-    element: <MaterialsPage />,
-  },
-  {
-    path: "/purchases",
-    element: <PurchasesPage />,
-  },
-  {
-    path: "/properties",
-    element: <PropertyPage />,
-  },
-  {
-    path: "/craftifies",
-    element: <СraftifiesPage />,
-  },
-  {
-    path: "/tmcs",
-    element: <TmcsPage />,
-  },
-  {
-    path: "/tmctypes",
-    element: <TmcTypesPage />,
-  },
-  {
-    path: "/delivery_methods",
-    element: <DeliveryMethodsPage />,
-  },
-  {
-    path: "/delivery_places",
-    element: <DeliveryPlacesPage />,
-  },
-  {
-    path: "/notification_page",
-    element: <NotificationPage />,
-  },
-  {
-    path: "/warehouse_page",
-    element: <WarehousePage />,
-  },
-  {
-    path: "/signup_page",
-    element: <SignUpPage />,
-  },
-  {
-    path: "/sign_in",
-    element: <SignInPage />,
+    element: <Layout />,
+    children: [
+      {
+        path: "/",
+        element: <MainPage />,
+        errorElement: <NotFoundPage />,
+      },
+      {
+        path: "/materials",
+        element: <MaterialsPage />,
+      },
+      {
+        path: "/purchases",
+        element: <PurchasesPage />,
+      },
+      {
+        path: "/properties",
+        element: <PropertyPage />,
+      },
+      {
+        path: "/craftifies",
+        element: <СraftifiesPage />,
+      },
+      {
+        path: "/tmcs",
+        element: <TmcsPage />,
+      },
+      {
+        path: "/tmctypes",
+        element: <TmcTypesPage />,
+      },
+      {
+        path: "/delivery_methods",
+        element: <DeliveryMethodsPage />,
+      },
+      {
+        path: "/delivery_places",
+        element: <DeliveryPlacesPage />,
+      },
+      {
+        path: "/notification_page",
+        element: <NotificationPage />,
+      },
+      {
+        path: "/warehouse_page",
+        element: <WarehousePage />,
+      },
+      {
+        path: "/signup_page",
+        element: <SignUpPage />,
+      },
+      {
+        path: "/sign_in",
+        element: <SignInPage />,
+      },
+    ],
   },
 ]);
 

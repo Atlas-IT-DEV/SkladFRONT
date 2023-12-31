@@ -1,13 +1,5 @@
 import React, { useEffect, useState } from "react";
-import {
-  Button,
-  Input,
-  SimpleGrid,
-  Stack,
-  Text,
-  VStack,
-} from "@chakra-ui/react";
-import Header from "../components/header/header";
+import { Button, Input, SimpleGrid, Text, VStack } from "@chakra-ui/react";
 import { useFormik } from "formik";
 import { Select } from "chakra-react-select";
 import WarehouseService from "../API/services/warehouse_service";
@@ -100,110 +92,100 @@ const SignUpPage = () => {
   }, []);
 
   return (
-    <Stack
-      direction={"column"}
-      height="100vh"
-      spacing="0"
-      backgroundColor="menu_white"
-      width="100%"
-    >
-      <Header />
-      <VStack minH="100vh" align="center" justify="center">
-        <VStack spacing="15px" align="center" border>
-          <form onSubmit={formik.handleSubmit}>
-            <SimpleGrid minW="300px" spacing={5}>
-              <Input
-                id="login"
-                name="login"
-                placeholder="Логин"
-                onChange={formik.handleChange}
-                value={formik.values.login}
-              />
-              {formik.errors.login && formik.touched.login ? (
-                <Text>{formik.errors.login} </Text>
-              ) : null}
-              <Input
-                id="username"
-                name="username"
-                placeholder="Имя"
-                onChange={formik.handleChange}
-                value={formik.values.username}
-              />
-              {formik.errors.username && formik.touched.username ? (
-                <Text>{formik.errors.username}</Text>
-              ) : null}
-              <Input
-                id="password"
-                name="password"
-                type="password"
-                placeholder="Пароль"
-                onChange={formik.handleChange}
-                value={formik.values.password}
-              />
-              {formik.errors.password && formik.touched.password ? (
-                <Text>{formik.errors.password}</Text>
-              ) : null}
-              <Input
-                id="passwordConfirm"
-                name="passwordConfirm"
-                type="password"
-                placeholder="Повторите пароль"
-                onChange={formik.handleChange}
-                value={formik.values.passwordConfirm}
-              />
-              {formik.errors.passwordConfirm &&
-              formik.touched.passwordConfirm ? (
-                <Text>{formik.errors.passwordConfirm}</Text>
-              ) : null}
-              <Select
-                width={"100%"}
-                menuPortalTarget={document.body}
-                styles={{ menuPortal: (base) => ({ ...base, zIndex: 3 }) }}
-                isInvalid={formik.errors.role && formik.touched.role}
-                errorBorderColor="crimson"
-                options={roles}
-                id="role"
-                name="role"
-                onChange={(e) => {
-                  formik.setFieldValue("role", e.value);
-                }}
-                placeholder="Роль"
-                fontSize={["14px", "14px", "16px", "16px", "16px"]}
-              ></Select>
-              {formik.values.role === "MASTER" ||
-              formik.values.role === "WAREHOUSE_RESPONSIBLE" ? (
-                <>
-                  <Select
-                    menuPortalTarget={document.body}
-                    styles={{ menuPortal: (base) => ({ ...base, zIndex: 3 }) }}
-                    isInvalid={
-                      formik.errors.warehouseDTO && formik.touched.warehouseDTO
-                    }
-                    errorBorderColor="crimson"
-                    options={warehousesList}
-                    onChange={(e) => {
-                      formik.setFieldValue("warehouseDTO", {
-                        id: e.value,
-                        name: e.label,
-                      });
-                    }}
-                    placeholder={"Склады"}
-                  ></Select>
-                  {formik.errors.warehouseDTO && formik.touched.warehouseDTO ? (
-                    <Text>{formik.errors.warehouseDTO}</Text>
-                  ) : null}
-                </>
-              ) : (
-                <></>
-              )}
-              <Button type="submit" variant="menu_yellow">
-                Создать
-              </Button>
-            </SimpleGrid>
-          </form>
-        </VStack>
+    <VStack minH="100vh" align="center" justify="center">
+      <VStack spacing="15px" align="center" border>
+        <form onSubmit={formik.handleSubmit}>
+          <SimpleGrid minW="300px" spacing={5}>
+            <Input
+              id="login"
+              name="login"
+              placeholder="Логин"
+              onChange={formik.handleChange}
+              value={formik.values.login}
+            />
+            {formik.errors.login && formik.touched.login ? (
+              <Text>{formik.errors.login} </Text>
+            ) : null}
+            <Input
+              id="username"
+              name="username"
+              placeholder="Имя"
+              onChange={formik.handleChange}
+              value={formik.values.username}
+            />
+            {formik.errors.username && formik.touched.username ? (
+              <Text>{formik.errors.username}</Text>
+            ) : null}
+            <Input
+              id="password"
+              name="password"
+              type="password"
+              placeholder="Пароль"
+              onChange={formik.handleChange}
+              value={formik.values.password}
+            />
+            {formik.errors.password && formik.touched.password ? (
+              <Text>{formik.errors.password}</Text>
+            ) : null}
+            <Input
+              id="passwordConfirm"
+              name="passwordConfirm"
+              type="password"
+              placeholder="Повторите пароль"
+              onChange={formik.handleChange}
+              value={formik.values.passwordConfirm}
+            />
+            {formik.errors.passwordConfirm && formik.touched.passwordConfirm ? (
+              <Text>{formik.errors.passwordConfirm}</Text>
+            ) : null}
+            <Select
+              width={"100%"}
+              menuPortalTarget={document.body}
+              styles={{ menuPortal: (base) => ({ ...base, zIndex: 3 }) }}
+              isInvalid={formik.errors.role && formik.touched.role}
+              errorBorderColor="crimson"
+              options={roles}
+              id="role"
+              name="role"
+              onChange={(e) => {
+                formik.setFieldValue("role", e.value);
+              }}
+              placeholder="Роль"
+              fontSize={["14px", "14px", "16px", "16px", "16px"]}
+            ></Select>
+            {formik.values.role === "MASTER" ||
+            formik.values.role === "WAREHOUSE_RESPONSIBLE" ? (
+              <>
+                <Select
+                  menuPortalTarget={document.body}
+                  styles={{ menuPortal: (base) => ({ ...base, zIndex: 3 }) }}
+                  isInvalid={
+                    formik.errors.warehouseDTO && formik.touched.warehouseDTO
+                  }
+                  errorBorderColor="crimson"
+                  options={warehousesList}
+                  onChange={(e) => {
+                    formik.setFieldValue("warehouseDTO", {
+                      id: e.value,
+                      name: e.label,
+                    });
+                  }}
+                  placeholder={"Склады"}
+                ></Select>
+                {formik.errors.warehouseDTO && formik.touched.warehouseDTO ? (
+                  <Text>{formik.errors.warehouseDTO}</Text>
+                ) : null}
+              </>
+            ) : (
+              <></>
+            )}
+            <Button type="submit" variant="menu_yellow">
+              Создать
+            </Button>
+          </SimpleGrid>
+        </form>
       </VStack>
-    </Stack>
+    </VStack>
   );
 };
 
