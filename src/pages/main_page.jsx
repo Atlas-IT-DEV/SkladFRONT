@@ -8,7 +8,7 @@ import MaterialSearch from "../components/material_search";
 const MainPage = () => {
   return (
     <VStack backgroundColor="menu_white">
-      <Header title="Главная страница" />
+      <Header />
       <VStack
         padding={25}
         alignItems="flex-start"

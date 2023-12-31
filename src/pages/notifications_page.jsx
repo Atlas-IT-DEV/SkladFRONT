@@ -31,7 +31,7 @@ const NotificationPage = () => {
       width="100%"
     >
       <VStack backgroundColor="menu_white" width="100%">
-        <Header title="Материалы" />
+        <Header />
         <VStack
           padding={25}
           alignItems="flex-start"

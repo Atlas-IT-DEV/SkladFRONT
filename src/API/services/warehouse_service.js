@@ -18,7 +18,7 @@ export default class WarehouseService {
   }
 
   static async createWarehouse(warehouse) {
-    return Instance.post(warehousesUrl, warehouse);
+    return Instance.post(warehousesUrl.warehouses, warehouse);
   }
 
   static async addMaterialToWarehouse(warehouseId, materialTransfer) {

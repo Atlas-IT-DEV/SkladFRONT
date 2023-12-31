@@ -4,23 +4,21 @@ import { Button, HStack, Stack, Text, VStack } from "@chakra-ui/react";
 import MyModal from "../components/myModal/my_modal";
 import Header from "../components/header/header";
 import Footer from "../components/footer";
-import DeliveryMethodService from "../API/services/deliveryMethod_service";
-import TableDeliveryMethods from "../components/tables/tableDeliveryMethods/table_delivery_methods";
-import DeliveryMethodCreateForm from "../components/forms/deliveryMethod/delivery_method_create_form";
+import WarehouseService from "../API/services/warehouse_service";
+import TableWarehouses from "../components/tables/tableWarehouses/table_warehouses";
+import WarehouseCreateForm from "../components/forms/warehouse/warehouse_create_form";
 
-const DeliveryMethodsPage = () => {
+const WarehousePage = () => {
   const [visibleCreateModal, setVisibleCreateModal] = useState();
-  const [deliveryMethodList, setDeliveryMethodList] = useState([]);
+  const [warehouseList, setWarehouseList] = useState([]);
 
-  const [getDeliveryMethodList, deliveryMethodListError] = useFetching(
-    async () => {
-      const response = await DeliveryMethodService.getDeliveryMethods();
-      setDeliveryMethodList(response.data);
-    },
-  );
+  const [getWarehouseList, warehouseListError] = useFetching(async () => {
+    const response = await WarehouseService.getWarehouses();
+    setWarehouseList(response.data);
+  });
 
   useEffect(() => {
-    getDeliveryMethodList();
+    getWarehouseList();
   }, []);
 
   return (
@@ -35,12 +33,12 @@ const DeliveryMethodsPage = () => {
         visibleModal={visibleCreateModal}
         setVisibleModal={setVisibleCreateModal}
       >
-        <DeliveryMethodCreateForm
+        <WarehouseCreateForm
           setVisibleModal={setVisibleCreateModal}
-          getDeliveryMethodList={getDeliveryMethodList}
+          getWarehouseList={getWarehouseList}
         />
       </MyModal>
-      <VStack backgroundColor="menu_white" width="100%">
+      <VStack overflowY="scroll" backgroundColor="menu_white" width="100%">
         <Header />
         <VStack
           padding={25}
@@ -56,7 +54,7 @@ const DeliveryMethodsPage = () => {
             lineHeight="normal"
             fontStyle="normal"
           >
-            Способы доставки
+            Склады
           </Text>
           <Text fontSize={14} fontWeight={400} marginBottom="20px">
             Возможно здеась будет тоже какой то поясняющий текст
@@ -67,17 +65,17 @@ const DeliveryMethodsPage = () => {
                 variant="menu_yellow"
                 onClick={() => setVisibleCreateModal(true)}
               >
-                Добавить новый способ доставки
+                Добавить ноый склад
               </Button>
             </HStack>
           </HStack>
-          {deliveryMethodListError ? (
-            <div>{deliveryMethodListError}</div>
+          {warehouseListError ? (
+            <div>{warehouseListError}</div>
           ) : (
-            <TableDeliveryMethods
+            <TableWarehouses
               setVisibleCreateModal={setVisibleCreateModal}
-              getDeliveryMethodList={getDeliveryMethodList}
-              deliveryMethodList={deliveryMethodList}
+              getWarehouseList={getWarehouseList}
+              warehouseList={warehouseList}
             />
           )}
         </VStack>
@@ -87,4 +85,4 @@ const DeliveryMethodsPage = () => {
   );
 };
 
-export default DeliveryMethodsPage;
+export default WarehousePage;

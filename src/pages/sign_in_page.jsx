@@ -3,7 +3,7 @@ import { useFormik } from "formik";
 import Header from "../components/header/header";
 import React from "react";
 import UserService from "../API/services/user_service";
-import { setUser } from "../API/helper/userCookie/userCookie";
+import { setUser } from "../API/helper/userCookie";
 
 const SignInPage = () => {
   const validate = (values) => {

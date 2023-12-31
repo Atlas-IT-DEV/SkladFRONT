@@ -14,7 +14,7 @@ const PurchasesPage = () => {
       width="100%"
     >
       <VStack overflowY="scroll" backgroundColor="menu_white" width="100%">
-        <Header title="Закупки" />
+        <Header />
         <VStack
           padding={25}
           alignItems="flex-start"

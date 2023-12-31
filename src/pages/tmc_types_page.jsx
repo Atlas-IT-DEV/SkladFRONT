@@ -39,7 +39,7 @@ const TmcTypesPage = () => {
         />
       </MyModal>
       <VStack overflowY="scroll" backgroundColor="menu_white" width="100%">
-        <Header title="Типы ТМЦ" />
+        <Header />
         <VStack
           padding={25}
           alignItems="flex-start"

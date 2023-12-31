@@ -1,6 +1,6 @@
 import { Instance } from "../instance";
 import { notificationsUrl } from "../apiConsts";
-import { getToken } from "../helper/userCookie/userCookie";
+import { getToken } from "../helper/userCookie";
 
 export default class NotificationService {
   static async getNotifications() {

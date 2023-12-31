@@ -1,6 +1,6 @@
 import { Instance } from "../instance";
 import { purchasesUrl } from "../apiConsts";
-import { getToken } from "../helper/userCookie/userCookie";
+import { getToken } from "../helper/userCookie";
 
 export default class PurchaseService {
   static async getPurchases(currentPage, currentPageSize) {

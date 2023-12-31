@@ -13,6 +13,7 @@ import DeliveryMethodsPage from "./pages/delivery_methods_page";
 import DeliveryPlacesPage from "./pages/delivery_places_page";
 import NotificationPage from "./pages/notifications_page";
 import SignUpPage from "./pages/sign_up_page";
+import WarehousePage from "./pages/warehouse_page";
 
 const router = createHashRouter([
   {
@@ -57,10 +58,13 @@ const router = createHashRouter([
     element: <NotificationPage />,
   },
   {
+    path: "/warehouse_page",
+    element: <WarehousePage />,
+  },
+  {
     path: "/signup_page",
     element: <SignUpPage />,
   },
-
   {
     path: "/sign_in",
     element: <SignInPage />,

@@ -3,21 +3,20 @@ import { Box } from "@chakra-ui/react";
 import MyModal from "../../myModal/my_modal";
 import UlForTable from "../forTable/ulForTable/ul_for_table";
 import styles from "../forTable/table.module.css";
-import UlToClickTmc from "./ulToClickTmcs/ul_to_click_tmcs";
-import { Select } from "chakra-react-select";
-import TmcEditForm from "../../forms/tmc/tmc_edit_form";
+import UlToClickWarehouse from "./ulToClickWarehouses/ul_to_click_warehouse";
 import useWindowDimensions from "../../../hooks/window_dimensions";
+import WarehouseEditForm from "../../forms/warehouse/warehouse_edit_form";
 
-const TableTmcs = ({ getTmcList, tmcList }) => {
+const TableWarehouses = ({ getWarehouseList, warehouseList }) => {
   const [sort, setSort] = useState(false);
   const [visibleEditModal, setVisibleEditModal] = useState();
-  const { width, height } = useWindowDimensions();
-  const [tmcId, setTmcId] = useState(-1);
 
+  const [warehouseId, setWarehouseId] = useState(-1);
+  const { width, height } = useWindowDimensions();
   return (
     <Box
-      overflowX={width <= 944 ? "scroll" : "auto"}
       className={styles.table__Box}
+      overflowX={width <= 944 ? "scroll" : "auto"}
       display="block"
       width={width <= 944 ? "100%" : "100%"}
     >
@@ -25,10 +24,10 @@ const TableTmcs = ({ getTmcList, tmcList }) => {
         visibleModal={visibleEditModal}
         setVisibleModal={setVisibleEditModal}
       >
-        <TmcEditForm
+        <WarehouseEditForm
           setVisibleModal={setVisibleEditModal}
-          getTmcList={getTmcList}
-          tmcId={tmcId}
+          getWarehouseList={getWarehouseList}
+          warehouseId={warehouseId}
         />
       </MyModal>
       <table className={styles.table} width={width <= 944 ? "944px" : "100%"}>
@@ -40,36 +39,18 @@ const TableTmcs = ({ getTmcList, tmcList }) => {
             <td>
               <UlForTable sort={sort} setSort={setSort} name="Название" />
             </td>
-            <td className={styles.table__td}>
-              <UlForTable sort={sort} setSort={setSort} name="Свойства" />
-            </td>
             <td className={styles.table__td}></td>
           </tr>
         </thead>
         <tbody>
-          {tmcList?.map((tmc, index) => (
-            <tr className={styles.table__tbody_tr} key={tmc.id}>
+          {warehouseList?.map((warehouse, index) => (
+            <tr className={styles.table__tbody_tr} key={warehouse.id}>
               <td className={styles.table__td}>{index + 1}.</td>
-              <td className={styles.table__td}>{tmc.name}</td>
+              <td className={styles.table__td}>{warehouse.name}</td>
               <td className={styles.table__td}>
-                <ul>
-                  <Select
-                    menuPortalTarget={document.body}
-                    styles={{ menuPortal: (base) => ({ ...base, zIndex: 3 }) }}
-                    options={tmc.properties.map((property) => {
-                      return {
-                        label: property.name + " " + property.type,
-                      };
-                    })}
-                    placeholder={"Свойства"}
-                  />
-                </ul>
-                {tmc.type}
-              </td>
-              <td className={styles.table__td}>
-                <UlToClickTmc
-                  tmcId={tmc.id}
-                  setTmcId={setTmcId}
+                <UlToClickWarehouse
+                  warehouseId={warehouse.id}
+                  setWarehouseId={setWarehouseId}
                   setVisibleEditModal={setVisibleEditModal}
                 />
               </td>
@@ -81,4 +62,4 @@ const TableTmcs = ({ getTmcList, tmcList }) => {
   );
 };
 
-export default TableTmcs;
+export default TableWarehouses;

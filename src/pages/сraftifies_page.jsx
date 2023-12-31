@@ -39,7 +39,7 @@ const СraftifiesPage = () => {
         />
       </MyModal>
       <VStack overflowY="scroll" backgroundColor="menu_white" width="100%">
-        <Header title="Способы обработки ТМЦ" />
+        <Header />
         <VStack
           padding={25}
           alignItems="flex-start"

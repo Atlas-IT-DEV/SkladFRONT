@@ -43,13 +43,6 @@ const TableMaterials = ({
         visibleModal={visibleWarehouseToWarehouse}
         setVisibleModal={setVisibleWarehouseToWarehouse}
       >
-        {/*<WarehouseToWarehouse*/}
-        {/*  materialId={materialId}*/}
-        {/*  warehouseId={warehouseId}*/}
-        {/*  setVisibleModal={setVisibleWarehouseToWarehouse}*/}
-        {/*  getMaterialList={getMaterialList}*/}
-        {/*  visibleModal={visibleWarehouseToWarehouse}*/}
-        {/*/>*/}
         <WarehouseToWarehouseNotification
           materialId={materialId}
           warehouseId={warehouseId}

@@ -1,4 +1,4 @@
-import { Button, HStack, Stack, Text, VStack } from "@chakra-ui/react";
+import { Button, Stack, Text, VStack } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 import MyModal from "../components/myModal/my_modal";
 import MaterialCreateForm from "../components/forms/material/material_create_form";
@@ -31,7 +31,7 @@ const MaterialsPage = () => {
     await MaterialService.getMaterials(
       warehouseId,
       currentPage,
-      currentPageSize
+      currentPageSize,
     ).then((response) => {
       setMaterialList(response.data.materials);
       setTotalPages(response.data.totalPages);
@@ -44,13 +44,13 @@ const MaterialsPage = () => {
         1,
         currentPageSize,
         warehouseId,
-        searchStr
+        searchStr,
       ).then((response) => {
         setMaterialList(response.data.materials);
         setTotalPages(response.data.totalPages);
         setTotalCountMaterials(response.data.totalItems);
       });
-    }
+    },
   );
 
   const [getWarehouseList, warehouseListError] = useFetching(async () => {
@@ -124,7 +124,7 @@ const MaterialsPage = () => {
         />
       </MyModal>
       <VStack backgroundColor="menu_white" width="100%">
-        <Header title="Материалы" />
+        <Header />
         <VStack
           padding={25}
           alignItems="flex-start"

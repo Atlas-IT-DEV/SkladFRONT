@@ -53,13 +53,6 @@ const TableTmcTypes = ({ getTmcTypeList, tmcTypeList }) => {
               <td className={styles.table__td}>{tmcType.name}</td>
               <td className={styles.table__td}>
                 <ul>
-                  {/*{tmcType.properties.map((property) => {*/}
-                  {/*  return (*/}
-                  {/*    <li key={property.id}>*/}
-                  {/*      {property.name} {property.type}*/}
-                  {/*    </li>*/}
-                  {/*  );*/}
-                  {/*})}*/}
                   <Select
                     menuPortalTarget={document.body}
                     styles={{ menuPortal: (base) => ({ ...base, zIndex: 3 }) }}

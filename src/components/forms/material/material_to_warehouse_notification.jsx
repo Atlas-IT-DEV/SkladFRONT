@@ -18,7 +18,7 @@ import MaterialFormTransferDto from "../../../dto/material_form_transfer_dto";
 import NotificationService from "../../../API/services/notification_service";
 import WarehouseToWarehouseDto from "../../../dto/warehouse_to_warehouse_dto";
 import MaterialTransferDto from "../../../dto/material_transfer_dto";
-import { getRole } from "../../../API/helper/userCookie/userCookie";
+import { getRole } from "../../../API/helper/userCookie";
 
 const validationSchema = Yup.object().shape({
   warehouseId: Yup.number().min(1, "Too Short!").required("Required"),

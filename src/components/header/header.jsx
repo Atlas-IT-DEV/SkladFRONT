@@ -12,7 +12,7 @@ import { useNavigate } from "react-router";
 import useWindowDimensions from "../../hooks/window_dimensions";
 import { GoChevronDown } from "react-icons/go";
 import { useEffect, useRef, useState } from "react";
-import { deleteUser } from "../../API/helper/userCookie/userCookie";
+import { deleteUser } from "../../API/helper/userCookie";
 import { useCookies } from "react-cookie";
 
 const Header = () => {
@@ -45,6 +45,16 @@ const Header = () => {
       <Image src={logo} />
       {width >= 1488 ? (
         <HStack spacing={5}>
+          <HStack variant="menu_yellow_hover">
+            <Link
+              onClick={() => {
+                navigate("/warehouse_page");
+              }}
+              variant="light_gray"
+            >
+              Склады
+            </Link>
+          </HStack>
           <HStack variant="menu_yellow_hover">
             <Link
               onClick={() => {
@@ -188,6 +198,16 @@ const Header = () => {
         </HStack>
       ) : width >= 966 ? (
         <VStack spacing="20px">
+          <HStack variant="menu_yellow_hover">
+            <Link
+              onClick={() => {
+                navigate("/warehouse_page");
+              }}
+              variant="light_gray"
+            >
+              Склады
+            </Link>
+          </HStack>
           <HStack spacing="15px">
             <HStack variant="menu_yellow_hover">
               <Link
@@ -344,6 +364,16 @@ const Header = () => {
                     zIndex="20"
                     backgroundColor="white"
                   >
+                    <HStack variant="menu_yellow_hover">
+                      <Link
+                        onClick={() => {
+                          navigate("/warehouse_page");
+                        }}
+                        variant="light_gray"
+                      >
+                        Склады
+                      </Link>
+                    </HStack>
                     <HStack variant="menu_yellow_hover">
                       <Link
                         onClick={() => {
