@@ -4,33 +4,31 @@ import { Button, HStack, Text, VStack } from "@chakra-ui/react";
 import MyModal from "../components/myModal/my_modal";
 import Header from "../components/header/header";
 import Footer from "../components/footer";
-import WarehouseService from "../API/services/warehouse_service";
-import TableWarehouses from "../components/tables/tableWarehouses/table_warehouses";
-import WarehouseCreateForm from "../components/forms/warehouse/warehouse_create_form";
+import WriteoffService from "../API/services/writeoff_service";
 
-const WarehousePage = () => {
+const WriteoffsPage = () => {
   const [visibleCreateModal, setVisibleCreateModal] = useState();
-  const [warehouseList, setWarehouseList] = useState([]);
+  const [warehouseList, setWriteoffList] = useState([]);
 
-  const [getWarehouseList, warehouseListError] = useFetching(async () => {
-    const response = await WarehouseService.getWarehouses();
-    setWarehouseList(response.data);
+  const [getWriteoffList, warehouseListError] = useFetching(async () => {
+    const response = await WriteoffService.getWriteoffs();
+    setWriteoffList(response.data);
   });
 
   useEffect(() => {
-    getWarehouseList();
+    getWriteoffList();
   }, []);
 
   return (
-    <VStack backgroundColor="menu_white" height="100vh" width="100%">
+    <VStack backgroundColor="menu_white" width="100%" height="100vh">
       <MyModal
         visibleModal={visibleCreateModal}
         setVisibleModal={setVisibleCreateModal}
       >
-        <WarehouseCreateForm
-          setVisibleModal={setVisibleCreateModal}
-          getWarehouseList={getWarehouseList}
-        />
+        {/*<WriteoffCreateForm*/}
+        {/*  setVisibleModal={setVisibleCreateModal}*/}
+        {/*  getWriteoffList={getWriteoffList}*/}
+        {/*/>*/}
       </MyModal>
       <Header />
       <VStack
@@ -47,7 +45,7 @@ const WarehousePage = () => {
           lineHeight="normal"
           fontStyle="normal"
         >
-          Склады
+          Списания
         </Text>
         <Text fontSize={14} fontWeight={400} marginBottom="20px">
           Возможно здеась будет тоже какой то поясняющий текст
@@ -58,18 +56,19 @@ const WarehousePage = () => {
               variant="menu_yellow"
               onClick={() => setVisibleCreateModal(true)}
             >
-              Добавить ноый склад
+              Создать списание
             </Button>
           </HStack>
         </HStack>
         {warehouseListError ? (
           <div>{warehouseListError}</div>
         ) : (
-          <TableWarehouses
-            setVisibleCreateModal={setVisibleCreateModal}
-            getWarehouseList={getWarehouseList}
-            warehouseList={warehouseList}
-          />
+          ""
+          // <TableWriteoffs
+          //   setVisibleCreateModal={setVisibleCreateModal}
+          //   getWriteoffList={getWriteoffList}
+          //   warehouseList={warehouseList}
+          // />
         )}
       </VStack>
       <Footer />
@@ -77,4 +76,4 @@ const WarehousePage = () => {
   );
 };
 
-export default WarehousePage;
+export default WriteoffsPage;

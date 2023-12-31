@@ -4,8 +4,6 @@ import up from "./../images/up.svg";
 const Footer = () => {
   return (
     <HStack
-      position="relative"
-      bottom="0px"
       backgroundColor="#FFF7EE"
       width="100%"
       minHeight={["60px", "70px", "80px", "90px", "100px"]}

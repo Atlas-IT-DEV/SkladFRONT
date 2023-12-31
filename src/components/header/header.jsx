@@ -62,7 +62,7 @@ const Header = () => {
               }}
               variant="light_gray"
             >
-              Поставщики
+              Главная
             </Link>
           </HStack>
           <HStack>
@@ -216,7 +216,7 @@ const Header = () => {
                 }}
                 variant="light_gray"
               >
-                Поставщики
+                Главная
               </Link>
             </HStack>
             <HStack>
@@ -381,7 +381,7 @@ const Header = () => {
                         }}
                         variant="light_gray"
                       >
-                        Поставщики
+                        Главная
                       </Link>
                     </HStack>
                     <HStack>

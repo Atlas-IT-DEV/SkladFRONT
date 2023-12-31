@@ -7,14 +7,9 @@ import MaterialSearch from "../components/material_search";
 
 const MainPage = () => {
   return (
-    <VStack backgroundColor="menu_white">
+    <VStack backgroundColor="menu_white" height="100vh">
       <Header />
-      <VStack
-        padding={25}
-        alignItems="flex-start"
-        overflow="scroll"
-        spacing="40px"
-      >
+      <VStack padding={25} alignItems="flex-start" spacing="40px" flexGrow={1}>
         <Text
           color="#000"
           fontSize={[24, 26, 28, 32, 36]}
