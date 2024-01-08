@@ -1,19 +1,28 @@
 import { Instance } from "../instance";
 import { craftifyUrl } from "../apiConsts";
+import { getToken } from "../helper/userCookie";
 
 export default class CraftifyService {
-  static async getCraftifies() {
-    return Instance.get(craftifyUrl);
+  static getCraftifies() {
+    return Instance.get(craftifyUrl, {
+      headers: { Authorization: getToken() },
+    });
   }
-  static async getCraftify(craftifyId) {
-    return Instance.get(`${craftifyUrl}/${craftifyId}`);
+  static getCraftify(craftifyId) {
+    return Instance.get(`${craftifyUrl}/${craftifyId}`, {
+      headers: { Authorization: getToken() },
+    });
   }
 
-  static async updateCraftify(craftifyId, craftify) {
-    return Instance.put(`${craftifyUrl}/${craftifyId}`, craftify);
+  static updateCraftify(craftifyId, craftify) {
+    return Instance.put(`${craftifyUrl}/${craftifyId}`, craftify, {
+      headers: { Authorization: getToken() },
+    });
   }
 
-  static async createCraftify(craftify) {
-    return Instance.post(craftifyUrl, craftify);
+  static createCraftify(craftify) {
+    return Instance.post(craftifyUrl, craftify, {
+      headers: { Authorization: getToken() },
+    });
   }
 }

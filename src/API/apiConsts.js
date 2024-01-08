@@ -6,7 +6,10 @@ export const imagesUrl = "images";
 export const materialsUrl = "materials";
 export const propertiesUrl = "properties";
 export const purchasesUrl = "purchases";
-export const contractorsUrl = "contractors";
+export const contractorsUrl = {
+  contractors: "contractors",
+  clients: "clients",
+};
 export const tmcsUrl = "tmcs";
 export const tmcTypesUrl = "tmctypes";
 export const writeoffsUrl = "writeoffs";

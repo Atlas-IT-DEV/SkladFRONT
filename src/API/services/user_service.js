@@ -1,14 +1,17 @@
-import { Instance } from "../instance";
 import { usersUrl } from "../apiConsts";
+import { Instance } from "../instance";
+import { getToken } from "../helper/userCookie";
 
 export default class UserService {
-  static async signIn(username, password) {
+  static signIn(username, password) {
     return Instance.post(`${usersUrl.users}/${usersUrl.signIn}`, {
       username,
       password,
     });
   }
-  static async signUp(userSignUp) {
-    return Instance.post(`${usersUrl.users}/${usersUrl.signUp}`, userSignUp);
+  static signUp(userSignUp) {
+    return Instance.post(`${usersUrl.users}/${usersUrl.signUp}`, userSignUp, {
+      headers: { Authorization: getToken() },
+    });
   }
 }

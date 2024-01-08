@@ -1,20 +1,29 @@
 import { Instance } from "../instance";
 import { propertiesUrl } from "../apiConsts";
+import { getToken } from "../helper/userCookie";
 
 export default class PropertyService {
-  static async getProperties() {
-    return Instance.get(propertiesUrl);
+  static getProperties() {
+    return Instance.get(propertiesUrl, {
+      headers: { Authorization: getToken() },
+    });
   }
 
-  static async getProperty(propertyId) {
-    return Instance.get(`${propertiesUrl}/${propertyId}`);
+  static getProperty(propertyId) {
+    return Instance.get(`${propertiesUrl}/${propertyId}`, {
+      headers: { Authorization: getToken() },
+    });
   }
 
-  static async updateProperty(propertyId, property) {
-    return Instance.put(`${propertiesUrl}/${propertyId}`, property);
+  static updateProperty(propertyId, property) {
+    return Instance.put(`${propertiesUrl}/${propertyId}`, property, {
+      headers: { Authorization: getToken() },
+    });
   }
 
-  static async createProperty(property) {
-    return Instance.post(propertiesUrl, property);
+  static createProperty(property) {
+    return Instance.post(propertiesUrl, property, {
+      headers: { Authorization: getToken() },
+    });
   }
 }

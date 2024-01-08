@@ -58,6 +58,16 @@ const Header = () => {
           <HStack variant="menu_yellow_hover">
             <Link
               onClick={() => {
+                navigate("/writeoffs_page");
+              }}
+              variant="light_gray"
+            >
+              Списания
+            </Link>
+          </HStack>
+          <HStack variant="menu_yellow_hover">
+            <Link
+              onClick={() => {
                 navigate("/");
               }}
               variant="light_gray"
@@ -184,7 +194,6 @@ const Header = () => {
               </Link>
             </HStack>
           )}
-
           <HStack>
             <Link
               onClick={() => {
@@ -206,6 +215,16 @@ const Header = () => {
               variant="light_gray"
             >
               Склады
+            </Link>
+          </HStack>
+          <HStack variant="menu_yellow_hover">
+            <Link
+              onClick={() => {
+                navigate("/writeoffs_page");
+              }}
+              variant="light_gray"
+            >
+              Списания
             </Link>
           </HStack>
           <HStack spacing="15px">
@@ -372,6 +391,16 @@ const Header = () => {
                         variant="light_gray"
                       >
                         Склады
+                      </Link>
+                    </HStack>
+                    <HStack variant="menu_yellow_hover">
+                      <Link
+                        onClick={() => {
+                          navigate("/writeoffs_page");
+                        }}
+                        variant="light_gray"
+                      >
+                        Списания
                       </Link>
                     </HStack>
                     <HStack variant="menu_yellow_hover">

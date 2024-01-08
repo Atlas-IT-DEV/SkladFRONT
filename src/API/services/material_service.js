@@ -1,8 +1,9 @@
 import { Instance } from "../instance";
 import { materialsUrl } from "../apiConsts";
+import { getToken } from "../helper/userCookie";
 
 export default class MaterialService {
-  static async getMaterials(warehouseId, currentPage, currentPageSize) {
+  static getMaterials(warehouseId, currentPage, currentPageSize) {
     const params = {
       page: currentPage,
       size: currentPageSize,
@@ -10,42 +11,46 @@ export default class MaterialService {
     };
     return Instance.get(`${materialsUrl}`, {
       params,
+      headers: { Authorization: getToken() },
     });
   }
-  static async getMaterial(materialId, warehouseId) {
+  static getMaterial(materialId, warehouseId) {
     const params = {
       warehouseId,
     };
     return Instance.get(`${materialsUrl}/${materialId}`, {
       params,
+      headers: { Authorization: getToken() },
     });
   }
 
-  static async updateMaterial(materialId, material) {
+  static updateMaterial(materialId, material) {
     return Instance.put(`${materialsUrl}/${materialId}`, material, {
       timeout: 5000,
       headers: {
         "Content-Type": "multipart/form-data",
         accept: "application/json",
+        Authorization: getToken(),
       },
     });
   }
 
-  static async createMaterial(material) {
+  static createMaterial(material) {
     return Instance.post(materialsUrl, material, {
       timeout: 5000,
       headers: {
         "Content-Type": "multipart/form-data",
         accept: "application/json",
+        Authorization: getToken(),
       },
     });
   }
 
-  static async searchMaterial(
+  static searchMaterial(
     currentPage,
     currentPageSize,
     warehouseId,
-    searchString
+    searchString,
   ) {
     const params = {
       page: currentPage,
@@ -55,6 +60,7 @@ export default class MaterialService {
     };
     return Instance.get(`${materialsUrl}`, {
       params,
+      headers: { Authorization: getToken() },
     });
   }
 }

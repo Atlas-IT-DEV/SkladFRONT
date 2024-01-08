@@ -3,6 +3,7 @@ import { useFetching } from "../hooks/useFetching";
 import { Button, HStack, Text, VStack } from "@chakra-ui/react";
 import MyModal from "../components/myModal/my_modal";
 import WriteoffService from "../API/services/writeoff_service";
+import WriteoffCreateForm from "../components/forms/writeOff/writeoff_create_form";
 
 const WriteoffsPage = () => {
   const [visibleCreateModal, setVisibleCreateModal] = useState();
@@ -29,10 +30,10 @@ const WriteoffsPage = () => {
         visibleModal={visibleCreateModal}
         setVisibleModal={setVisibleCreateModal}
       >
-        {/*<WriteoffCreateForm*/}
-        {/*  setVisibleModal={setVisibleCreateModal}*/}
-        {/*  getWriteoffList={getWriteoffList}*/}
-        {/*/>*/}
+        <WriteoffCreateForm
+          setVisibleModal={setVisibleCreateModal}
+          getWriteoffList={getWriteoffList}
+        />
       </MyModal>
       <Text
         color="#000"

@@ -26,7 +26,7 @@ const validationSchema = Yup.object().shape({
   purchaseId: Yup.number().min(1, "Too Short!").required("Required"),
   maxCount: Yup.number()
     .min(1, "Too Short!")
-    .max(50, "Too Long!")
+    .max(1000, "Too Long!")
     .required("Required"),
   count: Yup.number()
     .when("maxCount", (maxCount, schema) => {
@@ -156,7 +156,7 @@ const MaterialToWarehouseNotification = ({
       console.error("Error getSuppliers:", error);
     }
   };
-
+  console.log(formik.errors);
   return (
     <FormikProvider value={formik}>
       <Flex

@@ -3,7 +3,7 @@ import { Select } from "chakra-react-select";
 
 const FormikSelect = ({ selectRef, label, formik, name, options }) => {
   return (
-    <>
+    <div>
       <label>{label}</label>
       <Select
         ref={selectRef}
@@ -15,7 +15,7 @@ const FormikSelect = ({ selectRef, label, formik, name, options }) => {
         onChange={(e) => formik.setFieldValue(name, e.value)}
         placeholder={label}
       ></Select>
-    </>
+    </div>
   );
 };
 

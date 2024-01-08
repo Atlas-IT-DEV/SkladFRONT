@@ -28,7 +28,7 @@ const validationSchema = Yup.object().shape({
     .required("Required"),
   count: Yup.number()
     .min(1, "Too Short!")
-    .max(50, "Too Long!")
+    .max(1000, "Too Long!")
     .required("Required"),
   price: Yup.number()
     .test("is-decimal", "invalid decimal", (value) =>
@@ -58,8 +58,9 @@ const PurchaseCreateForm = ({ setVisibleModal, materialId }) => {
   const getSuppliers = async () => {
     try {
       await SupplierService.getSuppliers().then((response) => {
+        console.log(response);
         setSupplierList(
-          response.data.map((supplier) => {
+          response.data.suppliers.map((supplier) => {
             return { value: supplier.id, label: supplier.name };
           }),
         );

@@ -15,6 +15,7 @@ import NotificationPage from "./pages/notifications_page";
 import SignUpPage from "./pages/sign_up_page";
 import WarehousePage from "./pages/warehouse_page";
 import Layout from "./Layout";
+import WriteoffsPage from "./pages/writeoffs_page";
 
 const router = createHashRouter([
   {
@@ -64,6 +65,10 @@ const router = createHashRouter([
       {
         path: "/warehouse_page",
         element: <WarehousePage />,
+      },
+      {
+        path: "/writeoffs_page",
+        element: <WriteoffsPage />,
       },
       {
         path: "/signup_page",
