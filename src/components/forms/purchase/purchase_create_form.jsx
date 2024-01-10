@@ -58,7 +58,6 @@ const PurchaseCreateForm = ({ setVisibleModal, materialId }) => {
   const getSuppliers = async () => {
     try {
       await SupplierService.getSuppliers().then((response) => {
-        console.log(response);
         setSupplierList(
           response.data.suppliers.map((supplier) => {
             return { value: supplier.id, label: supplier.name };

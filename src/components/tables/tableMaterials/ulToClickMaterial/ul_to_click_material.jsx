@@ -1,10 +1,7 @@
 import React from "react";
-import { Image } from "@chakra-ui/react";
-import edit from "../../../../images/edit.svg";
 import styles from "../../forTable/ul_to_click.module.css";
-import { CiShoppingCart } from "react-icons/ci";
-import { HiOutlineArrowsRightLeft } from "react-icons/hi2"
-import { CiEdit } from "react-icons/ci";
+import { CiEdit, CiShoppingCart } from "react-icons/ci";
+import { HiOutlineArrowsRightLeft } from "react-icons/hi2";
 
 const UlToClickMaterial = ({
   warehouseId,
@@ -18,12 +15,14 @@ const UlToClickMaterial = ({
   return (
     <ul className={styles.UlToClick}>
       <li className={`${styles.UlToClick__li} ${styles.UlToClick__li_first}`}>
-        <button onClick={() => {
+        <button
+          onClick={() => {
             setMaterialId(materialId);
             setVisibleEditModal(true);
-          }}>
-            <CiEdit/>
-          </button>
+          }}
+        >
+          <CiEdit />
+        </button>
       </li>
       <li className={styles.UlToClick__li}>
         <button
@@ -32,7 +31,7 @@ const UlToClickMaterial = ({
             setVisibleCreatePurchaseModal(true);
           }}
         >
-          <CiShoppingCart width='16px' height='16px'/>
+          <CiShoppingCart width="16px" height="16px" />
         </button>
       </li>
       <li className={styles.UlToClick__li}>
@@ -42,7 +41,7 @@ const UlToClickMaterial = ({
             setVisibleToWarehouse(true);
           }}
         >
-          <HiOutlineArrowsRightLeft  />
+          <HiOutlineArrowsRightLeft />
         </button>
       </li>
       {warehouseId > 0 ? (

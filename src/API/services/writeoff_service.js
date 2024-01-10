@@ -15,10 +15,14 @@ export default class WriteOffService {
     });
   }
 
-  static updateWriteoff(writeoffId, comment) {
-    return Instance.put(`${writeoffsUrl}/${writeoffId}?comment=${comment}`, {
-      headers: { Authorization: getToken() },
-    });
+  static confirmWriteoff(writeoffId, comment) {
+    return Instance.put(
+      `${writeoffsUrl}/${writeoffId}?comment=${comment}`,
+      null,
+      {
+        headers: { Authorization: getToken() },
+      },
+    );
   }
 
   static createWriteoff(writeoff) {

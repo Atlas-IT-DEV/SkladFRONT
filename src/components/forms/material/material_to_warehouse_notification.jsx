@@ -156,7 +156,7 @@ const MaterialToWarehouseNotification = ({
       console.error("Error getSuppliers:", error);
     }
   };
-  console.log(formik.errors);
+
   return (
     <FormikProvider value={formik}>
       <Flex

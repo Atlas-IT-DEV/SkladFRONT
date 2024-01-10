@@ -5,12 +5,13 @@ import UlForTable from "../forTable/ulForTable/ul_for_table";
 import styles from "../forTable/table.module.css";
 import useWindowDimensions from "../../../hooks/window_dimensions";
 import UlToClickWriteoff from "./ulToClickWriteoffs/ul_to_click_writeoff";
+import { convertDateString } from "../../../helperFunc/convertDateToYesterday";
+import WriteoffConfirmForm from "../../forms/writeOff/writeoff_confirm_form";
 
-const TableWriteoffs = ({ getWriteoffList, writeoffList }) => {
+const TableWriteoffs = ({ getWriteOffList, writeoffList }) => {
   const [sort, setSort] = useState(false);
-  const [visibleEditModal, setVisibleEditModal] = useState();
-
-  const [writeoffId, setWriteoffId] = useState(-1);
+  const [visibleConfirmModal, setVisibleConfirmModal] = useState();
+  const [writeOffId, setWriteOffId] = useState(-1);
   const { width, height } = useWindowDimensions();
   return (
     <Box
@@ -20,14 +21,14 @@ const TableWriteoffs = ({ getWriteoffList, writeoffList }) => {
       width={width <= 944 ? "100%" : "100%"}
     >
       <MyModal
-        visibleModal={visibleEditModal}
-        setVisibleModal={setVisibleEditModal}
+        visibleModal={visibleConfirmModal}
+        setVisibleModal={setVisibleConfirmModal}
       >
-        {/*        <WriteoffEditForm
-          setVisibleModal={setVisibleEditModal}
-          getWriteoffList={getWriteoffList}
-          writeoffId={writeoffId}
-        />*/}
+        <WriteoffConfirmForm
+          setVisibleModal={setVisibleConfirmModal}
+          getWriteOffList={getWriteOffList}
+          writeOffId={writeOffId}
+        />
       </MyModal>
       <table className={styles.table} width={width <= 944 ? "944px" : "100%"}>
         <thead>
@@ -36,7 +37,23 @@ const TableWriteoffs = ({ getWriteoffList, writeoffList }) => {
               <UlForTable name="№" />
             </td>
             <td>
-              <UlForTable sort={sort} setSort={setSort} name="Название" />
+              <UlForTable sort={sort} setSort={setSort} name="Причина" />
+            </td>
+            <td>
+              <UlForTable sort={sort} setSort={setSort} name="Комметнарий" />
+            </td>
+            <td>
+              <UlForTable sort={sort} setSort={setSort} name="Клиент" />
+            </td>
+            <td>
+              <UlForTable sort={sort} setSort={setSort} name="Оформил" />
+            </td>
+            <td>
+              <UlForTable
+                sort={sort}
+                setSort={setSort}
+                name="Дата подтверждения"
+              />
             </td>
             <td className={styles.table__td}></td>
           </tr>
@@ -44,14 +61,26 @@ const TableWriteoffs = ({ getWriteoffList, writeoffList }) => {
         <tbody>
           {writeoffList?.map((writeoff, index) => (
             <tr className={styles.table__tbody_tr} key={writeoff.id}>
-              <td className={styles.table__td}>{index + 1}.</td>
-              <td className={styles.table__td}>{writeoff.name}</td>
+              <td className={styles.table__td}>{writeoff.id}.</td>
+              <td className={styles.table__td}>{writeoff.reason}</td>
+              <td className={styles.table__td}>{writeoff.comment}</td>
+              <td className={styles.table__td}>{writeoff.supplier.name}</td>
+              <td className={styles.table__td}>{writeoff.user.userName}</td>
               <td className={styles.table__td}>
-                <UlToClickWriteoff
-                  writeoffId={writeoff.id}
-                  setWriteoffId={setWriteoffId}
-                  setVisibleEditModal={setVisibleEditModal}
-                />
+                {writeoff.dateOfConfirmation === null
+                  ? "Не подтверждено"
+                  : convertDateString(writeoff.dateOfConfirmation)}
+              </td>
+              <td className={styles.table__td}>
+                {writeoff.dateOfConfirmation === null ? (
+                  <UlToClickWriteoff
+                    writeoffId={writeoff.id}
+                    setWriteOffId={setWriteOffId}
+                    setVisibleConfirmModal={setVisibleConfirmModal}
+                  />
+                ) : (
+                  ""
+                )}
               </td>
             </tr>
           ))}

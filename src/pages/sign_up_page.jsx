@@ -38,11 +38,9 @@ const SignUpPage = () => {
       errors.role = "Required";
     }
     if (values.role === "MASTER" || values.role === "WAREHOUSE_RESPONSIBLE") {
-      if (values.warehouseDTO.name === undefined) {
-        errors.warehouseDTO = "Required";
+      if (values.warehouseId < 0) {
+        errors.warehouseId = "Required";
       }
-    } else {
-      delete errors.warehouseDTO;
     }
 
     return errors;
@@ -61,7 +59,7 @@ const SignUpPage = () => {
       password: "",
       passwordConfirm: "",
       role: "",
-      warehouseDTO: {},
+      warehouseId: 0,
     },
     validate,
     onSubmit: (values) => {
@@ -165,10 +163,7 @@ const SignUpPage = () => {
                   errorBorderColor="crimson"
                   options={warehousesList}
                   onChange={(e) => {
-                    formik.setFieldValue("warehouseDTO", {
-                      id: e.value,
-                      name: e.label,
-                    });
+                    formik.setFieldValue("warehouseId", e.value);
                   }}
                   placeholder={"Склады"}
                 ></Select>

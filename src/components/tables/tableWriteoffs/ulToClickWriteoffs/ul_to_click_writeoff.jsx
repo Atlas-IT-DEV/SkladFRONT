@@ -1,26 +1,23 @@
 import React from "react";
-import { Image } from "@chakra-ui/react";
-import edit from "../../../../images/edit.svg";
 import styles from "../../forTable/ul_to_click.module.css";
+import { GiConfirmed } from "react-icons/gi";
 
 const UlToClickWriteoff = ({
   writeoffId,
-  setWriteoffId,
-  setVisibleEditModal,
+  setWriteOffId,
+  setVisibleConfirmModal,
 }) => {
   return (
     <ul className={styles.UlToClick}>
       <li className={`${styles.UlToClick__li} ${styles.UlToClick__li_first}`}>
-        <Image
-          className={styles.UlToClick__Icon}
-          src={edit}
-          w="16px"
-          h="16px"
+        <button
           onClick={() => {
-            setWriteoffId(writeoffId);
-            setVisibleEditModal(true);
+            setWriteOffId(writeoffId);
+            setVisibleConfirmModal(true);
           }}
-        />
+        >
+          <GiConfirmed />
+        </button>
       </li>
     </ul>
   );

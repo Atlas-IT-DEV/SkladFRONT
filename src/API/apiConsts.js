@@ -23,4 +23,5 @@ export const usersUrl = {
   users: "users",
   signIn: "signIn",
   signUp: "signUp",
+  me: "me",
 };

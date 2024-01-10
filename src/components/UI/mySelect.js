@@ -7,9 +7,7 @@ const MenuList = (props) => {
 
   useEffect(() => {
     if (menuListRef.current) {
-      menuListRef.current.querySelector("div").onscroll = () => {
-        console.log("scrolling");
-      };
+      menuListRef.current.querySelector("div").onscroll = () => {};
     }
   }, [menuListRef]);
 

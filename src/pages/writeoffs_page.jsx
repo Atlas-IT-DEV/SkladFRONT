@@ -4,18 +4,19 @@ import { Button, HStack, Text, VStack } from "@chakra-ui/react";
 import MyModal from "../components/myModal/my_modal";
 import WriteoffService from "../API/services/writeoff_service";
 import WriteoffCreateForm from "../components/forms/writeOff/writeoff_create_form";
+import TableWriteoffs from "../components/tables/tableWriteoffs/table_writeoffs";
 
 const WriteoffsPage = () => {
   const [visibleCreateModal, setVisibleCreateModal] = useState();
-  const [warehouseList, setWriteoffList] = useState([]);
+  const [writeoffList, setWriteoffList] = useState([]);
 
-  const [getWriteoffList, warehouseListError] = useFetching(async () => {
+  const [getWriteOffList, warehouseListError] = useFetching(async () => {
     const response = await WriteoffService.getWriteoffs();
     setWriteoffList(response.data);
   });
 
   useEffect(() => {
-    getWriteoffList();
+    getWriteOffList();
   }, []);
 
   return (
@@ -32,7 +33,7 @@ const WriteoffsPage = () => {
       >
         <WriteoffCreateForm
           setVisibleModal={setVisibleCreateModal}
-          getWriteoffList={getWriteoffList}
+          getWriteOffList={getWriteOffList}
         />
       </MyModal>
       <Text
@@ -60,12 +61,11 @@ const WriteoffsPage = () => {
       {warehouseListError ? (
         <div>{warehouseListError}</div>
       ) : (
-        ""
-        // <TableWriteoffs
-        //   setVisibleCreateModal={setVisibleCreateModal}
-        //   getWriteoffList={getWriteoffList}
-        //   warehouseList={warehouseList}
-        // />
+        <TableWriteoffs
+          setVisibleCreateModal={setVisibleCreateModal}
+          getWriteOffList={getWriteOffList}
+          writeoffList={writeoffList}
+        />
       )}
     </VStack>
   );
