@@ -51,7 +51,7 @@ const WriteoffCreateForm = ({ getWriteOffList, setVisibleModal }) => {
     reason: "",
     supplierId: 0,
     materials: [],
-    warehouseId: 0,
+    warehouseId: cookie.warehouseId,
   });
   const [warehouses, setWarehouses] = useState();
   const [warehouseMaterials, setWarehouseMaterials] = useState([]);
@@ -195,6 +195,14 @@ const WriteoffCreateForm = ({ getWriteOffList, setVisibleModal }) => {
     );
   }, [paginationMaterial.currentPage]);
 
+  useEffect(() => {
+    selectMaterialRef.current?.setValue([]);
+    formik.setFieldValue(
+      Number.isInteger(+cookie.warehouseId) ? cookie.warehouseId : -1,
+    );
+    formik.setFieldValue("materials", []);
+  }, [cookie.warehouseId]);
+
   const setCurrentPageMaterials = () => {
     setPaginationMaterial((prevState) => ({
       ...prevState,
@@ -250,11 +258,10 @@ const WriteoffCreateForm = ({ getWriteOffList, setVisibleModal }) => {
     formik.setFieldValue("materials", formik.values.materials);
   };
 
-  const setCountFormikMaterial = async (e, materialId, purchaseId) => {
+  const setCountFormikMaterial = async (e, indexMaterial, purchaseId) => {
     let value = e.target.value;
     const validated = value.match(/^(\d*$)/);
     if (validated && value[0] !== "0") {
-      const indexMaterial = findIndexMaterial(materialId);
       const material = formik.values.materials[indexMaterial];
       const currentPurchaseMaterial = material.currentPurchaseMaterials.find(
         (purchaseMaterial) => purchaseMaterial.purchaseId === purchaseId,
@@ -272,8 +279,7 @@ const WriteoffCreateForm = ({ getWriteOffList, setVisibleModal }) => {
       }
     }
   };
-  const setPurchaseFormikMaterial = async (e, materialId) => {
-    const indexMaterial = findIndexMaterial(materialId);
+  const setPurchaseFormikMaterial = async (e, indexMaterial) => {
     const material = formik.values.materials[indexMaterial];
     const array = [];
 
@@ -386,7 +392,7 @@ const WriteoffCreateForm = ({ getWriteOffList, setVisibleModal }) => {
                 placeholder={"Материалы"}
               ></Select>
             </div>
-            {formik.values.materials?.map((material) => {
+            {formik.values.materials?.map((material, index) => {
               return (
                 <div key={material.materialId}>
                   <label>{material?.materialName}</label>
@@ -411,9 +417,7 @@ const WriteoffCreateForm = ({ getWriteOffList, setVisibleModal }) => {
                       styles={{
                         menuPortal: (base) => ({ ...base, zIndex: 3 }),
                       }}
-                      onChange={(e) =>
-                        setPurchaseFormikMaterial(e, material.materialId)
-                      }
+                      onChange={(e) => setPurchaseFormikMaterial(e, index)}
                       errorBorderColor="crimson"
                       options={material.currentPurchaseMaterials?.map(
                         (purchaseMaterial) => ({
@@ -445,7 +449,7 @@ const WriteoffCreateForm = ({ getWriteOffList, setVisibleModal }) => {
                           onChange={(e) =>
                             setCountFormikMaterial(
                               e,
-                              material.materialId,
+                              index,
                               materialPurchase.purchaseId,
                             )
                           }
