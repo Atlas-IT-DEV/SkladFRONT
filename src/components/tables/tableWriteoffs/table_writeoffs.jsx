@@ -7,8 +7,10 @@ import useWindowDimensions from "../../../hooks/window_dimensions";
 import UlToClickWriteoff from "./ulToClickWriteoffs/ul_to_click_writeoff";
 import { convertDateString } from "../../../helperFunc/convertDateToYesterday";
 import WriteoffConfirmForm from "../../forms/writeOff/writeoff_confirm_form";
+import { useCookies } from "react-cookie";
 
 const TableWriteoffs = ({ getWriteOffList, writeoffList }) => {
+  const [cookie, setCookie] = useCookies();
   const [sort, setSort] = useState(false);
   const [visibleConfirmModal, setVisibleConfirmModal] = useState();
   const [writeOffId, setWriteOffId] = useState(-1);
@@ -72,7 +74,9 @@ const TableWriteoffs = ({ getWriteOffList, writeoffList }) => {
                   : convertDateString(writeoff.dateOfConfirmation)}
               </td>
               <td className={styles.table__td}>
-                {writeoff.dateOfConfirmation === null ? (
+                {writeoff.dateOfConfirmation === null &&
+                (cookie.warehouseId === writeoff.user.warehouseId ||
+                  cookie.role === "ADMIN") ? (
                   <UlToClickWriteoff
                     writeoffId={writeoff.id}
                     setWriteOffId={setWriteOffId}

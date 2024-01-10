@@ -18,7 +18,6 @@ import SupplierService from "../../../API/services/supplier_service";
 import { Select } from "chakra-react-select";
 import WriteOffService from "../../../API/services/writeoff_service";
 import { useCookies } from "react-cookie";
-import UserService from "../../../API/services/user_service";
 
 const validationSchema = Yup.object().shape({
   reason: Yup.string()
@@ -145,7 +144,7 @@ const WriteoffCreateForm = ({ getWriteOffList, setVisibleModal }) => {
         });
       });
       WriteOff.materials = materials;
-      if (Number.isInteger(+cookie.warehouseId)) {
+      if (cookie.warehouseId > 0) {
         delete WriteOff.warehouseId;
       }
       await WriteOffService.createWriteoff(WriteOff);
@@ -171,7 +170,7 @@ const WriteoffCreateForm = ({ getWriteOffList, setVisibleModal }) => {
       paginationSupplier.currentPage,
       paginationSupplier.currentPageSize,
     );
-    if (Number.isInteger(+cookie.warehouseId)) {
+    if (cookie.warehouseId > 0) {
       getMaterials(cookie.warehouseId, 1, paginationMaterial.currentPageSize);
     }
   }, []);
@@ -195,16 +194,6 @@ const WriteoffCreateForm = ({ getWriteOffList, setVisibleModal }) => {
       paginationMaterial.currentPageSize,
     );
   }, [paginationMaterial.currentPage]);
-
-  useEffect(() => {
-    UserService.me().then((response) => {
-      if (response.warehouseId === cookie.warehouseId) {
-        formik.setFieldValue("warehouseId", cookie.warehouseId);
-      } else {
-        setCookie("warehouseId", response.data.warehouseId);
-      }
-    });
-  }, [cookie.warehouseId]);
 
   const setCurrentPageMaterials = () => {
     setPaginationMaterial((prevState) => ({
@@ -357,7 +346,9 @@ const WriteoffCreateForm = ({ getWriteOffList, setVisibleModal }) => {
               label={"Поставщик"}
               options={suppliers}
             />
-            {!Number.isInteger(+cookie.warehouseId) ? (
+            {cookie.warehouseId > 0 ? (
+              ""
+            ) : (
               <div>
                 <label>{"Склад"}</label>
                 <Select
@@ -373,8 +364,6 @@ const WriteoffCreateForm = ({ getWriteOffList, setVisibleModal }) => {
                   placeholder={"Склад"}
                 ></Select>
               </div>
-            ) : (
-              ""
             )}
             <div>
               <label>{"Материалы"}</label>
