@@ -15,7 +15,7 @@ import FormikSelect from "../../UI/formik_select";
 import WarehouseService from "../../../API/services/warehouse_service";
 import MaterialService from "../../../API/services/material_service";
 import SupplierService from "../../../API/services/supplier_service";
-import { Select } from "chakra-react-select";
+import { AsyncPaginate } from "react-select-async-paginate";
 import WriteOffService from "../../../API/services/writeoff_service";
 import { useCookies } from "react-cookie";
 
@@ -38,9 +38,11 @@ const validationSchema = Yup.object().shape({
                 .required("Required"),
             }),
           )
+          .min(1, "Too Short!")
           .max(20, "Too Long!"),
       }),
     )
+    .min(1, "Too Short!")
     .max(20, "Too Long!"),
   warehouseId: Yup.number().min(1, "Too Short!").required("Required"),
 });
@@ -54,12 +56,7 @@ const WriteoffCreateForm = ({ getWriteOffList, setVisibleModal }) => {
     warehouseId: cookie.warehouseId,
   });
   const [warehouses, setWarehouses] = useState();
-  const [warehouseMaterials, setWarehouseMaterials] = useState([]);
   const [suppliers, setSuppliers] = useState([]);
-  const [paginationMaterial, setPaginationMaterial] = useState({
-    currentPage: 1,
-    currentPageSize: 6,
-  });
   const [paginationSupplier, setPaginationSupplier] = useState({
     currentPage: 1,
     currentPageSize: 6,
@@ -76,28 +73,6 @@ const WriteoffCreateForm = ({ getWriteOffList, setVisibleModal }) => {
           return { value: warehouses.id, label: warehouses.name };
         }),
       );
-    } catch (error) {
-      console.error("Error getMaterial:", error);
-    }
-  };
-
-  const getMaterials = async (warehouseId, currentPage, currentPageSize) => {
-    try {
-      const response = await MaterialService.getMaterials(
-        warehouseId,
-        currentPage,
-        currentPageSize,
-      );
-      if (response.data.materials.length > 0) {
-        if (currentPage > 1) {
-          setWarehouseMaterials((prevState) => [
-            ...prevState,
-            ...response.data.materials,
-          ]);
-        } else {
-          setWarehouseMaterials(response.data.materials);
-        }
-      }
     } catch (error) {
       console.error("Error getMaterial:", error);
     }
@@ -170,45 +145,16 @@ const WriteoffCreateForm = ({ getWriteOffList, setVisibleModal }) => {
       paginationSupplier.currentPage,
       paginationSupplier.currentPageSize,
     );
-    if (cookie.warehouseId > 0) {
-      getMaterials(cookie.warehouseId, 1, paginationMaterial.currentPageSize);
-    }
   }, []);
-
-  useEffect(() => {
-    setPaginationMaterial({
-      currentPage: 1,
-      currentPageSize: paginationMaterial.currentPageSize,
-    });
-    getMaterials(
-      formik.values.warehouseId,
-      1,
-      paginationMaterial.currentPageSize,
-    );
-  }, [formik.values.warehouseId]);
-
-  useEffect(() => {
-    getMaterials(
-      formik.values.warehouseId,
-      paginationMaterial.currentPage,
-      paginationMaterial.currentPageSize,
-    );
-  }, [paginationMaterial.currentPage]);
 
   useEffect(() => {
     selectMaterialRef.current?.setValue([]);
     formik.setFieldValue(
+      "warehouseId",
       Number.isInteger(+cookie.warehouseId) ? cookie.warehouseId : -1,
     );
     formik.setFieldValue("materials", []);
   }, [cookie.warehouseId]);
-
-  const setCurrentPageMaterials = () => {
-    setPaginationMaterial((prevState) => ({
-      ...prevState,
-      currentPage: prevState.currentPage + 1,
-    }));
-  };
 
   const findIndexMaterial = (materialId) => {
     return formik.values.materials.findIndex(
@@ -217,7 +163,7 @@ const WriteoffCreateForm = ({ getWriteOffList, setVisibleModal }) => {
   };
   const selectMaterialRef = useRef();
   const setWarehouseId = (e) => {
-    selectMaterialRef.current?.setValue([]);
+    selectMaterialRef.current?.clearValue();
     formik.setFieldValue("warehouseId", e.value);
     formik.setFieldValue("materials", []);
   };
@@ -316,6 +262,40 @@ const WriteoffCreateForm = ({ getWriteOffList, setVisibleModal }) => {
     formik.setFieldValue("materials", formik.values.materials);
   };
 
+  const loadOptions = async (search, prevOptions, { page }) => {
+    if (formik.values.warehouseId !== -1) {
+      let searchString = search === "" ? null : `name:*${search}*`;
+      const response = await MaterialService.searchMaterial(
+        page,
+        10,
+        formik.values.warehouseId,
+        searchString,
+      ).catch((reason) => {
+        console.error("WriteoffCreateForm-loadOptions");
+      });
+
+      const hasMore = prevOptions.length < response.data.totalItems;
+      return {
+        options: response.data.materials.map((material) => ({
+          value: material.id,
+          label: material.name,
+        })),
+        hasMore,
+        additional: {
+          page: page + 1,
+        },
+      };
+    }
+    const hasMore = false;
+    return {
+      options: [],
+      hasMore,
+      additional: {
+        page: 1,
+      },
+    };
+  };
+
   return (
     <FormikProvider value={formik}>
       <Flex
@@ -349,86 +329,64 @@ const WriteoffCreateForm = ({ getWriteOffList, setVisibleModal }) => {
             <FormikSelect
               formik={formik}
               name={"supplierId"}
-              label={"Поставщик"}
+              placeholder={"Поставщик"}
               options={suppliers}
             />
             {cookie.warehouseId > 0 ? (
               ""
             ) : (
-              <div>
-                <label>{"Склад"}</label>
-                <Select
-                  menuPortalTarget={document.body}
-                  styles={{ menuPortal: (base) => ({ ...base, zIndex: 3 }) }}
-                  isInvalid={
-                    formik.errors["warehouseId"] &&
-                    formik.touched["warehouseId"]
-                  }
-                  errorBorderColor="crimson"
-                  options={warehouses}
-                  onChange={setWarehouseId}
-                  placeholder={"Склад"}
-                ></Select>
-              </div>
+              <FormikSelect
+                formik={formik}
+                name={"warehouseId"}
+                placeholder={"Склад"}
+                options={warehouses}
+                onChange={setWarehouseId}
+              />
             )}
             <div>
               <label>{"Материалы"}</label>
-              <Select
-                ref={selectMaterialRef}
+              <AsyncPaginate
+                selectRef={selectMaterialRef}
                 isMulti
+                loadOptions={loadOptions}
+                cacheUniqs={[formik.values.warehouseId]}
+                onChange={addFormikMaterial}
+                additional={{
+                  page: 1,
+                }}
                 closeMenuOnSelect={false}
-                onMenuScrollToBottom={(event) => setCurrentPageMaterials(event)}
                 menuPortalTarget={document.body}
                 styles={{ menuPortal: (base) => ({ ...base, zIndex: 3 }) }}
-                isInvalid={
-                  formik.errors["materials"] && formik.touched["materials"]
-                }
-                onChange={addFormikMaterial}
-                errorBorderColor="crimson"
-                options={warehouseMaterials?.map((material) => ({
-                  value: material.id,
-                  label: material.name,
-                }))}
                 placeholder={"Материалы"}
-              ></Select>
+              />
             </div>
             {formik.values.materials?.map((material, index) => {
+              console.log(material);
               return (
                 <div key={material.materialId}>
-                  <label>{material?.materialName}</label>
                   {material.currentPurchaseMaterials.length === 1 ? (
-                    <Select
+                    <FormikSelect
+                      formik={formik}
+                      placeholder={material?.materialName}
                       defaultValue={{
                         value: material.materialPurchases[0].purchaseId,
                         label: `id: ${material.materialPurchases[0].purchaseId}, Количество: ${material.currentPurchaseMaterials[0].countOnWarehouse}`,
                       }}
-                      menuPortalTarget={document.body}
-                      styles={{
-                        menuPortal: (base) => ({ ...base, zIndex: 3 }),
-                      }}
-                      errorBorderColor="crimson"
-                      placeholder={material?.materialName}
-                    ></Select>
+                    />
                   ) : (
-                    <Select
-                      isMulti
-                      closeMenuOnSelect={false}
-                      menuPortalTarget={document.body}
-                      styles={{
-                        menuPortal: (base) => ({ ...base, zIndex: 3 }),
-                      }}
+                    <FormikSelect
+                      isMulti={true}
                       onChange={(e) => setPurchaseFormikMaterial(e, index)}
-                      errorBorderColor="crimson"
                       options={material.currentPurchaseMaterials?.map(
                         (purchaseMaterial) => ({
                           value: purchaseMaterial.purchaseId,
                           label: `id: ${purchaseMaterial.purchaseId}, Количество: ${purchaseMaterial.countOnWarehouse}`,
                         }),
                       )}
+                      formik={formik}
                       placeholder={material?.materialName}
-                    ></Select>
+                    />
                   )}
-
                   {material.materialPurchases?.map((materialPurchase) => {
                     return (
                       <div

@@ -15,13 +15,13 @@ import * as Yup from "yup";
 import EditMaterialDto from "../../../dto/edit_material_dto";
 import MaterialService from "../../../API/services/material_service";
 import ImageService from "../../../API/services/image_service";
-import { Select } from "chakra-react-select";
 import CraftifyService from "../../../API/services/craftify_service";
 import usePropertyValidationById from "../../../hooks/property_validation_by_id";
 import {
   mapPropertiesValidationToArray,
   materialPropertyDTOListToArray,
 } from "./support/conversion_functions";
+import FormikSelect from "../../UI/formik_select";
 
 const validationSchema = Yup.object().shape({
   name: Yup.string()
@@ -314,25 +314,14 @@ const MaterialEditForm = ({ setVisibleModal, materialId, getMaterialList }) => {
                 fontSize={["14px", "14px", "16px", "16px", "16px"]}
               />
             </div>
-            <div>
-              <label>Способы обработки</label>
-              <Select
-                isMulti
-                closeMenuOnSelect={false}
-                menuPortalTarget={document.body}
-                isInvalid={
-                  formik.errors.tmCraftifyIdList &&
-                  formik.touched.tmCraftifyIdList
-                }
-                styles={{ menuPortal: (base) => ({ ...base, zIndex: 3 }) }}
-                errorBorderColor="crimson"
-                ref={selectCraftifiesRef}
-                options={craftifyList}
-                onChange={(e) => changeTmCraftifyIdList(e)}
-                placeholder="Способы обработки"
-                fontSize={["14px", "14px", "16px", "16px", "16px"]}
-              ></Select>
-            </div>
+            <FormikSelect
+              isMulti
+              ref={selectCraftifiesRef}
+              options={craftifyList}
+              onChange={(e) => changeTmCraftifyIdList(e)}
+              placeholder="Способы обработки"
+              // fontSize={["14px", "14px", "16px", "16px", "16px"]}
+            />
             <Checkbox
               size="md"
               isChecked={material?.show}

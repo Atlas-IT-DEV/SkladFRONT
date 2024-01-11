@@ -4,7 +4,7 @@ import MyModal from "../../myModal/my_modal";
 import UlForTable from "../forTable/ulForTable/ul_for_table";
 import styles from "../forTable/table.module.css";
 import UlToClickTmc from "./ulToClickTmcs/ul_to_click_tmcs";
-import { Select } from "chakra-react-select";
+import Select from "react-select";
 import TmcEditForm from "../../forms/tmc/tmc_edit_form";
 import useWindowDimensions from "../../../hooks/window_dimensions";
 

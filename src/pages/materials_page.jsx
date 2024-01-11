@@ -1,14 +1,15 @@
 import { Button, Stack, Text, VStack } from "@chakra-ui/react";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import MyModal from "../components/myModal/my_modal";
 import MaterialCreateForm from "../components/forms/material/material_create_form";
 import TableMaterials from "../components/tables/tableMaterials/table_materials";
 import { useFetching } from "../hooks/useFetching";
 import MaterialService from "../API/services/material_service";
-import { Select } from "chakra-react-select";
+import Select from "react-select";
 import WarehouseService from "../API/services/warehouse_service";
 import useWindowDimensions from "../hooks/window_dimensions";
 import { ReactSearchAutocomplete } from "react-search-autocomplete";
+import { AsyncPaginate } from "react-select-async-paginate";
 
 const MaterialsPage = () => {
   const [visibleCreateModal, setVisibleCreateModal] = useState();
@@ -36,6 +37,7 @@ const MaterialsPage = () => {
       setTotalCountMaterials(response.data.totalItems);
     });
   });
+
   const [getMaterialListSearch, materialListErrorSearch] = useFetching(
     async () => {
       await MaterialService.searchMaterial(
@@ -104,6 +106,62 @@ const MaterialsPage = () => {
     //   });
     // }
   };
+  const options = [];
+  for (let i = 0; i < 50; ++i) {
+    options.push({
+      value: i + 1,
+      label: `Option ${i + 1}`,
+    });
+  }
+
+  const sleep = (ms) =>
+    new Promise((resolve) => {
+      setTimeout(() => {
+        resolve(undefined);
+      }, ms);
+    });
+
+  const [selectCurrentPage, setSelectCurrentPage] = useState(1);
+  const [selectPageSize, setSelectPageSize] = useState(10);
+  const [selectSearch, setSelectSearch] = useState("");
+  const selectRef = useRef();
+
+  const clear = async () => {
+    selectRef.current.setValue([]);
+  };
+
+  const loadOptions = async (search, prevOptions, { page }) => {
+    await sleep(1000);
+    console.log({ page, selectPageSize, search });
+    let searchString = search === "" ? null : `name:*${search}*`;
+    if (selectSearch !== search) {
+      page = 1;
+      setSelectSearch(search);
+    }
+    const response = await MaterialService.searchMaterial(
+      page,
+      selectPageSize,
+      null,
+      searchString,
+    );
+
+    console.log(prevOptions);
+
+    const materialsOption = response.data.materials.map((material) => ({
+      value: material.id,
+      label: material.name,
+    }));
+    const hasMore = prevOptions.length >= response.data.materials.totalItems;
+    return {
+      options: materialsOption,
+      hasMore,
+      additional: {
+        page: page + 1,
+      },
+    };
+  };
+
+  const [value, onChange] = useState();
   return (
     <VStack
       padding={25}
@@ -179,9 +237,22 @@ const MaterialsPage = () => {
         <Button
           variant="menu_yellow"
           fontSize={["14px", "14px", "16px", "16px", "16px"]}
+          onClick={clear}
         >
           Рулонные материалы
         </Button>
+        <div style={{ width: "300px" }}>
+          <AsyncPaginate
+            selectRef={selectRef}
+            isMulti
+            value={value}
+            loadOptions={loadOptions}
+            onChange={onChange}
+            additional={{
+              page: 1,
+            }}
+          />
+        </div>
       </Stack>
       {materialListError ? (
         <div>{materialListError}</div>

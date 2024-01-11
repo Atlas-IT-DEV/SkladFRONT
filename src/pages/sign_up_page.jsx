@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { Button, Input, SimpleGrid, Text, VStack } from "@chakra-ui/react";
 import { useFormik } from "formik";
-import { Select } from "chakra-react-select";
 import WarehouseService from "../API/services/warehouse_service";
 import UserService from "../API/services/user_service";
+import FormikSelect from "../components/UI/formik_select";
 
 const SignUpPage = () => {
   const roles = [
@@ -136,37 +136,25 @@ const SignUpPage = () => {
             {formik.errors.passwordConfirm && formik.touched.passwordConfirm ? (
               <Text>{formik.errors.passwordConfirm}</Text>
             ) : null}
-            <Select
-              width={"100%"}
-              menuPortalTarget={document.body}
-              styles={{ menuPortal: (base) => ({ ...base, zIndex: 3 }) }}
-              isInvalid={formik.errors.role && formik.touched.role}
-              errorBorderColor="crimson"
+            <FormikSelect
+              // width={"100%"}
               options={roles}
-              id="role"
-              name="role"
               onChange={(e) => {
                 formik.setFieldValue("role", e.value);
               }}
               placeholder="Роль"
-              fontSize={["14px", "14px", "16px", "16px", "16px"]}
-            ></Select>
+              // fontSize={["14px", "14px", "16px", "16px", "16px"]}
+            ></FormikSelect>
             {formik.values.role === "MASTER" ||
             formik.values.role === "WAREHOUSE_RESPONSIBLE" ? (
               <>
-                <Select
-                  menuPortalTarget={document.body}
-                  styles={{ menuPortal: (base) => ({ ...base, zIndex: 3 }) }}
-                  isInvalid={
-                    formik.errors.warehouseDTO && formik.touched.warehouseDTO
-                  }
-                  errorBorderColor="crimson"
+                <FormikSelect
                   options={warehousesList}
                   onChange={(e) => {
                     formik.setFieldValue("warehouseId", e.value);
                   }}
                   placeholder={"Склады"}
-                ></Select>
+                />
                 {formik.errors.warehouseDTO && formik.touched.warehouseDTO ? (
                   <Text>{formik.errors.warehouseDTO}</Text>
                 ) : null}

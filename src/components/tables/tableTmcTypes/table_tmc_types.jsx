@@ -3,7 +3,7 @@ import { Box } from "@chakra-ui/react";
 import MyModal from "../../myModal/my_modal";
 import UlForTable from "../forTable/ulForTable/ul_for_table";
 import styles from "../forTable/table.module.css";
-import { Select } from "chakra-react-select";
+import Select from "react-select";
 import UlToClickTmcType from "./ulToClickTmcTypes/ul_to_click_tmc_type";
 import TmcTypeEditForm from "../../forms/tmcTypes/tmc_type_edit_form";
 import useWindowDimensions from "../../../hooks/window_dimensions";
