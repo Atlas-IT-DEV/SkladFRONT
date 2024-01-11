@@ -15,6 +15,7 @@ import PurchaseService from "../../../API/services/purchase_service";
 import FormikInput from "../../UI/formik_input";
 import FormikSelect from "../../UI/formik_select";
 import { getDate } from "../../../helperFunc/getDate";
+import { AsyncPaginate } from "react-select-async-paginate";
 
 const validationSchema = Yup.object().shape({
   dateTime: Yup.date().min(getDate()).required("Required"),
@@ -52,22 +53,7 @@ const PurchaseCreateForm = ({ setVisibleModal, materialId }) => {
     materialId: materialId,
   });
 
-  const [supplierList, setSupplierList] = useState([]);
   const [deliveryMethodList, setDeliveryMethodList] = useState([]);
-
-  const getSuppliers = async () => {
-    try {
-      await SupplierService.getSuppliers().then((response) => {
-        setSupplierList(
-          response.data.suppliers.map((supplier) => {
-            return { value: supplier.id, label: supplier.name };
-          }),
-        );
-      });
-    } catch (error) {
-      console.error("Error getSuppliers:", error);
-    }
-  };
 
   const getDeliveryMethods = async () => {
     try {
@@ -123,6 +109,32 @@ const PurchaseCreateForm = ({ setVisibleModal, materialId }) => {
     },
     enableReinitialize: true,
   });
+  const getSuppliers = async (currentPage, currentPageSize) => {
+    try {
+      return await SupplierService.getSuppliersClients(
+        currentPage,
+        currentPageSize,
+      );
+    } catch (error) {
+      console.error("Error getMaterial:", error);
+    }
+  };
+
+  const loadOptionsSupplier = async (search, prevOptions, { page }) => {
+    const response = await getSuppliers(page, 10);
+
+    const hasMore = prevOptions.length < response.data.totalItems;
+    return {
+      options: response.data.suppliers.map((supplier) => ({
+        value: supplier.id,
+        label: supplier.name,
+      })),
+      hasMore,
+      additional: {
+        page: page + 1,
+      },
+    };
+  };
   return (
     <FormikProvider value={formik}>
       <Flex
@@ -169,12 +181,19 @@ const PurchaseCreateForm = ({ setVisibleModal, materialId }) => {
               label={"Цена"}
               change={changePrice}
             />
-            <FormikSelect
-              formik={formik}
-              name={"supplierId"}
-              placeholder={"Поставщик"}
-              options={supplierList}
-            />
+            <div>
+              <label>{"Поставщик"}</label>
+              <AsyncPaginate
+                loadOptions={loadOptionsSupplier}
+                onChange={(e) => formik.setFieldValue("supplierId", e.value)}
+                additional={{
+                  page: 1,
+                }}
+                menuPortalTarget={document.body}
+                styles={{ menuPortal: (base) => ({ ...base, zIndex: 3 }) }}
+                placeholder={"Поставщик"}
+              />
+            </div>
             <FormikSelect
               formik={formik}
               name={"deliveryMethodId"}

@@ -56,7 +56,6 @@ const WriteoffCreateForm = ({ getWriteOffList, setVisibleModal }) => {
     warehouseId: cookie.warehouseId,
   });
   const [warehouses, setWarehouses] = useState();
-  const [suppliers, setSuppliers] = useState([]);
   const [paginationSupplier, setPaginationSupplier] = useState({
     currentPage: 1,
     currentPageSize: 6,
@@ -71,22 +70,6 @@ const WriteoffCreateForm = ({ getWriteOffList, setVisibleModal }) => {
       setWarehouses(
         response.data.map((warehouses) => {
           return { value: warehouses.id, label: warehouses.name };
-        }),
-      );
-    } catch (error) {
-      console.error("Error getMaterial:", error);
-    }
-  };
-
-  const getSuppliers = async (currentPage, currentPageSize) => {
-    try {
-      const response = await SupplierService.getSuppliersClients(
-        currentPage,
-        currentPageSize,
-      );
-      setSuppliers(
-        response.data.suppliers.map((supplier) => {
-          return { value: supplier.id, label: supplier.name };
         }),
       );
     } catch (error) {
@@ -141,10 +124,6 @@ const WriteoffCreateForm = ({ getWriteOffList, setVisibleModal }) => {
   });
   useEffect(() => {
     getWarehouses();
-    getSuppliers(
-      paginationSupplier.currentPage,
-      paginationSupplier.currentPageSize,
-    );
   }, []);
 
   useEffect(() => {
@@ -295,7 +274,32 @@ const WriteoffCreateForm = ({ getWriteOffList, setVisibleModal }) => {
       },
     };
   };
+  const getSuppliers = async (currentPage, currentPageSize) => {
+    try {
+      return await SupplierService.getSuppliersClients(
+        currentPage,
+        currentPageSize,
+      );
+    } catch (error) {
+      console.error("Error getMaterial:", error);
+    }
+  };
 
+  const loadOptionsSupplier = async (search, prevOptions, { page }) => {
+    const response = await getSuppliers(page, 10);
+
+    const hasMore = prevOptions.length < response.data.totalItems;
+    return {
+      options: response.data.suppliers.map((supplier) => ({
+        value: supplier.id,
+        label: supplier.name,
+      })),
+      hasMore,
+      additional: {
+        page: page + 1,
+      },
+    };
+  };
   return (
     <FormikProvider value={formik}>
       <Flex
@@ -326,12 +330,19 @@ const WriteoffCreateForm = ({ getWriteOffList, setVisibleModal }) => {
             }}
           >
             <FormikInput formik={formik} name={"reason"} label={"Причина"} />
-            <FormikSelect
-              formik={formik}
-              name={"supplierId"}
-              placeholder={"Поставщик"}
-              options={suppliers}
-            />
+            <div>
+              <label>{"Поставщик"}</label>
+              <AsyncPaginate
+                loadOptions={loadOptionsSupplier}
+                onChange={(e) => formik.setFieldValue("supplierId", e.value)}
+                additional={{
+                  page: 1,
+                }}
+                menuPortalTarget={document.body}
+                styles={{ menuPortal: (base) => ({ ...base, zIndex: 3 }) }}
+                placeholder={"Поставщик"}
+              />
+            </div>
             {cookie.warehouseId > 0 ? (
               ""
             ) : (
