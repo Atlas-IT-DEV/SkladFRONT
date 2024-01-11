@@ -35,7 +35,6 @@ const validationSchema = Yup.object().shape({
     Yup.number().min(1, "Too Short!").required("Required"),
   ).max(20, "Too Long!"),
   show: Yup.boolean().required("Required"),
-  trim: Yup.boolean().required("Required"),
 });
 
 const MaterialCreateForm = ({ setVisibleModal, getMaterialList }) => {
@@ -47,7 +46,6 @@ const MaterialCreateForm = ({ setVisibleModal, getMaterialList }) => {
     tmCraftifyIdList: [],
     materialPropertyDTOList: new Map(),
     show: true,
-    trim: true,
   });
 
   const [tmcList, setTmcList] = useState([]);
@@ -334,17 +332,6 @@ const MaterialCreateForm = ({ setVisibleModal, getMaterialList }) => {
                 }
               >
                 Показывать
-              </Checkbox>
-              <Checkbox
-                size="md"
-                colorScheme="green"
-                isChecked={material.trim}
-                fontSize={["14px", "14px", "16px", "16px", "16px"]}
-                onChange={(e) =>
-                  setMaterial({ ...material, trim: e.target.checked })
-                }
-              >
-                Обрезок
               </Checkbox>
             </Stack>
             {currentProperties?.map((item, index) => {
