@@ -109,7 +109,7 @@ const PropertyEditForm = ({ getPropertyList, setVisibleModal, propertyId }) => {
               selectRef={selectTypesRef}
               formik={formik}
               name={"type"}
-              label={"Тип"}
+              placeholder={"Тип"}
               options={optionTypeList}
             />
           </SimpleGrid>

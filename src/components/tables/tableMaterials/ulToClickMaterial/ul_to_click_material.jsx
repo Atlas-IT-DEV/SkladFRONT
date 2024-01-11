@@ -6,9 +6,11 @@ import { HiOutlineArrowsRightLeft } from "react-icons/hi2";
 const UlToClickMaterial = ({
   warehouseId,
   materialId,
+  trim,
   setMaterialId,
   setVisibleEditModal,
   setVisibleCreatePurchaseModal,
+  setVisibleCreateTrimModal,
   setVisibleToWarehouse,
   setVisibleWarehouseToWarehouse,
 }) => {
@@ -24,6 +26,20 @@ const UlToClickMaterial = ({
           <CiEdit />
         </button>
       </li>
+      {trim ? (
+        <li className={`${styles.UlToClick__li}`} />
+      ) : (
+        <li className={`${styles.UlToClick__li}`}>
+          <button
+            onClick={() => {
+              setMaterialId(materialId);
+              setVisibleCreateTrimModal(true);
+            }}
+          >
+            Обрезок
+          </button>
+        </li>
+      )}
       <li className={styles.UlToClick__li}>
         <button
           onClick={() => {

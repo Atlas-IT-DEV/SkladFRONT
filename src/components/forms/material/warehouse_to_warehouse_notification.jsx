@@ -205,7 +205,7 @@ const WarehouseToWarehouseNotification = ({
               />
             </div>
             <FormikSelect
-              ref={selectPurchaseIdRef}
+              selectRef={selectPurchaseIdRef}
               options={purchaseList}
               onChange={(e) => {
                 formik.setFieldValue("purchaseId", e?.value);
@@ -214,7 +214,7 @@ const WarehouseToWarehouseNotification = ({
               placeholder={"Закупки"}
             />
             <FormikSelect
-              ref={selectWarehouseIdRef}
+              selectRef={selectWarehouseIdRef}
               options={warehouseList}
               onChange={(e) => {
                 formik.setFieldValue("warehouseId", e?.value);

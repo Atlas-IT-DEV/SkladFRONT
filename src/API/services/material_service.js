@@ -9,7 +9,7 @@ export default class MaterialService {
       size: currentPageSize,
       warehouseId: warehouseId,
     };
-    return Instance.get(`${materialsUrl}`, {
+    return Instance.get(`${materialsUrl.materials}`, {
       params,
       headers: { Authorization: getToken() },
     });
@@ -18,14 +18,14 @@ export default class MaterialService {
     const params = {
       warehouseId,
     };
-    return Instance.get(`${materialsUrl}/${materialId}`, {
+    return Instance.get(`${materialsUrl.materials}/${materialId}`, {
       params,
       headers: { Authorization: getToken() },
     });
   }
 
   static updateMaterial(materialId, material) {
-    return Instance.put(`${materialsUrl}/${materialId}`, material, {
+    return Instance.put(`${materialsUrl.materials}/${materialId}`, material, {
       timeout: 5000,
       headers: {
         "Content-Type": "multipart/form-data",
@@ -36,7 +36,7 @@ export default class MaterialService {
   }
 
   static createMaterial(material) {
-    return Instance.post(materialsUrl, material, {
+    return Instance.post(materialsUrl.materials, material, {
       timeout: 5000,
       headers: {
         "Content-Type": "multipart/form-data",
@@ -44,6 +44,23 @@ export default class MaterialService {
         Authorization: getToken(),
       },
     });
+  }
+
+  static createTrimMaterial(material) {
+    const formData = new FormData();
+    formData.append("insertMaterialDTO ", JSON.stringify(material));
+    return Instance.post(
+      `${materialsUrl.materials}/${materialsUrl.trim}`,
+      formData,
+      {
+        timeout: 5000,
+        headers: {
+          "Content-Type": "multipart/form-data",
+          accept: "application/json",
+          Authorization: getToken(),
+        },
+      },
+    );
   }
 
   static searchMaterial(
@@ -58,7 +75,7 @@ export default class MaterialService {
       warehouseId: warehouseId,
       search: searchString,
     };
-    return Instance.get(`${materialsUrl}`, {
+    return Instance.get(`${materialsUrl.materials}`, {
       params,
       headers: { Authorization: getToken() },
     });

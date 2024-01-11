@@ -9,7 +9,6 @@ import Select from "react-select";
 import WarehouseService from "../API/services/warehouse_service";
 import useWindowDimensions from "../hooks/window_dimensions";
 import { ReactSearchAutocomplete } from "react-search-autocomplete";
-import { AsyncPaginate } from "react-select-async-paginate";
 
 const MaterialsPage = () => {
   const [visibleCreateModal, setVisibleCreateModal] = useState();
@@ -106,60 +105,8 @@ const MaterialsPage = () => {
     //   });
     // }
   };
-  const options = [];
-  for (let i = 0; i < 50; ++i) {
-    options.push({
-      value: i + 1,
-      label: `Option ${i + 1}`,
-    });
-  }
 
-  const sleep = (ms) =>
-    new Promise((resolve) => {
-      setTimeout(() => {
-        resolve(undefined);
-      }, ms);
-    });
-
-  const [selectCurrentPage, setSelectCurrentPage] = useState(1);
-  const [selectPageSize, setSelectPageSize] = useState(10);
-  const [selectSearch, setSelectSearch] = useState("");
   const selectRef = useRef();
-
-  const clear = async () => {
-    selectRef.current.setValue([]);
-  };
-
-  const loadOptions = async (search, prevOptions, { page }) => {
-    await sleep(1000);
-    console.log({ page, selectPageSize, search });
-    let searchString = search === "" ? null : `name:*${search}*`;
-    if (selectSearch !== search) {
-      page = 1;
-      setSelectSearch(search);
-    }
-    const response = await MaterialService.searchMaterial(
-      page,
-      selectPageSize,
-      null,
-      searchString,
-    );
-
-    console.log(prevOptions);
-
-    const materialsOption = response.data.materials.map((material) => ({
-      value: material.id,
-      label: material.name,
-    }));
-    const hasMore = prevOptions.length >= response.data.materials.totalItems;
-    return {
-      options: materialsOption,
-      hasMore,
-      additional: {
-        page: page + 1,
-      },
-    };
-  };
 
   const [value, onChange] = useState();
   return (
@@ -237,22 +184,9 @@ const MaterialsPage = () => {
         <Button
           variant="menu_yellow"
           fontSize={["14px", "14px", "16px", "16px", "16px"]}
-          onClick={clear}
         >
           Рулонные материалы
         </Button>
-        <div style={{ width: "300px" }}>
-          <AsyncPaginate
-            selectRef={selectRef}
-            isMulti
-            value={value}
-            loadOptions={loadOptions}
-            onChange={onChange}
-            additional={{
-              page: 1,
-            }}
-          />
-        </div>
       </Stack>
       {materialListError ? (
         <div>{materialListError}</div>

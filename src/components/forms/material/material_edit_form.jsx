@@ -316,7 +316,7 @@ const MaterialEditForm = ({ setVisibleModal, materialId, getMaterialList }) => {
             </div>
             <FormikSelect
               isMulti
-              ref={selectCraftifiesRef}
+              selectRef={selectCraftifiesRef}
               options={craftifyList}
               onChange={(e) => changeTmCraftifyIdList(e)}
               placeholder="Способы обработки"

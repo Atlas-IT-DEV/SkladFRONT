@@ -131,7 +131,7 @@ const TmcEditForm = ({ getTmcList, setVisibleModal, tmcId }) => {
             <FormikInput formik={formik} name={"name"} label={"Название"} />
             <FormikSelect
               isMulti
-              ref={selectPropertiesRef}
+              selectRef={selectPropertiesRef}
               options={propertyList}
               onChange={(e) => {
                 formik.setFieldValue(

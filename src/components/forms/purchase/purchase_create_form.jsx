@@ -172,13 +172,13 @@ const PurchaseCreateForm = ({ setVisibleModal, materialId }) => {
             <FormikSelect
               formik={formik}
               name={"supplierId"}
-              label={"Поставщик"}
+              placeholder={"Поставщик"}
               options={supplierList}
             />
             <FormikSelect
               formik={formik}
               name={"deliveryMethodId"}
-              label={"Метод доставки"}
+              placeholder={"Метод доставки"}
               options={deliveryMethodList}
             />
           </SimpleGrid>
