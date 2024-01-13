@@ -165,12 +165,6 @@ const Header = () => {
               Уведомления
             </Link>
           </HStack>
-          <HStack>
-            <Link variant="light_gray">Перемещения</Link>
-          </HStack>
-          <HStack>
-            <Link variant="light_gray">Доступ</Link>
-          </HStack>
           {cookie.role === undefined ? (
             <HStack>
               <Link
@@ -319,12 +313,6 @@ const Header = () => {
               >
                 Адреса отгрузки
               </Link>
-            </HStack>
-            <HStack>
-              <Link variant="light_gray">Перемещения</Link>
-            </HStack>
-            <HStack>
-              <Link variant="light_gray">Доступ</Link>
             </HStack>
             {cookie.role === undefined ? (
               <HStack>
@@ -502,12 +490,6 @@ const Header = () => {
                       >
                         Уведомления
                       </Link>
-                    </HStack>
-                    <HStack>
-                      <Link variant="light_gray">Перемещения</Link>
-                    </HStack>
-                    <HStack>
-                      <Link variant="light_gray">Доступ</Link>
                     </HStack>
                     {cookie.role === undefined ? (
                       <HStack>
