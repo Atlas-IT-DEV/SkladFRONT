@@ -8,17 +8,16 @@ export default class SupplierService {
       headers: { Authorization: getToken() },
     });
   }
-  static getSuppliersClients(currentPage, currentPageSize) {
+  static getSuppliersClients(page, size, search, onlyClients = false) {
     const params = {
-      page: currentPage,
-      size: currentPageSize,
+      page,
+      size,
+      search,
+      onlyClients,
     };
-    return Instance.get(
-      `${contractorsUrl.contractors}/${contractorsUrl.clients}`,
-      {
-        params,
-        headers: { Authorization: getToken() },
-      },
-    );
+    return Instance.get(`${contractorsUrl.contractors}`, {
+      params,
+      headers: { Authorization: getToken() },
+    });
   }
 }

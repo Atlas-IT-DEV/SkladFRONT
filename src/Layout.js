@@ -26,7 +26,7 @@ function Layout() {
     getUser();
   }, [cookie]);
   return (
-    <VStack backgroundColor="menu_white" width="100%" height="100vh">
+    <VStack backgroundColor="menu_white" width="100%" minH={"100VH"}>
       <Header />
       <Outlet />
       <Footer />

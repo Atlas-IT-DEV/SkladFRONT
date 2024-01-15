@@ -40,7 +40,7 @@ const SignInPage = () => {
   });
 
   return (
-    <VStack minH="100vh" align="center" justify="center">
+    <VStack minH={"100VH"} align="center" justify="center">
       <VStack spacing="15px" align="center" border>
         <form onSubmit={formik.handleSubmit}>
           <VStack>

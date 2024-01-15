@@ -74,7 +74,7 @@ const PurchaseCreateForm = ({ setVisibleModal, materialId }) => {
   };
 
   useEffect(() => {
-    getSuppliers();
+    getSuppliers(1, 10);
     getDeliveryMethods();
   }, []);
 
@@ -109,11 +109,12 @@ const PurchaseCreateForm = ({ setVisibleModal, materialId }) => {
     },
     enableReinitialize: true,
   });
-  const getSuppliers = async (currentPage, currentPageSize) => {
+  const getSuppliers = async (currentPage, currentPageSize, search) => {
     try {
       return await SupplierService.getSuppliersClients(
         currentPage,
         currentPageSize,
+        search,
       );
     } catch (error) {
       console.error("Error getMaterial:", error);
@@ -121,7 +122,7 @@ const PurchaseCreateForm = ({ setVisibleModal, materialId }) => {
   };
 
   const loadOptionsSupplier = async (search, prevOptions, { page }) => {
-    const response = await getSuppliers(page, 10);
+    const response = await getSuppliers(page, 10, search);
 
     const hasMore = prevOptions.length < response.data.totalItems;
     return {

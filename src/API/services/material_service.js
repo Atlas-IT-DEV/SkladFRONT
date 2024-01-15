@@ -3,17 +3,46 @@ import { materialsUrl } from "../apiConsts";
 import { getToken } from "../helper/userCookie";
 
 export default class MaterialService {
-  static getMaterials(warehouseId, currentPage, currentPageSize) {
+  static getMaterials(
+    warehouseId,
+    currentPage,
+    currentPageSize,
+    searchString,
+    showHidden = false,
+  ) {
     const params = {
       page: currentPage,
       size: currentPageSize,
       warehouseId: warehouseId,
+      search: searchString,
+      showHidden,
     };
     return Instance.get(`${materialsUrl.materials}`, {
       params,
       headers: { Authorization: getToken() },
     });
   }
+
+  static searchMaterial(
+    currentPage,
+    currentPageSize,
+    warehouseId,
+    searchString,
+    showHidden,
+  ) {
+    const params = {
+      page: currentPage,
+      size: currentPageSize,
+      warehouseId: warehouseId,
+      search: searchString,
+      showHidden,
+    };
+    return Instance.get(`${materialsUrl.materials}`, {
+      params,
+      headers: { Authorization: getToken() },
+    });
+  }
+
   static getMaterial(materialId, warehouseId) {
     const params = {
       warehouseId,
@@ -61,23 +90,5 @@ export default class MaterialService {
         },
       },
     );
-  }
-
-  static searchMaterial(
-    currentPage,
-    currentPageSize,
-    warehouseId,
-    searchString,
-  ) {
-    const params = {
-      page: currentPage,
-      size: currentPageSize,
-      warehouseId: warehouseId,
-      search: searchString,
-    };
-    return Instance.get(`${materialsUrl.materials}`, {
-      params,
-      headers: { Authorization: getToken() },
-    });
   }
 }

@@ -1,4 +1,11 @@
-import { Button, Stack, Text, VStack } from "@chakra-ui/react";
+import {
+  Button,
+  Checkbox,
+  HStack,
+  Stack,
+  Text,
+  VStack,
+} from "@chakra-ui/react";
 import React, { useEffect, useRef, useState } from "react";
 import MyModal from "../components/myModal/my_modal";
 import MaterialCreateForm from "../components/forms/material/material_create_form";
@@ -12,13 +19,17 @@ import { ReactSearchAutocomplete } from "react-search-autocomplete";
 
 const MaterialsPage = () => {
   const [visibleCreateModal, setVisibleCreateModal] = useState();
+
   const [materialList, setMaterialList] = useState([]);
   const [currentPageSize, setCurrentPageSize] = useState(10);
   const [currentPage, setCurrentPage] = useState(1);
-  const [searchStr, setSearchStr] = useState("");
-  const [warehouseId, setWarehouseId] = useState();
   const [totalPages, setTotalPages] = useState(0);
   const [totalCountMaterials, setTotalCountMaterials] = useState(0);
+
+  const [searchStr, setSearchStr] = useState("");
+  const [showHidden, setShowHidden] = useState(false);
+  const [warehouseId, setWarehouseId] = useState();
+
   const [warehouseList, setWarehouseList] = useState([
     { value: -1, label: "Нераспределенные" },
     { value: null, label: "Все склады" },
@@ -30,27 +41,14 @@ const MaterialsPage = () => {
       warehouseId,
       currentPage,
       currentPageSize,
+      searchStr,
+      showHidden,
     ).then((response) => {
       setMaterialList(response.data.materials);
       setTotalPages(response.data.totalPages);
       setTotalCountMaterials(response.data.totalItems);
     });
   });
-
-  const [getMaterialListSearch, materialListErrorSearch] = useFetching(
-    async () => {
-      await MaterialService.searchMaterial(
-        1,
-        currentPageSize,
-        warehouseId,
-        searchStr,
-      ).then((response) => {
-        setMaterialList(response.data.materials);
-        setTotalPages(response.data.totalPages);
-        setTotalCountMaterials(response.data.totalItems);
-      });
-    },
-  );
 
   const [getWarehouseList, warehouseListError] = useFetching(async () => {
     await WarehouseService.getWarehouses().then((response) => {
@@ -69,11 +67,7 @@ const MaterialsPage = () => {
 
   useEffect(() => {
     getMaterialList();
-  }, [warehouseId, currentPage, currentPageSize]);
-
-  useEffect(() => {
-    getMaterialListSearch();
-  }, [searchStr]);
+  }, [warehouseId, currentPage, currentPageSize, searchStr, showHidden]);
 
   const formatResult = (item) => {
     return (
@@ -91,7 +85,7 @@ const MaterialsPage = () => {
     string == "" ? setSearchStr("") : setSearchStr(`name:*${string}*`);
   };
   const handleOnSelect = (item) => {
-    console.log();
+    console.log(item);
     // async () => {
     //   await MaterialService.getMaterials(
     //     warehouseId,
@@ -138,14 +132,23 @@ const MaterialsPage = () => {
       <Text fontSize={14} fontWeight={400} marginBottom="20px">
         Возможно здесь будет тоже какой то поясняющий текст
       </Text>
-      <div style={{ width: 400 }}>
-        <ReactSearchAutocomplete
-          items={materialList}
-          formatResult={formatResult}
-          onSelect={handleOnSelect}
-          onSearch={handleOnSearch}
-        />
-      </div>
+      <HStack gap={"25px"}>
+        <div style={{ width: 400 }}>
+          <ReactSearchAutocomplete
+            items={materialList}
+            formatResult={formatResult}
+            onSelect={handleOnSelect}
+            onSearch={handleOnSearch}
+            styling={{ zIndex: 1 }}
+          />
+        </div>
+        <Checkbox
+          isChecked={showHidden}
+          onChange={(e) => setShowHidden(e.target.checked)}
+        >
+          Показывать скрытые материалы
+        </Checkbox>
+      </HStack>
 
       <Stack color={"black"} width="100%" direction={"row"} align="flex-start">
         <Stack

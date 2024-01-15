@@ -56,10 +56,7 @@ const WriteoffCreateForm = ({ getWriteOffList, setVisibleModal }) => {
     warehouseId: cookie.warehouseId,
   });
   const [warehouses, setWarehouses] = useState();
-  const [paginationSupplier, setPaginationSupplier] = useState({
-    currentPage: 1,
-    currentPageSize: 6,
-  });
+
   const onClose = () => {
     setVisibleModal(false);
   };
@@ -244,10 +241,10 @@ const WriteoffCreateForm = ({ getWriteOffList, setVisibleModal }) => {
   const loadOptions = async (search, prevOptions, { page }) => {
     if (formik.values.warehouseId !== -1) {
       let searchString = search === "" ? null : `name:*${search}*`;
-      const response = await MaterialService.searchMaterial(
+      const response = await MaterialService.getMaterials(
+        formik.values.warehouseId,
         page,
         10,
-        formik.values.warehouseId,
         searchString,
       ).catch((reason) => {
         console.error("WriteoffCreateForm-loadOptions");
@@ -274,11 +271,13 @@ const WriteoffCreateForm = ({ getWriteOffList, setVisibleModal }) => {
       },
     };
   };
-  const getSuppliers = async (currentPage, currentPageSize) => {
+  const getSuppliers = async (currentPage, currentPageSize, search) => {
     try {
       return await SupplierService.getSuppliersClients(
         currentPage,
         currentPageSize,
+        search,
+        true,
       );
     } catch (error) {
       console.error("Error getMaterial:", error);
@@ -286,7 +285,7 @@ const WriteoffCreateForm = ({ getWriteOffList, setVisibleModal }) => {
   };
 
   const loadOptionsSupplier = async (search, prevOptions, { page }) => {
-    const response = await getSuppliers(page, 10);
+    const response = await getSuppliers(page, 10, search);
 
     const hasMore = prevOptions.length < response.data.totalItems;
     return {

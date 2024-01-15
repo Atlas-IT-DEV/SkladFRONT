@@ -8,7 +8,6 @@ export const propertiesUrl = "properties";
 export const purchasesUrl = "purchases";
 export const contractorsUrl = {
   contractors: "contractors",
-  clients: "clients",
 };
 export const tmcsUrl = "tmcs";
 export const tmcTypesUrl = "tmctypes";

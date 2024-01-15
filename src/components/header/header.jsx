@@ -1,19 +1,14 @@
-import {
-  HStack,
-  Image,
-  Link,
-  Stack,
-  useDimensions,
-  VStack,
-} from "@chakra-ui/react";
+import { HStack, Image, Stack, useDimensions, VStack } from "@chakra-ui/react";
 import starbucks from "../../images/starbucks.svg";
 import logo from "./../../images/Logotype.svg";
-import { useNavigate } from "react-router";
 import useWindowDimensions from "../../hooks/window_dimensions";
 import { GoChevronDown } from "react-icons/go";
-import { useEffect, useRef, useState } from "react";
-import { deleteUser } from "../../API/helper/userCookie";
+import React, { useEffect, useRef, useState } from "react";
 import { useCookies } from "react-cookie";
+import NavBar from "./navBar/navBar";
+import { authenticationPaths, paths } from "./paths";
+import MyLink from "./link/my_link";
+import { useNavigate } from "react-router";
 
 const Header = () => {
   const { width, height } = useWindowDimensions();
@@ -44,315 +39,22 @@ const Header = () => {
     >
       <Image src={logo} />
       {width >= 1488 ? (
-        <HStack spacing={5}>
-          <HStack variant="menu_yellow_hover">
-            <Link
-              onClick={() => {
-                navigate("/warehouse_page");
-              }}
-              variant="light_gray"
-            >
-              Склады
-            </Link>
-          </HStack>
-          <HStack variant="menu_yellow_hover">
-            <Link
-              onClick={() => {
-                navigate("/writeoffs_page");
-              }}
-              variant="light_gray"
-            >
-              Списания
-            </Link>
-          </HStack>
-          <HStack variant="menu_yellow_hover">
-            <Link
-              onClick={() => {
-                navigate("/");
-              }}
-              variant="light_gray"
-            >
-              Главная
-            </Link>
-          </HStack>
-          <HStack>
-            <Link
-              onClick={() => {
-                navigate("/materials");
-              }}
-              variant="light_gray"
-            >
-              Материалы
-            </Link>
-          </HStack>
-          <HStack>
-            <Link
-              onClick={() => {
-                navigate("/purchases");
-              }}
-              variant="light_gray"
-            >
-              Закупки
-            </Link>
-          </HStack>
-          <HStack>
-            <Link
-              onClick={() => {
-                navigate("/properties");
-              }}
-              variant="light_gray"
-            >
-              Свойства
-            </Link>
-          </HStack>
-          <HStack>
-            <Link
-              onClick={() => {
-                navigate("/craftifies");
-              }}
-              variant="light_gray"
-            >
-              Способы обработки
-            </Link>
-          </HStack>
-          <HStack>
-            <Link
-              onClick={() => {
-                navigate("/tmcs");
-              }}
-              variant="light_gray"
-            >
-              ТМЦ
-            </Link>
-          </HStack>
-          <HStack>
-            <Link
-              onClick={() => {
-                navigate("/tmctypes");
-              }}
-              variant="light_gray"
-            >
-              Типы тмц
-            </Link>
-          </HStack>
-          <HStack>
-            <Link
-              onClick={() => {
-                navigate("/delivery_methods");
-              }}
-              variant="light_gray"
-            >
-              Способы доставки
-            </Link>
-          </HStack>
-          <HStack>
-            <Link
-              onClick={() => {
-                navigate("/delivery_places");
-              }}
-              variant="light_gray"
-            >
-              Адреса отгрузки
-            </Link>
-          </HStack>
-          <HStack>
-            <Link
-              onClick={() => {
-                navigate("/notification_page");
-              }}
-              variant="light_gray"
-            >
-              Уведомления
-            </Link>
-          </HStack>
-          {cookie.role === undefined ? (
-            <HStack>
-              <Link
-                onClick={() => {
-                  navigate("/sign_in");
-                }}
-                variant="light_gray"
-              >
-                Вход
-              </Link>
-            </HStack>
-          ) : (
-            <HStack>
-              <Link
-                onClick={() => {
-                  deleteUser();
-                }}
-                variant="light_gray"
-              >
-                Выход
-              </Link>
-            </HStack>
-          )}
-          <HStack>
-            <Link
-              onClick={() => {
-                navigate("/signup_page");
-              }}
-              variant="light_gray"
-            >
-              Регистрация
-            </Link>
-          </HStack>
+        <HStack width={"100%"} justifyContent={"space-between"}>
+          <NavBar />
         </HStack>
-      ) : width >= 966 ? (
+      ) : width >= 1150 ? (
         <VStack spacing="20px">
-          <HStack variant="menu_yellow_hover">
-            <Link
-              onClick={() => {
-                navigate("/warehouse_page");
-              }}
-              variant="light_gray"
-            >
-              Склады
-            </Link>
-          </HStack>
-          <HStack variant="menu_yellow_hover">
-            <Link
-              onClick={() => {
-                navigate("/writeoffs_page");
-              }}
-              variant="light_gray"
-            >
-              Списания
-            </Link>
-          </HStack>
-          <HStack spacing="15px">
-            <HStack variant="menu_yellow_hover">
-              <Link
-                onClick={() => {
-                  navigate("/");
-                }}
-                variant="light_gray"
-              >
-                Главная
-              </Link>
-            </HStack>
-            <HStack>
-              <Link
-                onClick={() => {
-                  navigate("/materials");
-                }}
-                variant="light_gray"
-              >
-                Материалы
-              </Link>
-            </HStack>
-            <HStack>
-              <Link
-                onClick={() => {
-                  navigate("/purchases");
-                }}
-                variant="light_gray"
-              >
-                Закупки
-              </Link>
-            </HStack>
-            <HStack>
-              <Link
-                onClick={() => {
-                  navigate("/properties");
-                }}
-                variant="light_gray"
-              >
-                Свойства
-              </Link>
-            </HStack>
-          </HStack>
-          <HStack spacing="15px">
-            <HStack>
-              <Link
-                onClick={() => {
-                  navigate("/tmcs");
-                }}
-                variant="light_gray"
-              >
-                ТМЦ
-              </Link>
-            </HStack>
-            <HStack>
-              <Link
-                onClick={() => {
-                  navigate("/tmctypes");
-                }}
-                variant="light_gray"
-              >
-                Типы тмц
-              </Link>
-            </HStack>
-            <HStack>
-              <Link
-                onClick={() => {
-                  navigate("/delivery_methods");
-                }}
-                variant="light_gray"
-              >
-                Способы доставки
-              </Link>
-            </HStack>
-            <HStack>
-              <Link
-                onClick={() => {
-                  navigate("/notification_page");
-                }}
-                variant="light_gray"
-              >
-                Уведомления
-              </Link>
-            </HStack>
-            <HStack>
-              <Link
-                onClick={() => {
-                  navigate("/delivery_places");
-                }}
-                variant="light_gray"
-              >
-                Адреса отгрузки
-              </Link>
-            </HStack>
-            {cookie.role === undefined ? (
-              <HStack>
-                <Link
-                  onClick={() => {
-                    navigate("/sign_in");
-                  }}
-                  variant="light_gray"
-                >
-                  Вход
-                </Link>
-              </HStack>
-            ) : (
-              <HStack>
-                <Link
-                  onClick={() => {
-                    deleteUser();
-                  }}
-                  variant="light_gray"
-                >
-                  Выход
-                </Link>
-              </HStack>
-            )}
-            <HStack>
-              <Link
-                onClick={() => {
-                  navigate("/signup_page");
-                }}
-                variant="light_gray"
-              >
-                Регистрация
-              </Link>
-            </HStack>
-          </HStack>
+          <NavBar />
         </VStack>
       ) : null}
       <HStack>
-        <Image src={starbucks} borderRadius="50%" border="2px solid #FFBF00" />
-        {width <= 966 ? (
+        <Image
+          minW={"30px"}
+          src={starbucks}
+          borderRadius="50%"
+          border="2px solid #FFBF00"
+        />
+        {width < 1150 ? (
           <GoChevronDown
             width="20px"
             onClick={() => {
@@ -371,159 +73,33 @@ const Header = () => {
                     zIndex="20"
                     backgroundColor="white"
                   >
-                    <HStack variant="menu_yellow_hover">
-                      <Link
-                        onClick={() => {
-                          navigate("/warehouse_page");
-                        }}
-                        variant="light_gray"
-                      >
-                        Склады
-                      </Link>
-                    </HStack>
-                    <HStack variant="menu_yellow_hover">
-                      <Link
-                        onClick={() => {
-                          navigate("/writeoffs_page");
-                        }}
-                        variant="light_gray"
-                      >
-                        Списания
-                      </Link>
-                    </HStack>
-                    <HStack variant="menu_yellow_hover">
-                      <Link
-                        onClick={() => {
-                          navigate("/");
-                        }}
-                        variant="light_gray"
-                      >
-                        Главная
-                      </Link>
-                    </HStack>
-                    <HStack>
-                      <Link
-                        onClick={() => {
-                          navigate("/materials");
-                        }}
-                        variant="light_gray"
-                      >
-                        Материалы
-                      </Link>
-                    </HStack>
-                    <HStack>
-                      <Link
-                        onClick={() => {
-                          navigate("/purchases");
-                        }}
-                        variant="light_gray"
-                      >
-                        Закупки
-                      </Link>
-                    </HStack>
-                    <HStack>
-                      <Link
-                        onClick={() => {
-                          navigate("/properties");
-                        }}
-                        variant="light_gray"
-                      >
-                        Свойства
-                      </Link>
-                    </HStack>
-                    <HStack>
-                      <Link
-                        onClick={() => {
-                          navigate("/craftifies");
-                        }}
-                        variant="light_gray"
-                      >
-                        Способы обработки
-                      </Link>
-                    </HStack>
-                    <HStack>
-                      <Link
-                        onClick={() => {
-                          navigate("/tmcs");
-                        }}
-                        variant="light_gray"
-                      >
-                        ТМЦ
-                      </Link>
-                    </HStack>
-                    <HStack>
-                      <Link
-                        onClick={() => {
-                          navigate("/tmctypes");
-                        }}
-                        variant="light_gray"
-                      >
-                        Типы тмц
-                      </Link>
-                    </HStack>
-                    <HStack>
-                      <Link
-                        onClick={() => {
-                          navigate("/delivery_methods");
-                        }}
-                        variant="light_gray"
-                      >
-                        Способы доставки
-                      </Link>
-                    </HStack>
-                    <HStack>
-                      <Link
-                        onClick={() => {
-                          navigate("/delivery_places");
-                        }}
-                        variant="light_gray"
-                      >
-                        Адреса отгрузки
-                      </Link>
-                    </HStack>
-                    <HStack>
-                      <Link
-                        onClick={() => {
-                          navigate("/notification_page");
-                        }}
-                        variant="light_gray"
-                      >
-                        Уведомления
-                      </Link>
-                    </HStack>
-                    {cookie.role === undefined ? (
-                      <HStack>
-                        <Link
-                          onClick={() => {
-                            navigate("/sign_in");
-                          }}
-                          variant="light_gray"
-                        >
-                          Вход
-                        </Link>
-                      </HStack>
-                    ) : (
-                      <HStack>
-                        <Link
-                          onClick={() => {
-                            deleteUser();
-                          }}
-                          variant="light_gray"
-                        >
-                          Выход
-                        </Link>
-                      </HStack>
-                    )}
-                    <HStack>
-                      <Link
-                        onClick={() => {
-                          navigate("/signup_page");
-                        }}
-                        variant="light_gray"
-                      >
-                        Регистрация
-                      </Link>
-                    </HStack>
+                    {paths.map((item) => {
+                      if (item?.haveAccess?.has(cookie.role)) {
+                        return (
+                          <MyLink
+                            key={item.name}
+                            to={item.path}
+                            name={item.name}
+                          />
+                        );
+                      } else {
+                        return;
+                      }
+                    })}
+                    {authenticationPaths.map((item) => {
+                      if (item?.haveAccess?.has(cookie.role)) {
+                        return (
+                          <MyLink
+                            key={item.name}
+                            onClick={item.onClick}
+                            to={item.path}
+                            name={item.name}
+                          />
+                        );
+                      } else {
+                        return;
+                      }
+                    })}
                   </VStack>
                 );
               }
