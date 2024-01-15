@@ -5,6 +5,7 @@ import { Outlet } from "react-router-dom";
 import Footer from "./components/footer";
 import { useCookies } from "react-cookie";
 import UserService from "./API/services/user_service";
+import { deleteUser } from "./API/helper/userCookie";
 
 function Layout() {
   const [cookie, setCookie] = useCookies();
@@ -19,7 +20,9 @@ function Layout() {
         setCookie("role", response.data.role);
       }
     } catch (e) {
-      console.log("Error Layout-getUser");
+      if (e.response.status === 401) {
+        deleteUser();
+      }
     }
   };
   useEffect(() => {

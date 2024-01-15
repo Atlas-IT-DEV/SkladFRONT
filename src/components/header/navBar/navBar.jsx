@@ -12,8 +12,6 @@ const NavBar = () => {
         {paths.map((item) => {
           if (item?.haveAccess?.has(cookie.role)) {
             return <MyLink key={item.name} to={item.path} name={item.name} />;
-          } else {
-            return;
           }
         })}
       </HStack>
@@ -28,8 +26,6 @@ const NavBar = () => {
                 name={item.name}
               />
             );
-          } else {
-            return;
           }
         })}
       </HStack>

@@ -16,67 +16,78 @@ import SignUpPage from "./pages/sign_up_page";
 import WarehousePage from "./pages/warehouse_page";
 import Layout from "./Layout";
 import WriteoffsPage from "./pages/writeoffs_page";
+import PrivateRoutes from "./common/private_Routes";
 
 const router = createHashRouter([
   {
     element: <Layout />,
     children: [
       {
-        path: "/",
-        element: <MainPage />,
-        errorElement: <NotFoundPage />,
-      },
-      {
-        path: "/materials",
-        element: <MaterialsPage />,
-      },
-      {
-        path: "/purchases",
-        element: <PurchasesPage />,
-      },
-      {
-        path: "/properties",
-        element: <PropertyPage />,
-      },
-      {
-        path: "/craftifies",
-        element: <СraftifiesPage />,
-      },
-      {
-        path: "/tmcs",
-        element: <TmcsPage />,
-      },
-      {
-        path: "/tmctypes",
-        element: <TmcTypesPage />,
-      },
-      {
-        path: "/delivery_methods",
-        element: <DeliveryMethodsPage />,
-      },
-      {
-        path: "/delivery_places",
-        element: <DeliveryPlacesPage />,
-      },
-      {
-        path: "/notification_page",
-        element: <NotificationPage />,
-      },
-      {
-        path: "/warehouse_page",
-        element: <WarehousePage />,
-      },
-      {
-        path: "/writeoffs_page",
-        element: <WriteoffsPage />,
-      },
-      {
-        path: "/signup_page",
-        element: <SignUpPage />,
-      },
-      {
         path: "/sign_in",
         element: <SignInPage />,
+      },
+      {
+        element: <PrivateRoutes userGroup="AUTH" />,
+        children: [
+          {
+            path: "/",
+            element: <MainPage />,
+            errorElement: <NotFoundPage />,
+          },
+          {
+            path: "/materials",
+            element: <MaterialsPage />,
+          },
+          {
+            path: "/purchases",
+            element: <PurchasesPage />,
+          },
+          {
+            path: "/properties",
+            element: <PropertyPage />,
+          },
+          {
+            path: "/craftifies",
+            element: <СraftifiesPage />,
+          },
+          {
+            path: "/tmcs",
+            element: <TmcsPage />,
+          },
+          {
+            path: "/tmctypes",
+            element: <TmcTypesPage />,
+          },
+          {
+            path: "/delivery_methods",
+            element: <DeliveryMethodsPage />,
+          },
+          {
+            path: "/delivery_places",
+            element: <DeliveryPlacesPage />,
+          },
+          {
+            path: "/notification_page",
+            element: <NotificationPage />,
+          },
+          {
+            path: "/warehouse_page",
+            element: <WarehousePage />,
+          },
+          {
+            path: "/writeoffs_page",
+            element: <WriteoffsPage />,
+          },
+        ],
+      },
+      {
+        element: <PrivateRoutes userGroup="ADMIN" />,
+        children: [
+          {
+            path: "/signup_page",
+            element: <SignUpPage />,
+          },
+        ],
       },
     ],
   },

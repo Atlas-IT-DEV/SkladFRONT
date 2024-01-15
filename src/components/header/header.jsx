@@ -74,7 +74,10 @@ const Header = () => {
                     backgroundColor="white"
                   >
                     {paths.map((item) => {
-                      if (item?.haveAccess?.has(cookie.role)) {
+                      if (
+                        (item?.haveAccess?.has("AUTH") && cookie.role) ||
+                        item?.haveAccess?.has(cookie.role)
+                      ) {
                         return (
                           <MyLink
                             key={item.name}
@@ -82,12 +85,13 @@ const Header = () => {
                             name={item.name}
                           />
                         );
-                      } else {
-                        return;
                       }
                     })}
                     {authenticationPaths.map((item) => {
-                      if (item?.haveAccess?.has(cookie.role)) {
+                      if (
+                        (item?.haveAccess?.has("AUTH") && cookie.role) ||
+                        item?.haveAccess?.has(cookie.role)
+                      ) {
                         return (
                           <MyLink
                             key={item.name}
@@ -96,8 +100,6 @@ const Header = () => {
                             name={item.name}
                           />
                         );
-                      } else {
-                        return;
                       }
                     })}
                   </VStack>
