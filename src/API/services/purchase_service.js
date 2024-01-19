@@ -1,27 +1,32 @@
 import { Instance } from "../instance";
 import { purchasesUrl } from "../apiConsts";
-import { getToken } from "../helper/userCookie/userCookie";
+import { getToken } from "../helper/userCookie";
 
 export default class PurchaseService {
-  static async getPurchases(currentPage, currentPageSize) {
+  static getPurchases(currentPage, currentPageSize) {
     const params = {
       page: currentPage,
       size: currentPageSize,
     };
     return Instance.get(purchasesUrl, {
       params,
+      headers: { Authorization: getToken() },
     });
   }
 
-  static async getPurchase(purchaseId) {
-    return Instance.get(`${purchasesUrl}/${purchaseId}`);
+  static getPurchase(purchaseId) {
+    return Instance.get(`${purchasesUrl}/${purchaseId}`, {
+      headers: { Authorization: getToken() },
+    });
   }
 
-  static async updatePurchase(purchaseId, purchase) {
-    return Instance.put(`${purchasesUrl}/${purchaseId}`, purchase);
+  static updatePurchase(purchaseId, purchase) {
+    return Instance.put(`${purchasesUrl}/${purchaseId}`, purchase, {
+      headers: { Authorization: getToken() },
+    });
   }
 
-  static async createPurchase(purchase) {
+  static createPurchase(purchase) {
     return Instance.post(purchasesUrl, purchase, {
       headers: { Authorization: getToken() },
     });

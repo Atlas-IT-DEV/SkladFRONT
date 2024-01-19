@@ -3,8 +3,8 @@ import { Box } from "@chakra-ui/react";
 import MyModal from "../../myModal/my_modal";
 import UlForTable from "../forTable/ulForTable/ul_for_table";
 import styles from "../forTable/table.module.css";
-import { Select } from "chakra-react-select";
-import UlToClickTmcType from "./ulToClickTmcs/ul_to_click_tmc_type";
+import Select from "react-select";
+import UlToClickTmcType from "./ulToClickTmcTypes/ul_to_click_tmc_type";
 import TmcTypeEditForm from "../../forms/tmcTypes/tmc_type_edit_form";
 import useWindowDimensions from "../../../hooks/window_dimensions";
 
@@ -53,13 +53,6 @@ const TableTmcTypes = ({ getTmcTypeList, tmcTypeList }) => {
               <td className={styles.table__td}>{tmcType.name}</td>
               <td className={styles.table__td}>
                 <ul>
-                  {/*{tmcType.properties.map((property) => {*/}
-                  {/*  return (*/}
-                  {/*    <li key={property.id}>*/}
-                  {/*      {property.name} {property.type}*/}
-                  {/*    </li>*/}
-                  {/*  );*/}
-                  {/*})}*/}
                   <Select
                     menuPortalTarget={document.body}
                     styles={{ menuPortal: (base) => ({ ...base, zIndex: 3 }) }}

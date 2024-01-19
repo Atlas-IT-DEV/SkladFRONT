@@ -87,7 +87,7 @@ const PropertyCreateForm = ({ getPropertyList, setVisibleModal }) => {
             <FormikSelect
               formik={formik}
               name={"type"}
-              label={"Тип"}
+              placeholder={"Тип"}
               options={optionTypeList}
             />
           </SimpleGrid>

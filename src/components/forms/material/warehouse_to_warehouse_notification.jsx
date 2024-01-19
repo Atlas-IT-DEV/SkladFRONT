@@ -10,7 +10,6 @@ import {
   SimpleGrid,
   Text,
 } from "@chakra-ui/react";
-import { Select } from "chakra-react-select";
 import WarehouseService from "../../../API/services/warehouse_service";
 import MaterialService from "../../../API/services/material_service";
 import PurchaseService from "../../../API/services/purchase_service";
@@ -18,7 +17,8 @@ import MaterialFormTransferDto from "../../../dto/material_form_transfer_dto";
 import NotificationService from "../../../API/services/notification_service";
 import WarehouseToWarehouseDto from "../../../dto/warehouse_to_warehouse_dto";
 import MaterialTransferDto from "../../../dto/material_transfer_dto";
-import { getRole } from "../../../API/helper/userCookie/userCookie";
+import { getRole } from "../../../API/helper/userCookie";
+import FormikSelect from "../../UI/formik_select";
 
 const validationSchema = Yup.object().shape({
   warehouseId: Yup.number().min(1, "Too Short!").required("Required"),
@@ -204,39 +204,23 @@ const WarehouseToWarehouseNotification = ({
                 placeholder={"Количество"}
               />
             </div>
-            <label>{"Закупки"}</label>
-            <Select
-              ref={selectPurchaseIdRef}
-              menuPortalTarget={document.body}
-              styles={{ menuPortal: (base) => ({ ...base, zIndex: 3 }) }}
-              isInvalid={
-                (formik.errors.purchaseId && formik.touched.purchaseId) ||
-                (formik.errors.maxCount && formik.touched.maxCount)
-              }
-              errorBorderColor="crimson"
+            <FormikSelect
+              selectRef={selectPurchaseIdRef}
               options={purchaseList}
               onChange={(e) => {
                 formik.setFieldValue("purchaseId", e?.value);
                 formik.setFieldValue("maxCount", e?.maxCount);
               }}
               placeholder={"Закупки"}
-            ></Select>
-            <Select
-              ref={selectWarehouseIdRef}
-              menuPortalTarget={document.body}
-              styles={{ menuPortal: (base) => ({ ...base, zIndex: 3 }) }}
-              isInvalid={
-                formik.errors.warehouseId && formik.touched.warehouseId
-              }
-              errorBorderColor="crimson"
+            />
+            <FormikSelect
+              selectRef={selectWarehouseIdRef}
               options={warehouseList}
-              id="warehouseId"
-              name="warehouseId"
               onChange={(e) => {
                 formik.setFieldValue("warehouseId", e?.value);
               }}
               placeholder={"Склад"}
-            ></Select>
+            />
           </SimpleGrid>
           <Flex justifyContent="flex-end">
             <Button variant="menu_red" onClick={onClose} mr={3}>

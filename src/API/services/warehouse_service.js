@@ -1,37 +1,53 @@
 import { Instance } from "../instance";
 import { warehousesUrl } from "../apiConsts";
+import { getToken } from "../helper/userCookie";
 
 export default class WarehouseService {
-  static async getWarehouses() {
-    return Instance.get(warehousesUrl.warehouses);
+  static getWarehouses() {
+    return Instance.get(warehousesUrl.warehouses, {
+      headers: { Authorization: getToken() },
+    });
   }
 
-  static async getWarehouse(warehouseId) {
-    return Instance.get(`${warehousesUrl.warehouses}/${warehouseId}`);
+  static getWarehouse(warehouseId) {
+    return Instance.get(`${warehousesUrl.warehouses}/${warehouseId}`, {
+      headers: { Authorization: getToken() },
+    });
   }
 
-  static async updateWarehouse(warehouseId, warehouse) {
+  static updateWarehouse(warehouseId, warehouse) {
     return Instance.put(
       `${warehousesUrl.warehouses}/${warehouseId}`,
       warehouse,
+      {
+        headers: { Authorization: getToken() },
+      },
     );
   }
 
-  static async createWarehouse(warehouse) {
-    return Instance.post(warehousesUrl, warehouse);
+  static createWarehouse(warehouse) {
+    return Instance.post(warehousesUrl.warehouses, warehouse, {
+      headers: { Authorization: getToken() },
+    });
   }
 
-  static async addMaterialToWarehouse(warehouseId, materialTransfer) {
+  static addMaterialToWarehouse(warehouseId, materialTransfer) {
     return Instance.put(
       `${warehousesUrl.warehouses}/${warehouseId}/${warehousesUrl.update}`,
       materialTransfer,
+      {
+        headers: { Authorization: getToken() },
+      },
     );
   }
 
-  static async moveMaterial(warehouseId, newWarehouseId, materialTransfer) {
+  static moveMaterial(warehouseId, newWarehouseId, materialTransfer) {
     return Instance.put(
       `${warehousesUrl.warehouses}/${warehouseId}/${warehousesUrl.move}/${newWarehouseId}`,
       materialTransfer,
+      {
+        headers: { Authorization: getToken() },
+      },
     );
   }
 }

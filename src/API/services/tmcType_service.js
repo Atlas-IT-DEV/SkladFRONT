@@ -1,20 +1,29 @@
 import { Instance } from "../instance";
 import { tmcTypesUrl } from "../apiConsts";
+import { getToken } from "../helper/userCookie";
 
 export default class TmcTypeService {
-  static async getTmcTypes() {
-    return Instance.get(tmcTypesUrl);
+  static getTmcTypes() {
+    return Instance.get(tmcTypesUrl, {
+      headers: { Authorization: getToken() },
+    });
   }
 
-  static async getTmcType(tmcId) {
-    return Instance.get(`${tmcTypesUrl}/${tmcId}`);
+  static getTmcType(tmcId) {
+    return Instance.get(`${tmcTypesUrl}/${tmcId}`, {
+      headers: { Authorization: getToken() },
+    });
   }
 
-  static async updateTmcType(tmcId, tmc) {
-    return Instance.put(`${tmcTypesUrl}/${tmcId}`, tmc);
+  static updateTmcType(tmcId, tmc) {
+    return Instance.put(`${tmcTypesUrl}/${tmcId}`, tmc, {
+      headers: { Authorization: getToken() },
+    });
   }
 
-  static async createTmcType(tmc) {
-    return Instance.post(tmcTypesUrl, tmc);
+  static createTmcType(tmc) {
+    return Instance.post(tmcTypesUrl, tmc, {
+      headers: { Authorization: getToken() },
+    });
   }
 }

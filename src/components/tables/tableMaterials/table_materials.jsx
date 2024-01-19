@@ -10,6 +10,7 @@ import PurchaseCreateForm from "../../forms/purchase/purchase_create_form";
 import useWindowDimensions from "../../../hooks/window_dimensions";
 import WarehouseToWarehouseNotification from "../../forms/material/warehouse_to_warehouse_notification";
 import MaterialToWarehouseNotification from "../../forms/material/material_to_warehouse_notification";
+import MaterialTrimCreateForm from "../../forms/material/material_trim_create_form";
 
 const TableMaterials = ({
   totalPages,
@@ -25,6 +26,7 @@ const TableMaterials = ({
   const [sort, setSort] = useState(false);
   const [materialId, setMaterialId] = useState(-1);
   const [visibleEditModal, setVisibleEditModal] = useState();
+  const [visibleCreateTrimModal, setVisibleCreateTrimModal] = useState();
   const [visibleCreatePurchaseModal, setVisibleCreatePurchaseModal] =
     useState();
   const [visibleToWarehouse, setVisibleToWarehouse] = useState(false);
@@ -43,13 +45,6 @@ const TableMaterials = ({
         visibleModal={visibleWarehouseToWarehouse}
         setVisibleModal={setVisibleWarehouseToWarehouse}
       >
-        {/*<WarehouseToWarehouse*/}
-        {/*  materialId={materialId}*/}
-        {/*  warehouseId={warehouseId}*/}
-        {/*  setVisibleModal={setVisibleWarehouseToWarehouse}*/}
-        {/*  getMaterialList={getMaterialList}*/}
-        {/*  visibleModal={visibleWarehouseToWarehouse}*/}
-        {/*/>*/}
         <WarehouseToWarehouseNotification
           materialId={materialId}
           warehouseId={warehouseId}
@@ -81,9 +76,18 @@ const TableMaterials = ({
         visibleModal={visibleToWarehouse}
         setVisibleModal={setVisibleToWarehouse}
       >
-        {/*<MaterialToWarehouse*/}
         <MaterialToWarehouseNotification
           visibleModal={visibleToWarehouse}
+          setVisibleModal={setVisibleToWarehouse}
+          materialId={materialId}
+          getMaterialList={getMaterialList}
+        />
+      </MyModal>
+      <MyModal
+        visibleModal={visibleCreateTrimModal}
+        setVisibleModal={setVisibleCreateTrimModal}
+      >
+        <MaterialTrimCreateForm
           setVisibleModal={setVisibleToWarehouse}
           materialId={materialId}
           getMaterialList={getMaterialList}
@@ -140,9 +144,11 @@ const TableMaterials = ({
                 <UlToClickMaterial
                   warehouseId={warehouseId}
                   materialId={material.id}
+                  trim={material.trim}
                   setMaterialId={setMaterialId}
                   setVisibleEditModal={setVisibleEditModal}
                   setVisibleCreatePurchaseModal={setVisibleCreatePurchaseModal}
+                  setVisibleCreateTrimModal={setVisibleCreateTrimModal}
                   setVisibleToWarehouse={setVisibleToWarehouse}
                   setVisibleWarehouseToWarehouse={
                     setVisibleWarehouseToWarehouse

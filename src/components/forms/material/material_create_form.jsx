@@ -14,7 +14,6 @@ import React, { useEffect, useRef, useState } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import TmcService from "../../../API/services/tmc_service";
-import { Select } from "chakra-react-select";
 import TmcTypeService from "../../../API/services/tmcType_service";
 import CraftifyService from "../../../API/services/craftify_service";
 import usePropertyValidationById from "../../../hooks/property_validation_by_id";
@@ -23,6 +22,7 @@ import {
   mapPropertiesValidationToArray,
   materialPropertyDTOListToArray,
 } from "./support/conversion_functions";
+import FormikSelect from "../../UI/formik_select";
 
 const validationSchema = Yup.object().shape({
   name: Yup.string()
@@ -35,7 +35,6 @@ const validationSchema = Yup.object().shape({
     Yup.number().min(1, "Too Short!").required("Required"),
   ).max(20, "Too Long!"),
   show: Yup.boolean().required("Required"),
-  trim: Yup.boolean().required("Required"),
 });
 
 const MaterialCreateForm = ({ setVisibleModal, getMaterialList }) => {
@@ -47,7 +46,6 @@ const MaterialCreateForm = ({ setVisibleModal, getMaterialList }) => {
     tmCraftifyIdList: [],
     materialPropertyDTOList: new Map(),
     show: true,
-    trim: true,
   });
 
   const [tmcList, setTmcList] = useState([]);
@@ -302,58 +300,27 @@ const MaterialCreateForm = ({ setVisibleModal, getMaterialList }) => {
                 fontSize={["14px", "14px", "16px", "16px", "16px"]}
               />
             </div>
-            <div>
-              <label>ТМЦ</label>
-              <Select
-                menuPortalTarget={document.body}
-                styles={{ menuPortal: (base) => ({ ...base, zIndex: 3 }) }}
-                isInvalid={formik.errors.tmcId && formik.touched.tmcId}
-                errorBorderColor="crimson"
-                options={tmcList.map((tmc) => {
-                  return { value: tmc.id, label: tmc.name };
-                })}
-                id="tmcId"
-                name="tmcId"
-                onChange={(e) => changeTmcId(e)}
-                placeholder="Тип"
-                fontSize={["14px", "14px", "16px", "16px", "16px"]}
-              ></Select>
-            </div>
-            <div>
-              <label>Тип ТМЦ</label>
-              <Select
-                menuPortalTarget={document.body}
-                styles={{ menuPortal: (base) => ({ ...base, zIndex: 3 }) }}
-                isInvalid={formik.errors.tmcTypeId && formik.touched.tmcTypeId}
-                errorBorderColor="crimson"
-                options={tmcTypeList}
-                id="tmcTypeId"
-                name="tmcTypeId"
-                onChange={(e) =>
-                  setMaterial({ ...material, tmcTypeId: e.value })
-                }
-                placeholder="Тип ТМЦ"
-                fontSize={["14px", "14px", "16px", "16px", "16px"]}
-              ></Select>
-            </div>
-            <div>
-              <label>Способы обработки</label>
-              <Select
-                isMulti
-                closeMenuOnSelect={false}
-                menuPortalTarget={document.body}
-                isInvalid={
-                  formik.errors.tmCraftifyIdList &&
-                  formik.touched.tmCraftifyIdList
-                }
-                styles={{ menuPortal: (base) => ({ ...base, zIndex: 3 }) }}
-                errorBorderColor="crimson"
-                options={craftifyList}
-                onChange={(e) => changeTmCraftifyIdList(e)}
-                fontSize={["14px", "14px", "16px", "16px", "16px"]}
-                placeholder="Способы обработки"
-              ></Select>
-            </div>
+            <FormikSelect
+              options={tmcList.map((tmc) => {
+                return { value: tmc.id, label: tmc.name };
+              })}
+              onChange={(e) => changeTmcId(e)}
+              placeholder="ТМЦ"
+              // fontSize={["14px", "14px", "16px", "16px", "16px"]}
+            />
+            <FormikSelect
+              options={tmcTypeList}
+              onChange={(e) => setMaterial({ ...material, tmcTypeId: e.value })}
+              placeholder="Тип ТМЦ"
+              // fontSize={["14px", "14px", "16px", "16px", "16px"]}
+            />
+            <FormikSelect
+              isMulti
+              options={craftifyList}
+              onChange={(e) => changeTmCraftifyIdList(e)}
+              // fontSize={["14px", "14px", "16px", "16px", "16px"]}
+              placeholder="Способы обработки"
+            />
             <Stack spacing={[1, 5]} direction={["column", "row"]}>
               <Checkbox
                 size="md"
@@ -365,17 +332,6 @@ const MaterialCreateForm = ({ setVisibleModal, getMaterialList }) => {
                 }
               >
                 Показывать
-              </Checkbox>
-              <Checkbox
-                size="md"
-                colorScheme="green"
-                isChecked={material.trim}
-                fontSize={["14px", "14px", "16px", "16px", "16px"]}
-                onChange={(e) =>
-                  setMaterial({ ...material, trim: e.target.checked })
-                }
-              >
-                Обрезок
               </Checkbox>
             </Stack>
             {currentProperties?.map((item, index) => {

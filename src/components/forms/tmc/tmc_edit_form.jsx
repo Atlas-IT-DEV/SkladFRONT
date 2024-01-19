@@ -11,8 +11,8 @@ import {
 import * as Yup from "yup";
 import TmcService from "../../../API/services/tmc_service";
 import FormikInput from "../../UI/formik_input";
-import { Select } from "chakra-react-select";
 import PropertyService from "../../../API/services/property_service";
+import FormikSelect from "../../UI/formik_select";
 
 const validationSchema = Yup.object().shape({
   name: Yup.string()
@@ -129,16 +129,9 @@ const TmcEditForm = ({ getTmcList, setVisibleModal, tmcId }) => {
             }}
           >
             <FormikInput formik={formik} name={"name"} label={"Название"} />
-            <Select
+            <FormikSelect
               isMulti
-              closeMenuOnSelect={false}
-              ref={selectPropertiesRef}
-              menuPortalTarget={document.body}
-              styles={{ menuPortal: (base) => ({ ...base, zIndex: 3 }) }}
-              isInvalid={
-                formik.errors.propertyIdList && formik.touched.propertyIdList
-              }
-              errorBorderColor="crimson"
+              selectRef={selectPropertiesRef}
               options={propertyList}
               onChange={(e) => {
                 formik.setFieldValue(
@@ -147,7 +140,7 @@ const TmcEditForm = ({ getTmcList, setVisibleModal, tmcId }) => {
                 );
               }}
               placeholder={"Свойства"}
-            ></Select>
+            />
           </SimpleGrid>
           <Flex justifyContent="flex-end">
             <Button variant="menu_red" onClick={onClose} mr={3}>
