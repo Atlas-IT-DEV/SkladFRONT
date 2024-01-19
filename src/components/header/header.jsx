@@ -43,7 +43,7 @@ const Header = () => {
       ref={componentRef}
     >
       <Image src={logo} />
-      {width >= 1488 ? (
+      {width >= 1920 ? (
         <HStack spacing={5}>
           <HStack variant="menu_yellow_hover">
             <Link

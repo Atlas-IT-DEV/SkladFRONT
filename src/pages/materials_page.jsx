@@ -79,10 +79,10 @@ const MaterialsPage = () => {
   const formatResult = (item) => {
     return (
       <>
-        <span style={{ display: "block", textAlign: "left" }}>
+        <span style={{ display: "block", textAlign: "left", zIndex: 99 }}>
           id: {item.id}
         </span>
-        <span style={{ display: "block", textAlign: "left" }}>
+        <span style={{ display: "block", textAlign: "left", zIndex: 99 }}>
           name: {item.name}
         </span>
       </>
@@ -150,6 +150,7 @@ const MaterialsPage = () => {
               formatResult={formatResult}
               onSelect={handleOnSelect}
               onSearch={handleOnSearch}
+              styling={{zIndex:99}}
             />
           </div>
 
