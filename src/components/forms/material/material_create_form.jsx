@@ -37,7 +37,11 @@ const validationSchema = Yup.object().shape({
   show: Yup.boolean().required("Required"),
 });
 
-const MaterialCreateForm = ({ setVisibleModal, getMaterialList }) => {
+const MaterialCreateForm = ({
+  visibleModal,
+  setVisibleModal,
+  getMaterialList,
+}) => {
   //Можно написать MaterialDto
   const [material, setMaterial] = useState({
     name: "",
@@ -134,10 +138,12 @@ const MaterialCreateForm = ({ setVisibleModal, getMaterialList }) => {
   };
 
   useEffect(() => {
-    getTmcs();
-    getTmcTypes();
-    getCraftifies();
-  }, []);
+    if (visibleModal) {
+      getTmcs();
+      getTmcTypes();
+      getCraftifies();
+    }
+  }, [visibleModal]);
 
   const onClose = () => {
     setVisibleModal(false);

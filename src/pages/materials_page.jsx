@@ -112,10 +112,11 @@ const MaterialsPage = () => {
       width="100%"
     >
       <MyModal
-        visibleModal={visibleCreateModal}
         setVisibleModal={setVisibleCreateModal}
+        visibleCreateModal={visibleCreateModal}
       >
         <MaterialCreateForm
+          visibleModal={visibleCreateModal}
           setVisibleModal={setVisibleCreateModal}
           getMaterialList={getMaterialList}
         />
