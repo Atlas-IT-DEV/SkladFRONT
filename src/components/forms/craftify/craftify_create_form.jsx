@@ -26,6 +26,7 @@ const CraftifyCreateForm = ({ getCraftifyList, setVisibleModal }) => {
 
   const onClose = () => {
     setVisibleModal(false);
+    clearForm();
   };
 
   const createCraftify = async (propety) => {
@@ -47,6 +48,12 @@ const CraftifyCreateForm = ({ getCraftifyList, setVisibleModal }) => {
     },
     enableReinitialize: true,
   });
+
+  const clearForm = () => {
+    formik.setValues(craftify);
+    formik.setErrors({});
+    formik.setTouched({});
+  };
 
   return (
     <FormikProvider value={formik}>

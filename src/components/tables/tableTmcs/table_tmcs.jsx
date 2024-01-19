@@ -26,6 +26,7 @@ const TableTmcs = ({ getTmcList, tmcList }) => {
         setVisibleModal={setVisibleEditModal}
       >
         <TmcEditForm
+          visibleModal={visibleEditModal}
           setVisibleModal={setVisibleEditModal}
           getTmcList={getTmcList}
           tmcId={tmcId}

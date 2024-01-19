@@ -113,7 +113,7 @@ const MaterialsPage = () => {
     >
       <MyModal
         setVisibleModal={setVisibleCreateModal}
-        visibleCreateModal={visibleCreateModal}
+        visibleModal={visibleCreateModal}
       >
         <MaterialCreateForm
           visibleModal={visibleCreateModal}

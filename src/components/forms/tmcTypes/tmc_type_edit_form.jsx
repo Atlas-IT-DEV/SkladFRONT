@@ -24,7 +24,12 @@ const validationSchema = Yup.object().shape({
   ).max(20, "Too Long!"),
 });
 
-const TmcTypeEditForm = ({ getTmcTypeList, setVisibleModal, tmcTypeId }) => {
+const TmcTypeEditForm = ({
+  visibleModal,
+  getTmcTypeList,
+  setVisibleModal,
+  tmcTypeId,
+}) => {
   const [tmcType, setTmcType] = useState({
     name: "",
     propertyIdList: [],
@@ -67,10 +72,6 @@ const TmcTypeEditForm = ({ getTmcTypeList, setVisibleModal, tmcTypeId }) => {
   };
 
   useEffect(() => {
-    getProperties();
-  }, []);
-
-  useEffect(() => {
     if (tmcTypeId > 0) {
       getTmcType(tmcTypeId);
     }
@@ -78,6 +79,7 @@ const TmcTypeEditForm = ({ getTmcTypeList, setVisibleModal, tmcTypeId }) => {
 
   const onClose = () => {
     setVisibleModal(false);
+    clearForm();
   };
 
   const editTmcType = async (propety) => {
@@ -94,11 +96,24 @@ const TmcTypeEditForm = ({ getTmcTypeList, setVisibleModal, tmcTypeId }) => {
     validationSchema: validationSchema,
     onSubmit: (values, { setSubmitting }) => {
       editTmcType(values);
-      onClose();
+      setVisibleModal(false);
       setSubmitting(false);
     },
     enableReinitialize: true,
   });
+
+  useEffect(() => {
+    if (tmcTypeId > 0 && visibleModal) {
+      getProperties();
+    }
+  }, [visibleModal]);
+
+  const clearForm = () => {
+    getTmcType(tmcTypeId);
+    formik.setErrors({});
+    formik.setTouched({});
+  };
+
   return (
     <FormikProvider value={formik}>
       <Flex

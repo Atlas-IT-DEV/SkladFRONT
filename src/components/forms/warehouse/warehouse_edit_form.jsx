@@ -29,6 +29,7 @@ const WarehouseEditForm = ({
 
   const onClose = () => {
     setVisibleModal(false);
+    clearForm();
   };
 
   const updateWarehouse = async (warehouse) => {
@@ -45,7 +46,7 @@ const WarehouseEditForm = ({
     validationSchema: validationSchema,
     onSubmit: (values, { setSubmitting }) => {
       updateWarehouse(values);
-      onClose();
+      setVisibleModal(false);
       setSubmitting(false);
     },
     enableReinitialize: true,
@@ -66,6 +67,12 @@ const WarehouseEditForm = ({
       getWarehouse(warehouseId);
     }
   }, [warehouseId]);
+
+  const clearForm = () => {
+    getWarehouse(warehouseId);
+    formik.setErrors({});
+    formik.setTouched({});
+  };
 
   return (
     <FormikProvider value={formik}>

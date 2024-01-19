@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { FormikProvider, useFormik } from "formik";
 import {
   Box,
@@ -26,31 +26,14 @@ const validationSchema = Yup.object().shape({
 });
 
 const PurchaseEditForm = ({ setVisibleModal, purchaseId, getPurchaseList }) => {
-  const [purchase, setPurchase] = useState({
+  const purchase = {
     linkToMaterial: "",
     comment: "",
-  });
-
-  const getPurchase = async (purchaseId) => {
-    try {
-      const response = await PurchaseService.getPurchase(purchaseId);
-      setPurchase({
-        linkToMaterial: response.data.linkToMaterial || "",
-        comment: response.data.comment || "",
-      });
-    } catch (error) {
-      console.error("Error getMaterial:", error);
-    }
   };
-
-  useEffect(() => {
-    if (purchaseId > 0) {
-      getPurchase(purchaseId);
-    }
-  }, [purchaseId]);
 
   const onClose = () => {
     setVisibleModal(false);
+    clearForm();
   };
 
   const updatePurchase = async (purchase) => {
@@ -66,11 +49,35 @@ const PurchaseEditForm = ({ setVisibleModal, purchaseId, getPurchaseList }) => {
     validationSchema: validationSchema,
     onSubmit: (values, { setSubmitting }) => {
       updatePurchase(values);
-      onClose();
+      setVisibleModal(false);
       setSubmitting(false);
     },
     enableReinitialize: true,
   });
+
+  const getPurchase = async (purchaseId) => {
+    try {
+      const response = await PurchaseService.getPurchase(purchaseId);
+      formik.setValues({
+        linkToMaterial: response.data.linkToMaterial || "",
+        comment: response.data.comment || "",
+      });
+    } catch (error) {
+      console.error("Error getMaterial:", error);
+    }
+  };
+
+  useEffect(() => {
+    if (purchaseId > 0) {
+      getPurchase(purchaseId);
+    }
+  }, [purchaseId]);
+
+  const clearForm = () => {
+    getPurchase(purchaseId);
+    formik.setErrors({});
+    formik.setTouched({});
+  };
 
   return (
     <FormikProvider value={formik}>

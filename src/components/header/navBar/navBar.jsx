@@ -10,14 +10,20 @@ const NavBar = () => {
     <>
       <HStack spacing={5}>
         {paths.map((item) => {
-          if (item?.haveAccess?.has(cookie.role)) {
+          if (
+            item?.haveAccess?.has(cookie.role) ||
+            (item?.haveAccess?.has("AUTH") && cookie.role)
+          ) {
             return <MyLink key={item.name} to={item.path} name={item.name} />;
           }
         })}
       </HStack>
       <HStack spacing={5}>
         {authenticationPaths.map((item) => {
-          if (item?.haveAccess?.has(cookie.role)) {
+          if (
+            item?.haveAccess?.has(cookie.role) ||
+            (item?.haveAccess?.has("AUTH") && cookie.role)
+          ) {
             return (
               <MyLink
                 key={item.name}

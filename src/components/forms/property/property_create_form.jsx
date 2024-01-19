@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef } from "react";
 import { FormikProvider, useFormik } from "formik";
 import {
   Box,
@@ -26,13 +26,16 @@ const validationSchema = Yup.object().shape({
 });
 
 const PropertyCreateForm = ({ getPropertyList, setVisibleModal }) => {
-  const [property, setProperty] = useState({
+  const selectRefType = useRef();
+
+  const property = {
     name: "",
     type: "",
-  });
+  };
 
   const onClose = () => {
     setVisibleModal(false);
+    clearForm();
   };
 
   const createProperty = async (propety) => {
@@ -54,6 +57,12 @@ const PropertyCreateForm = ({ getPropertyList, setVisibleModal }) => {
     },
     enableReinitialize: true,
   });
+  const clearForm = () => {
+    selectRefType.current.setValue("");
+    formik.setValues(property);
+    formik.setErrors({});
+    formik.setTouched({});
+  };
   return (
     <FormikProvider value={formik}>
       <Flex
@@ -85,6 +94,7 @@ const PropertyCreateForm = ({ getPropertyList, setVisibleModal }) => {
           >
             <FormikInput formik={formik} name={"name"} label={"Название"} />
             <FormikSelect
+              selectRef={selectRefType}
               formik={formik}
               name={"type"}
               placeholder={"Тип"}

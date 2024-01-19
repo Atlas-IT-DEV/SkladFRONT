@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef } from "react";
 import { FormikProvider, useFormik } from "formik";
 import {
   Box,
@@ -25,35 +25,22 @@ const validationSchema = Yup.object().shape({
     .required("Required"),
 });
 
-const PropertyEditForm = ({ getPropertyList, setVisibleModal, propertyId }) => {
-  const [property, setProperty] = useState({
+const PropertyEditForm = ({
+  visibleModal,
+  getPropertyList,
+  setVisibleModal,
+  propertyId,
+}) => {
+  const property = {
     name: "",
     type: "",
-  });
-
-  const selectTypesRef = useRef();
-  const getProperty = async (propertyId) => {
-    try {
-      const response = await PropertyService.getProperty(propertyId);
-      selectTypesRef.current?.setValue(
-        optionTypeList.find((option) => {
-          return option.value === response.data.type;
-        }),
-      );
-      setProperty(response.data);
-    } catch (error) {
-      console.error("Error getProperty:", error);
-    }
   };
 
-  useEffect(() => {
-    if (propertyId > 0) {
-      getProperty(propertyId);
-    }
-  }, [propertyId]);
+  const selectTypesRef = useRef();
 
   const onClose = () => {
     setVisibleModal(false);
+    clearForm();
   };
 
   const editProperty = async (propety) => {
@@ -70,11 +57,41 @@ const PropertyEditForm = ({ getPropertyList, setVisibleModal, propertyId }) => {
     validationSchema: validationSchema,
     onSubmit: (values, { setSubmitting }) => {
       editProperty(values);
-      onClose();
+      setVisibleModal(false);
       setSubmitting(false);
     },
     enableReinitialize: true,
   });
+
+  const getProperty = async (propertyId) => {
+    try {
+      const response = await PropertyService.getProperty(propertyId);
+      selectTypesRef.current?.setValue(
+        optionTypeList.find((option) => {
+          return option.value === response.data.type;
+        }),
+      );
+      formik.setValues({
+        name: response.data.name,
+        type: response.data.type,
+      });
+    } catch (error) {
+      console.error("Error getProperty:", error);
+    }
+  };
+
+  useEffect(() => {
+    if (propertyId > 0) {
+      getProperty(propertyId);
+    }
+  }, [propertyId]);
+
+  const clearForm = () => {
+    getProperty(propertyId);
+    formik.setErrors({});
+    formik.setTouched({});
+  };
+  console.log(property);
   return (
     <FormikProvider value={formik}>
       <Flex

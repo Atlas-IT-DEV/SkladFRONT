@@ -26,6 +26,7 @@ const TableCraftifies = ({ getCraftifyList, craftifyList }) => {
         setVisibleModal={setVisibleEditModal}
       >
         <CraftifyEditForm
+          visibleModal={visibleEditModal}
           setVisibleModal={setVisibleEditModal}
           getCraftifyList={getCraftifyList}
           craftifyId={craftifyId}

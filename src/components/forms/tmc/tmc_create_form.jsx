@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { FormikProvider, useFormik } from "formik";
 import {
   Box,
@@ -21,16 +21,19 @@ const validationSchema = Yup.object().shape({
     .required("Required"),
   propertyIdList: Yup.array(
     Yup.number().min(1, "Too Short!").required("Required"),
-  ).max(20, "Too Long!"),
+  )
+    .min(1)
+    .max(20, "Too Long!"),
 });
 
-const TmcCreateForm = ({ getTmcList, setVisibleModal }) => {
-  const [tmc, setTmc] = useState({
+const TmcCreateForm = ({ visibleModal, getTmcList, setVisibleModal }) => {
+  const tmc = {
     name: "",
     propertyIdList: [],
-  });
+  };
 
   const [propertyList, setPropertyList] = useState([]);
+  const selectRefPropertyList = useRef();
 
   const getProperties = async () => {
     try {
@@ -46,14 +49,6 @@ const TmcCreateForm = ({ getTmcList, setVisibleModal }) => {
     } catch (error) {
       console.error("Error getProperties:", error);
     }
-  };
-
-  useEffect(() => {
-    getProperties();
-  }, []);
-
-  const onClose = () => {
-    setVisibleModal(false);
   };
 
   const createTmc = async (propety) => {
@@ -75,6 +70,25 @@ const TmcCreateForm = ({ getTmcList, setVisibleModal }) => {
     },
     enableReinitialize: true,
   });
+
+  useEffect(() => {
+    if (visibleModal) {
+      getProperties();
+    }
+  }, [visibleModal]);
+
+  const onClose = () => {
+    setVisibleModal(false);
+    clearForm();
+  };
+
+  const clearForm = () => {
+    selectRefPropertyList.current.clearValue();
+    formik.setValues(tmc);
+    formik.setErrors({});
+    formik.setTouched({});
+  };
+
   return (
     <FormikProvider value={formik}>
       <Flex
@@ -106,12 +120,14 @@ const TmcCreateForm = ({ getTmcList, setVisibleModal }) => {
           >
             <FormikInput formik={formik} name={"name"} label={"Название"} />
             <FormikSelect
+              name={"propertyIdList"}
+              selectRef={selectRefPropertyList}
               isMulti
               options={propertyList}
               onChange={(e) => {
                 formik.setFieldValue(
                   "propertyIdList",
-                  e.map((property) => property.value),
+                  e?.map((property) => property.value),
                 );
               }}
               placeholder={"Свойства"}

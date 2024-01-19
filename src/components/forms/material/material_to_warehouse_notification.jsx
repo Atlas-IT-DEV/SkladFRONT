@@ -75,6 +75,7 @@ const MaterialToWarehouseNotification = ({
 
   const onClose = () => {
     setVisibleModal(false);
+    clearForm();
   };
 
   const changeCount = (e) => {
@@ -121,15 +122,30 @@ const MaterialToWarehouseNotification = ({
   };
 
   useEffect(() => {
-    if (visibleModal) {
+    if (materialId > 0) {
       formik.setValues(new MaterialFormTransferDto(materialId));
       formik.setTouched({});
       selectPurchaseIdRef.current?.setValue();
       selectWarehouseIdRef.current?.setValue();
-      getWarehouses();
+
       getMaterial(materialId);
     }
-  }, [materialId, visibleModal]);
+  }, [materialId]);
+
+  useEffect(() => {
+    if (visibleModal > 0) {
+      getMaterial(materialId);
+      getWarehouses();
+    }
+  }, [visibleModal]);
+
+  const clearForm = () => {
+    formik.setValues(new MaterialFormTransferDto(materialId));
+    formik.setTouched({});
+    selectPurchaseIdRef.current?.setValue();
+    selectWarehouseIdRef.current?.setValue();
+    getMaterial(materialId);
+  };
 
   const Transfer = async (materialTransfer) => {
     try {

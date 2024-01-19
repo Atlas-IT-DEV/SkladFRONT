@@ -32,6 +32,7 @@ const TmcTypesPage = () => {
         setVisibleModal={setVisibleCreateModal}
       >
         <TmcTypeCreateForm
+          visibleModal={visibleCreateModal}
           setVisibleModal={setVisibleCreateModal}
           getTmcTypeList={getTmcTypeList}
         />

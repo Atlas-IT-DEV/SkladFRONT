@@ -26,6 +26,7 @@ const WarehouseCreateForm = ({ getWarehouseList, setVisibleModal }) => {
 
   const onClose = () => {
     setVisibleModal(false);
+    clearForm();
   };
 
   const createWarehouse = async (warehouse) => {
@@ -47,6 +48,13 @@ const WarehouseCreateForm = ({ getWarehouseList, setVisibleModal }) => {
     },
     enableReinitialize: true,
   });
+
+  const clearForm = () => {
+    formik.setValues(warehouse);
+    formik.setErrors({});
+    formik.setTouched({});
+  };
+
   return (
     <FormikProvider value={formik}>
       <Flex

@@ -28,6 +28,7 @@ const TableDeliveryMethods = ({
         setVisibleModal={setVisibleEditModal}
       >
         <DeliveryMethodEditForm
+          visibleModal={visibleEditModal}
           setVisibleModal={setVisibleEditModal}
           deliveryMethodId={deliveryMethodId}
           getDeliveryMethodList={getDeliveryMethodList}

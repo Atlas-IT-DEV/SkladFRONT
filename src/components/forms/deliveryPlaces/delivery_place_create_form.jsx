@@ -26,6 +26,7 @@ const DeliveryPlaceCreateForm = ({ getDeliveryPlaceList, setVisibleModal }) => {
 
   const onClose = () => {
     setVisibleModal(false);
+    clearForm();
   };
 
   const createDeliveryPlace = async (deliveryPlace) => {
@@ -47,6 +48,12 @@ const DeliveryPlaceCreateForm = ({ getDeliveryPlaceList, setVisibleModal }) => {
     },
     enableReinitialize: true,
   });
+
+  const clearForm = () => {
+    formik.setValues(deliveryPlace);
+    formik.setErrors({});
+    formik.setTouched({});
+  };
   return (
     <FormikProvider value={formik}>
       <Flex

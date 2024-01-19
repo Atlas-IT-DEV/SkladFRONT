@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import * as Yup from "yup";
 import { FormikProvider, useFormik } from "formik";
 import {
@@ -43,11 +43,13 @@ const validationSchema = Yup.object().shape({
 });
 
 const MaterialTrimCreateForm = ({
+  visibleModal,
   getMaterialList,
   setVisibleModal,
   materialId,
 }) => {
   const [materialPurchases, setMaterialPurchases] = useState([]);
+  const selectRefPurchase = useRef();
   const material = {
     name: "",
     tmcId: "",
@@ -66,6 +68,7 @@ const MaterialTrimCreateForm = ({
   };
   const onClose = () => {
     setVisibleModal(false);
+    clearForm();
   };
 
   const createMaterial = async (material) => {
@@ -99,7 +102,7 @@ const MaterialTrimCreateForm = ({
       );
       console.log(response.data);
       formik.setValues({
-        name: `${response.data.name}-обрезок`,
+        name: "",
         tmcId: response.data.tmc.id,
         tmcTypeId: response.data.tmcType.id,
         tmCraftifyIdList: response.data.tmCraftifies.map(
@@ -119,12 +122,39 @@ const MaterialTrimCreateForm = ({
     }
   };
 
+  const getPurchases = async (materialId) => {
+    try {
+      const response = await MaterialService.getMaterial(materialId);
+      setMaterialPurchases(
+        response.data.currentPurchaseMaterials.map((purchase) => ({
+          value: purchase.purchaseId,
+          label: `Идентификатор закупки: ${purchase.purchaseId}`,
+        })),
+      );
+    } catch (error) {
+      console.error("Error getPurchases:", error);
+    }
+  };
+
   useEffect(() => {
     if (materialId > 0) {
       getMaterial(materialId);
     }
   }, [materialId]);
-  console.log(formik.errors);
+
+  useEffect(() => {
+    if (materialId > 0 && visibleModal) {
+      getPurchases(materialId);
+    }
+  }, [visibleModal]);
+
+  const clearForm = () => {
+    formik.setValues(material);
+    formik.setErrors({});
+    formik.setTouched({});
+    selectRefPurchase.current.setValue("");
+  };
+
   return (
     <FormikProvider value={formik}>
       <Flex
@@ -154,7 +184,9 @@ const MaterialTrimCreateForm = ({
               },
             }}
           >
+            <FormikInput formik={formik} name={"name"} label={"Название"} />
             <FormikSelect
+              selectRef={selectRefPurchase}
               formik={formik}
               name={"purchaseId"}
               placeholder={"Закупка"}

@@ -32,6 +32,7 @@ const WriteoffsPage = () => {
         setVisibleModal={setVisibleCreateModal}
       >
         <WriteoffCreateForm
+          visibleModal={visibleCreateModal}
           setVisibleModal={setVisibleCreateModal}
           getWriteOffList={getWriteOffList}
         />
