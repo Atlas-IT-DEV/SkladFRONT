@@ -48,7 +48,7 @@ const DeliveryPlacesPage = () => {
         Адреса отгрузки
       </Text>
       <Text fontSize={14} fontWeight={400} marginBottom="20px">
-        Возможно здеась будет тоже какой то поясняющий текст
+        Управление адресами отгрузок
       </Text>
       <HStack color={"black"} width="100%">
         <HStack color={"black"} width="100%">

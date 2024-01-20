@@ -46,7 +46,7 @@ const WriteoffsPage = () => {
         Списания
       </Text>
       <Text fontSize={14} fontWeight={400} marginBottom="20px">
-        Возможно здеась будет тоже какой то поясняющий текст
+        Страница создания и редактирования списаний
       </Text>
       <HStack color={"black"} width="100%">
         <HStack color={"black"} width="100%">

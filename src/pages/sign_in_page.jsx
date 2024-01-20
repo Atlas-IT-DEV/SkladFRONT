@@ -3,8 +3,10 @@ import { useFormik } from "formik";
 import React from "react";
 import UserService from "../API/services/user_service";
 import { setUser } from "../API/helper/userCookie";
+import { useNavigate } from "react-router";
 
 const SignInPage = () => {
+  const navigate = useNavigate();
   const validate = (values) => {
     const errors = {};
 
@@ -23,8 +25,11 @@ const SignInPage = () => {
     try {
       const response = await UserService.signIn(values.login, values.password);
       setUser(response.data);
+      alert("Вы успешно вошли в систему");
+      navigate("/materials");
     } catch (error) {
       console.error("Error signIn:", error);
+      alert("Ошибка в данных!");
     }
   };
 

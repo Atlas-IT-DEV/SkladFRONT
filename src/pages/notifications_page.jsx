@@ -37,7 +37,7 @@ const NotificationPage = () => {
         Уведомления
       </Text>
       <Text fontSize={14} fontWeight={400} marginBottom="20px">
-        Возможно здесь будет тоже какой то поясняющий текст
+        Страница уведомлений
       </Text>
       <Stack
         color={"black"}

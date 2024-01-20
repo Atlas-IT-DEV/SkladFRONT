@@ -21,7 +21,7 @@ const PurchasesPage = () => {
         Закупки
       </Text>
       <Text fontSize={14} fontWeight={400} marginBottom="20px">
-        Возможно здеась будет тоже какой то поясняющий текст
+        Информация о закупках
       </Text>
       <TablePurchases />
     </VStack>

@@ -46,7 +46,7 @@ const СraftifiesPage = () => {
         Способы обработки
       </Text>
       <Text fontSize={14} fontWeight={400} marginBottom="20px">
-        Возможно здеась будет тоже какой то поясняющий текст
+        Создание  способов обработки материалов
       </Text>
       <HStack color={"black"} width="100%">
         <HStack color={"black"} width="100%">

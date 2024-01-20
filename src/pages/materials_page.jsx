@@ -16,6 +16,9 @@ import Select from "react-select";
 import WarehouseService from "../API/services/warehouse_service";
 import useWindowDimensions from "../hooks/window_dimensions";
 import { ReactSearchAutocomplete } from "react-search-autocomplete";
+import { CiEdit, CiShoppingCart } from "react-icons/ci";
+import { HiOutlineArrowsRightLeft } from "react-icons/hi2";
+import { MdOutlineContentCut } from "react-icons/md";
 
 const MaterialsPage = () => {
   const [visibleCreateModal, setVisibleCreateModal] = useState();
@@ -42,7 +45,7 @@ const MaterialsPage = () => {
       currentPage,
       currentPageSize,
       searchStr,
-      showHidden,
+      showHidden
     ).then((response) => {
       setMaterialList(response.data.materials);
       setTotalPages(response.data.totalPages);
@@ -129,9 +132,24 @@ const MaterialsPage = () => {
       >
         Материалы
       </Text>
-      <Text fontSize={14} fontWeight={400} marginBottom="20px">
-        Возможно здесь будет тоже какой то поясняющий текст
-      </Text>
+      <VStack align={"flex-start"}>
+        <HStack>
+          <CiEdit />
+          <Text>редактирование материала.</Text>
+        </HStack>
+        <HStack>
+          <CiShoppingCart />
+          <Text>создать закупку материала</Text>
+        </HStack>
+        <HStack>
+          <HiOutlineArrowsRightLeft />
+          <Text>перемещение материала</Text>
+        </HStack>
+        <HStack>
+          <MdOutlineContentCut />
+          <Text>обрезка материала</Text>
+        </HStack>
+      </VStack>
       <HStack gap={"25px"}>
         <div style={{ width: 400 }}>
           <ReactSearchAutocomplete

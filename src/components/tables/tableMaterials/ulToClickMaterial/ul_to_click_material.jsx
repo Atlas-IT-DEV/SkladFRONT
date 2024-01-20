@@ -2,6 +2,7 @@ import React from "react";
 import styles from "../../forTable/ul_to_click.module.css";
 import { CiEdit, CiShoppingCart } from "react-icons/ci";
 import { HiOutlineArrowsRightLeft } from "react-icons/hi2";
+import { MdOutlineContentCut } from "react-icons/md";
 
 const UlToClickMaterial = ({
   warehouseId,
@@ -36,7 +37,7 @@ const UlToClickMaterial = ({
               setVisibleCreateTrimModal(true);
             }}
           >
-            Обрезок
+            <MdOutlineContentCut/>
           </button>
         </li>
       )}

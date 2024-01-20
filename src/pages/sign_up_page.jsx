@@ -48,8 +48,10 @@ const SignUpPage = () => {
   const signUp = async (values) => {
     try {
       await UserService.signUp(values);
+      alert("Пользователь зарегистрирован");
     } catch (error) {
       console.error("Error signUp:", error);
+      alert("Ошибка при регистрации");
     }
   };
   const formik = useFormik({
@@ -78,7 +80,7 @@ const SignUpPage = () => {
             value: warehouse.id,
             label: warehouse.name,
           };
-        }),
+        })
       );
     } catch (error) {
       console.error("Error getWarehouses:", error);

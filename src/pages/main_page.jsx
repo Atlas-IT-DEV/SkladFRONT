@@ -15,13 +15,11 @@ const MainPage = () => {
       >
         Главная страница
       </Text>
-      <MaterialSearch />
       <Text fontSize={14} fontWeight={400} marginBottom="20px">
         Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
         tempor incididunt ut labore et dolore magna aliqua. Dignissim enim sit
         amet venenatis urna cursus eget nunc scelerisque.
       </Text>
-      <Recent />
       <MainInfo />
     </VStack>
   );

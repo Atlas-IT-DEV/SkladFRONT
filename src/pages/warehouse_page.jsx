@@ -46,7 +46,7 @@ const WarehousePage = () => {
         Склады
       </Text>
       <Text fontSize={14} fontWeight={400} marginBottom="20px">
-        Возможно здеась будет тоже какой то поясняющий текст
+        Страница создания и редактирования складов
       </Text>
       <HStack color={"black"} width="100%">
         <HStack color={"black"} width="100%">
@@ -54,7 +54,7 @@ const WarehousePage = () => {
             variant="menu_yellow"
             onClick={() => setVisibleCreateModal(true)}
           >
-            Добавить ноый склад
+            Добавить новый склад
           </Button>
         </HStack>
       </HStack>

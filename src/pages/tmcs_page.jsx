@@ -17,7 +17,7 @@ const TmcsPage = () => {
 
   useEffect(() => {
     getTmcList();
-  }, []);
+  }, [visibleCreateModal]);
 
   return (
     <VStack
@@ -46,7 +46,7 @@ const TmcsPage = () => {
         ТМЦ
       </Text>
       <Text fontSize={14} fontWeight={400} marginBottom="20px">
-        Возможно здеась будет тоже какой то поясняющий текст
+        Страница создания и редактирования ТМЦ
       </Text>
       <HStack color={"black"} width="100%">
         <HStack color={"black"} width="100%">
@@ -54,7 +54,7 @@ const TmcsPage = () => {
             variant="menu_yellow"
             onClick={() => setVisibleCreateModal(true)}
           >
-            Добавить ноый ТМЦ
+            Добавить новый ТМЦ
           </Button>
         </HStack>
       </HStack>
