@@ -43,7 +43,12 @@ const validationSchema = Yup.object().shape({
   show: Yup.boolean().required("Required"),
 });
 
-const MaterialEditForm = ({ setVisibleModal, materialId, getMaterialList }) => {
+const MaterialEditForm = ({
+  visibleModal,
+  setVisibleModal,
+  materialId,
+  getMaterialList,
+}) => {
   //Можно написать MaterialDto
   const [material, setMaterial] = useState(new EditMaterialDto());
 
@@ -160,15 +165,9 @@ const MaterialEditForm = ({ setVisibleModal, materialId, getMaterialList }) => {
     }
   };
 
-  useEffect(() => {
-    if (materialId > 0) {
-      getMaterial(materialId);
-      getCraftifies();
-    }
-  }, [materialId]);
-
   const onClose = () => {
     setVisibleModal(false);
+    clearForm();
   };
 
   const clearImages = () => {
@@ -225,12 +224,34 @@ const MaterialEditForm = ({ setVisibleModal, materialId, getMaterialList }) => {
         !mapPropertiesValidationToArray(mapPropertiesValidation).includes(false)
       ) {
         updateMaterial();
-        onClose();
+        setVisibleModal(false);
         setSubmitting(false);
       }
     },
     enableReinitialize: true,
   });
+
+  useEffect(() => {
+    if (materialId > 0) {
+      getMaterial(materialId);
+      getCraftifies();
+      formik.setErrors({});
+      formik.setTouched({});
+    }
+  }, [materialId]);
+
+  useEffect(() => {
+    if (visibleModal) {
+      getCraftifies();
+    }
+  }, [visibleModal]);
+
+  const clearForm = () => {
+    getMaterial(materialId);
+    formik.setErrors({});
+    formik.setTouched({});
+  };
+
   return (
     <>
       <Flex

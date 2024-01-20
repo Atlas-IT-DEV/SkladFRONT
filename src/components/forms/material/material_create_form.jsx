@@ -37,8 +37,21 @@ const validationSchema = Yup.object().shape({
   show: Yup.boolean().required("Required"),
 });
 
-const MaterialCreateForm = ({ setVisibleModal, getMaterialList }) => {
+const MaterialCreateForm = ({
+  visibleModal,
+  setVisibleModal,
+  getMaterialList,
+}) => {
   //Можно написать MaterialDto
+  const startMaterial = {
+    name: "",
+    tmcId: "",
+    tmcTypeId: "",
+    tmCraftifyIdList: [],
+    materialPropertyDTOList: new Map(),
+    show: true,
+  };
+
   const [material, setMaterial] = useState({
     name: "",
     tmcId: "",
@@ -65,6 +78,9 @@ const MaterialCreateForm = ({ setVisibleModal, getMaterialList }) => {
   const [isSubmit, setIsSubmit] = useState(false);
 
   const refImageInput = useRef();
+  const selectRefTMC = useRef();
+  const selectRefTmcType = useRef();
+  const selectRefCraftifyIdList = useRef();
 
   const [propertyChangeability, changeMapPropertiesValidation] =
     usePropertyValidationById(
@@ -134,13 +150,16 @@ const MaterialCreateForm = ({ setVisibleModal, getMaterialList }) => {
   };
 
   useEffect(() => {
-    getTmcs();
-    getTmcTypes();
-    getCraftifies();
-  }, []);
+    if (visibleModal) {
+      getTmcs();
+      getTmcTypes();
+      getCraftifies();
+    }
+  }, [visibleModal]);
 
   const onClose = () => {
     setVisibleModal(false);
+    clearForm();
   };
 
   const changeProperty = (value, propertyId, type) => {
@@ -162,6 +181,15 @@ const MaterialCreateForm = ({ setVisibleModal, getMaterialList }) => {
   };
 
   const changeTmcId = (e) => {
+    if (!e) {
+      setCurrentProperties([]);
+      setMaterial({
+        ...material,
+        tmcId: "",
+        materialPropertyDTOList: new Map(),
+      });
+      return;
+    }
     const result = tmcList.find((Tmc) => {
       return Tmc.id === e.value;
     });
@@ -234,6 +262,18 @@ const MaterialCreateForm = ({ setVisibleModal, getMaterialList }) => {
     },
     enableReinitialize: true,
   });
+
+  const clearForm = () => {
+    refImageInput.current.value = null;
+    setImages(refImageInput.current.files);
+    selectRefTMC.current.clearValue();
+    selectRefTmcType.current.clearValue();
+    selectRefCraftifyIdList.current.clearValue();
+    setMaterial(startMaterial);
+    formik.setErrors({});
+    formik.setTouched({});
+  };
+
   return (
     <>
       <Flex
@@ -301,6 +341,7 @@ const MaterialCreateForm = ({ setVisibleModal, getMaterialList }) => {
               />
             </div>
             <FormikSelect
+              selectRef={selectRefTMC}
               options={tmcList.map((tmc) => {
                 return { value: tmc.id, label: tmc.name };
               })}
@@ -309,13 +350,20 @@ const MaterialCreateForm = ({ setVisibleModal, getMaterialList }) => {
               // fontSize={["14px", "14px", "16px", "16px", "16px"]}
             />
             <FormikSelect
+              selectRef={selectRefTmcType}
               options={tmcTypeList}
-              onChange={(e) => setMaterial({ ...material, tmcTypeId: e.value })}
+              onChange={(e) => {
+                if (!e) {
+                  return;
+                }
+                setMaterial({ ...material, tmcTypeId: e.value });
+              }}
               placeholder="Тип ТМЦ"
               // fontSize={["14px", "14px", "16px", "16px", "16px"]}
             />
             <FormikSelect
               isMulti
+              selectRef={selectRefCraftifyIdList}
               options={craftifyList}
               onChange={(e) => changeTmCraftifyIdList(e)}
               // fontSize={["14px", "14px", "16px", "16px", "16px"]}

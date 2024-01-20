@@ -47,18 +47,23 @@ const validationSchema = Yup.object().shape({
   warehouseId: Yup.number().min(1, "Too Short!").required("Required"),
 });
 
-const WriteoffCreateForm = ({ getWriteOffList, setVisibleModal }) => {
+const WriteoffCreateForm = ({
+  visibleModal,
+  getWriteOffList,
+  setVisibleModal,
+}) => {
   const [cookie, setCookie] = useCookies();
-  const [writeOff, setWriteOff] = useState({
+  const writeOff = {
     reason: "",
     supplierId: 0,
     materials: [],
     warehouseId: cookie.warehouseId,
-  });
+  };
   const [warehouses, setWarehouses] = useState();
 
   const onClose = () => {
     setVisibleModal(false);
+    clearForm();
   };
 
   const getWarehouses = async () => {
@@ -119,9 +124,10 @@ const WriteoffCreateForm = ({ getWriteOffList, setVisibleModal }) => {
     },
     enableReinitialize: true,
   });
+
   useEffect(() => {
     getWarehouses();
-  }, []);
+  }, [visibleModal]);
 
   useEffect(() => {
     selectMaterialRef.current?.setValue([]);
@@ -137,13 +143,22 @@ const WriteoffCreateForm = ({ getWriteOffList, setVisibleModal }) => {
       (formikMaterial) => formikMaterial.materialId === materialId,
     );
   };
+
   const selectMaterialRef = useRef();
+
+  const selectRefWarehouseId = useRef();
+
+  const selectRefSupplierId = useRef();
+
   const setWarehouseId = (e) => {
     selectMaterialRef.current?.clearValue();
-    formik.setFieldValue("warehouseId", e.value);
+    formik.setFieldValue("warehouseId", e?.value);
     formik.setFieldValue("materials", []);
   };
   const addFormikMaterial = async (e) => {
+    if (!e) {
+      formik.setFieldValue("materials", []);
+    }
     for (const material of e) {
       if (findIndexMaterial(material.value) === -1) {
         const newMaterial = await getMaterial(
@@ -299,6 +314,16 @@ const WriteoffCreateForm = ({ getWriteOffList, setVisibleModal }) => {
       },
     };
   };
+
+  const clearForm = () => {
+    selectMaterialRef.current.clearValue();
+    selectRefWarehouseId?.current?.clearValue();
+    selectRefSupplierId.current.clearValue();
+    formik.setValues(writeOff);
+    formik.setErrors({});
+    formik.setTouched({});
+  };
+
   return (
     <FormikProvider value={formik}>
       <Flex
@@ -332,8 +357,9 @@ const WriteoffCreateForm = ({ getWriteOffList, setVisibleModal }) => {
             <div>
               <label>{"Поставщик"}</label>
               <AsyncPaginate
+                selectRef={selectRefSupplierId}
                 loadOptions={loadOptionsSupplier}
-                onChange={(e) => formik.setFieldValue("supplierId", e.value)}
+                onChange={(e) => formik.setFieldValue("supplierId", e?.value)}
                 additional={{
                   page: 1,
                 }}
@@ -346,6 +372,7 @@ const WriteoffCreateForm = ({ getWriteOffList, setVisibleModal }) => {
               ""
             ) : (
               <FormikSelect
+                selectRef={selectRefWarehouseId}
                 formik={formik}
                 name={"warehouseId"}
                 placeholder={"Склад"}

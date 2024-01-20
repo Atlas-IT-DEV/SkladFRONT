@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { FormikProvider, useFormik } from "formik";
 import {
   Box,
@@ -24,13 +24,18 @@ const validationSchema = Yup.object().shape({
   ).max(20, "Too Long!"),
 });
 
-const TmcTypeCreateForm = ({ getTmcTypeList, setVisibleModal }) => {
-  const [tmcType, setTmcType] = useState({
+const TmcTypeCreateForm = ({
+  visibleModal,
+  getTmcTypeList,
+  setVisibleModal,
+}) => {
+  const tmcType = {
     name: "",
     propertyIdList: [],
-  });
+  };
 
   const [propertyList, setPropertyList] = useState([]);
+  const selectRefPropertyIdList = useRef();
 
   const getProperties = async () => {
     try {
@@ -49,11 +54,14 @@ const TmcTypeCreateForm = ({ getTmcTypeList, setVisibleModal }) => {
   };
 
   useEffect(() => {
-    getProperties();
-  }, []);
+    if (visibleModal) {
+      getProperties();
+    }
+  }, [visibleModal]);
 
   const onClose = () => {
     setVisibleModal(false);
+    clearForm();
   };
 
   const createTmcType = async (propety) => {
@@ -75,6 +83,13 @@ const TmcTypeCreateForm = ({ getTmcTypeList, setVisibleModal }) => {
     },
     enableReinitialize: true,
   });
+
+  const clearForm = () => {
+    selectRefPropertyIdList.current.clearValue();
+    formik.setValues(tmcType);
+    formik.setErrors({});
+    formik.setTouched({});
+  };
   return (
     <FormikProvider value={formik}>
       <Flex
@@ -106,6 +121,7 @@ const TmcTypeCreateForm = ({ getTmcTypeList, setVisibleModal }) => {
           >
             <FormikInput formik={formik} name={"name"} label={"Название"} />
             <FormikSelect
+              selectRef={selectRefPropertyIdList}
               isMulti
               options={propertyList}
               onChange={(e) => {

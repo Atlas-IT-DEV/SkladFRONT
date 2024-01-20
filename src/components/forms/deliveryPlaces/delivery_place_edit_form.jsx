@@ -39,7 +39,7 @@ const DeliveryPlaceEditForm = ({
     validationSchema: validationSchema,
     onSubmit: (values, { setSubmitting }) => {
       editDeliveryPlace(values);
-      onClose();
+      setVisibleModal(false);
       setSubmitting(false);
     },
     enableReinitialize: true,
@@ -58,14 +58,10 @@ const DeliveryPlaceEditForm = ({
       console.error("Error getDeliveryPlace:", error);
     }
   };
-  useEffect(() => {
-    if (deliveryPlaceId > 0) {
-      getDeliveryPlace(deliveryPlaceId);
-    }
-  }, [deliveryPlaceId]);
 
   const onClose = () => {
     setVisibleModal(false);
+    clearForm();
   };
 
   const editDeliveryPlace = async (deliveryPlace) => {
@@ -79,6 +75,19 @@ const DeliveryPlaceEditForm = ({
       console.error("Error editDeliveryPlace:", error);
     }
   };
+
+  useEffect(() => {
+    if (deliveryPlaceId > 0) {
+      getDeliveryPlace(deliveryPlaceId);
+    }
+  }, [deliveryPlaceId]);
+
+  const clearForm = () => {
+    getDeliveryPlace(deliveryPlaceId);
+    formik.setErrors({});
+    formik.setTouched({});
+  };
+
   return (
     <FormikProvider value={formik}>
       <Flex

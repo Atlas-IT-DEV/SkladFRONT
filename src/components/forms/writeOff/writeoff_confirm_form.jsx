@@ -9,7 +9,6 @@ import {
   SimpleGrid,
   Text,
 } from "@chakra-ui/react";
-import { useCookies } from "react-cookie";
 import FormikInput from "../../UI/formik_input";
 import WriteOffService from "../../../API/services/writeoff_service";
 
@@ -29,8 +28,6 @@ const WriteoffConfirmForm = ({
   setVisibleModal,
   writeOffId,
 }) => {
-  const [cookie, setCookie] = useCookies();
-
   const writeOff = {
     id: writeOffId,
     comment: "",
@@ -38,6 +35,7 @@ const WriteoffConfirmForm = ({
 
   const onClose = () => {
     setVisibleModal(false);
+    clearForm();
   };
 
   const confirmWriteOff = async (confirm) => {
@@ -64,6 +62,12 @@ const WriteoffConfirmForm = ({
       formik.setFieldValue("id", writeOffId);
     }
   }, [writeOffId]);
+
+  const clearForm = () => {
+    formik.setValues(writeOff);
+    formik.setErrors({});
+    formik.setTouched({});
+  };
 
   return (
     <FormikProvider value={formik}>

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { FormikProvider, useFormik } from "formik";
 import {
   Box,
@@ -20,33 +20,18 @@ const validationSchema = Yup.object().shape({
 });
 
 const DeliveryMethodEditForm = ({
+  visibleModal,
   getDeliveryMethodList,
   setVisibleModal,
   deliveryMethodId,
 }) => {
-  const [deliveryMethod, setDeliveryMethod] = useState({
+  const deliveryMethod = {
     name: "",
-  });
-
-  const getDeliveryMethod = async (deliveryMethodId) => {
-    try {
-      const response = await DeliveryMethodService.getDeliveryMethod(
-        deliveryMethodId,
-      );
-      setDeliveryMethod(response.data);
-    } catch (error) {
-      console.error("Error getDeliveryMethod:", error);
-    }
   };
-
-  useEffect(() => {
-    if (deliveryMethodId > 0) {
-      getDeliveryMethod(deliveryMethodId);
-    }
-  }, [deliveryMethodId]);
 
   const onClose = () => {
     setVisibleModal(false);
+    clearForm();
   };
 
   const editDeliveryMethod = async (deliveryMethod) => {
@@ -66,11 +51,35 @@ const DeliveryMethodEditForm = ({
     validationSchema: validationSchema,
     onSubmit: (values, { setSubmitting }) => {
       editDeliveryMethod(values);
-      onClose();
+      setVisibleModal(false);
       setSubmitting(false);
     },
     enableReinitialize: true,
   });
+
+  const getDeliveryMethod = async (deliveryMethodId) => {
+    try {
+      const response = await DeliveryMethodService.getDeliveryMethod(
+        deliveryMethodId,
+      );
+      formik.setValues(response.data);
+    } catch (error) {
+      console.error("Error getDeliveryMethod:", error);
+    }
+  };
+
+  useEffect(() => {
+    if (deliveryMethodId > 0) {
+      getDeliveryMethod(deliveryMethodId);
+    }
+  }, [deliveryMethodId]);
+
+  const clearForm = () => {
+    getDeliveryMethod(deliveryMethodId);
+    formik.setErrors({});
+    formik.setTouched({});
+  };
+
   return (
     <FormikProvider value={formik}>
       <Flex
@@ -79,7 +88,7 @@ const DeliveryMethodEditForm = ({
         fontWeight="bold"
         mb={9}
       >
-        <Text fontSize="2xl">Редактирование метода доставки</Text>
+        <Text fontSize="2xl">Редактирование способа доставки</Text>
         <CloseButton onClick={onClose} />
       </Flex>
       <Box pb={6}>

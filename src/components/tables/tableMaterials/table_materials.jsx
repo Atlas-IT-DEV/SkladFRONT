@@ -6,11 +6,11 @@ import UlToClickMaterial from "./ulToClickMaterial/ul_to_click_material";
 import UlForTable from "../forTable/ulForTable/ul_for_table";
 import MyModal from "../../myModal/my_modal";
 import MaterialEditForm from "../../forms/material/material_edit_form";
-import PurchaseCreateForm from "../../forms/purchase/purchase_create_form";
 import useWindowDimensions from "../../../hooks/window_dimensions";
 import WarehouseToWarehouseNotification from "../../forms/material/warehouse_to_warehouse_notification";
 import MaterialToWarehouseNotification from "../../forms/material/material_to_warehouse_notification";
 import MaterialTrimCreateForm from "../../forms/material/material_trim_create_form";
+import PurchaseCreateForm from "../../forms/purchase/purchase_create_form";
 
 const TableMaterials = ({
   totalPages,
@@ -58,6 +58,7 @@ const TableMaterials = ({
         setVisibleModal={setVisibleEditModal}
       >
         <MaterialEditForm
+          visibleModal={visibleEditModal}
           setVisibleModal={setVisibleEditModal}
           materialId={materialId}
           getMaterialList={getMaterialList}
@@ -68,6 +69,7 @@ const TableMaterials = ({
         setVisibleModal={setVisibleCreatePurchaseModal}
       >
         <PurchaseCreateForm
+          visibleModal={visibleCreatePurchaseModal}
           setVisibleModal={setVisibleCreatePurchaseModal}
           materialId={materialId}
         />
@@ -88,7 +90,8 @@ const TableMaterials = ({
         setVisibleModal={setVisibleCreateTrimModal}
       >
         <MaterialTrimCreateForm
-          setVisibleModal={setVisibleToWarehouse}
+          visibleModal={visibleCreateTrimModal}
+          setVisibleModal={setVisibleCreateTrimModal}
           materialId={materialId}
           getMaterialList={getMaterialList}
         />

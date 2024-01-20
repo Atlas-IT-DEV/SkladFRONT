@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { FormikProvider, useFormik } from "formik";
 import {
   Box,
@@ -19,28 +19,19 @@ const validationSchema = Yup.object().shape({
     .required("Required"),
 });
 
-const CraftifyEditForm = ({ getCraftifyList, setVisibleModal, craftifyId }) => {
-  const [craftify, setCraftify] = useState({
+const CraftifyEditForm = ({
+  visibleModal,
+  getCraftifyList,
+  setVisibleModal,
+  craftifyId,
+}) => {
+  const craftify = {
     name: "",
-  });
-
-  const getCraftify = async (craftifyId) => {
-    try {
-      const response = await CraftifyService.getCraftify(craftifyId);
-      setCraftify(response.data);
-    } catch (error) {
-      console.error("Error getCraftify:", error);
-    }
   };
-
-  useEffect(() => {
-    if (craftifyId > 0) {
-      getCraftify(craftifyId);
-    }
-  }, [craftifyId]);
 
   const onClose = () => {
     setVisibleModal(false);
+    clearForm();
   };
 
   const editCraftify = async (craftify) => {
@@ -57,11 +48,32 @@ const CraftifyEditForm = ({ getCraftifyList, setVisibleModal, craftifyId }) => {
     validationSchema: validationSchema,
     onSubmit: (values, { setSubmitting }) => {
       editCraftify(values);
-      onClose();
+      setVisibleModal(false);
       setSubmitting(false);
     },
-    enableReinitialize: true,
   });
+
+  const getCraftify = async (craftifyId) => {
+    try {
+      const response = await CraftifyService.getCraftify(craftifyId);
+      formik.setValues(response.data);
+    } catch (error) {
+      console.error("Error getCraftify:", error);
+    }
+  };
+
+  useEffect(() => {
+    if (craftifyId > 0) {
+      getCraftify(craftifyId);
+    }
+  }, [craftifyId]);
+
+  const clearForm = () => {
+    getCraftify(craftifyId);
+    formik.setErrors({});
+    formik.setTouched({});
+  };
+
   return (
     <FormikProvider value={formik}>
       <Flex

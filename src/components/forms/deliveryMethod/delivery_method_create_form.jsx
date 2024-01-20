@@ -29,6 +29,7 @@ const DeliveryMethodCreateForm = ({
 
   const onClose = () => {
     setVisibleModal(false);
+    clearForm();
   };
 
   const createDeliveryMethod = async (deliveryMethod) => {
@@ -50,6 +51,13 @@ const DeliveryMethodCreateForm = ({
     },
     enableReinitialize: true,
   });
+
+  const clearForm = () => {
+    formik.setValues(deliveryMethod);
+    formik.setErrors({});
+    formik.setTouched({});
+  };
+
   return (
     <FormikProvider value={formik}>
       <Flex
@@ -58,7 +66,7 @@ const DeliveryMethodCreateForm = ({
         fontWeight="bold"
         mb={9}
       >
-        <Text fontSize="2xl">Создание метода доставки</Text>
+        <Text fontSize="2xl">Создание способа доставки</Text>
         <CloseButton onClick={onClose} />
       </Flex>
       <Box pb={6}>

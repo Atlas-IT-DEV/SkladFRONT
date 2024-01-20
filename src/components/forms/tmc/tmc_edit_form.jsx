@@ -24,31 +24,15 @@ const validationSchema = Yup.object().shape({
   ).max(20, "Too Long!"),
 });
 
-const TmcEditForm = ({ getTmcList, setVisibleModal, tmcId }) => {
-  const [tmc, setTmc] = useState({
+const TmcEditForm = ({ visibleModal, getTmcList, setVisibleModal, tmcId }) => {
+  const tmc = {
     name: "",
     propertyIdList: [],
-  });
+  };
 
   const [propertyList, setPropertyList] = useState([]);
 
   const selectPropertiesRef = useRef();
-  const getTmc = async (tmcId) => {
-    try {
-      const response = await TmcService.getTmc(tmcId);
-      selectPropertiesRef.current?.setValue(
-        response.data.properties.map((property) => {
-          return {
-            value: property.id,
-            label: property.name,
-          };
-        }),
-      );
-      setTmc(response.data);
-    } catch (error) {
-      console.error("Error getTmc:", error);
-    }
-  };
 
   const getProperties = async () => {
     try {
@@ -67,10 +51,6 @@ const TmcEditForm = ({ getTmcList, setVisibleModal, tmcId }) => {
   };
 
   useEffect(() => {
-    getProperties();
-  }, []);
-
-  useEffect(() => {
     if (tmcId > 0) {
       getTmc(tmcId);
     }
@@ -78,6 +58,7 @@ const TmcEditForm = ({ getTmcList, setVisibleModal, tmcId }) => {
 
   const onClose = () => {
     setVisibleModal(false);
+    clearForm();
   };
 
   const editTmc = async (propety) => {
@@ -94,11 +75,41 @@ const TmcEditForm = ({ getTmcList, setVisibleModal, tmcId }) => {
     validationSchema: validationSchema,
     onSubmit: (values, { setSubmitting }) => {
       editTmc(values);
-      onClose();
+      setVisibleModal(false);
       setSubmitting(false);
     },
     enableReinitialize: true,
   });
+
+  const getTmc = async (tmcId) => {
+    try {
+      const response = await TmcService.getTmc(tmcId);
+      selectPropertiesRef.current?.setValue(
+        response.data.properties.map((property) => {
+          return {
+            value: property.id,
+            label: property.name,
+          };
+        }),
+      );
+      formik.setValues(response.data);
+    } catch (error) {
+      console.error("Error getTmc:", error);
+    }
+  };
+
+  useEffect(() => {
+    if (tmcId > 0 && visibleModal) {
+      getProperties();
+    }
+  }, [visibleModal]);
+
+  const clearForm = () => {
+    getTmc(tmcId);
+    formik.setErrors({});
+    formik.setTouched({});
+  };
+
   return (
     <FormikProvider value={formik}>
       <Flex

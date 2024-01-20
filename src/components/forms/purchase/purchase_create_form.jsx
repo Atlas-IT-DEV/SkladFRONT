@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   Box,
   Button,
@@ -41,8 +41,8 @@ const validationSchema = Yup.object().shape({
   materialId: Yup.number().min(1, "Too Short!").required("Required"),
 });
 
-const PurchaseCreateForm = ({ setVisibleModal, materialId }) => {
-  const [purchase, setPurchase] = useState({
+const PurchaseCreateForm = ({ visibleModal, setVisibleModal, materialId }) => {
+  const purchase = {
     dateTime: new Date(),
     linkToMaterial: "",
     articleNumber: "",
@@ -51,9 +51,11 @@ const PurchaseCreateForm = ({ setVisibleModal, materialId }) => {
     supplierId: "",
     deliveryMethodId: "",
     materialId: materialId,
-  });
+  };
 
   const [deliveryMethodList, setDeliveryMethodList] = useState([]);
+  const selectRefSupplierId = useRef();
+  const selectRefDeliveryMethodId = useRef();
 
   const getDeliveryMethods = async () => {
     try {
@@ -71,16 +73,8 @@ const PurchaseCreateForm = ({ setVisibleModal, materialId }) => {
 
   const onClose = () => {
     setVisibleModal(false);
+    clearForm();
   };
-
-  useEffect(() => {
-    getSuppliers(1, 10);
-    getDeliveryMethods();
-  }, []);
-
-  useEffect(() => {
-    setPurchase({ ...purchase, materialId: materialId });
-  }, [materialId]);
 
   const createPurchase = async (purchase) => {
     try {
@@ -107,7 +101,6 @@ const PurchaseCreateForm = ({ setVisibleModal, materialId }) => {
       onClose();
       setSubmitting(false);
     },
-    enableReinitialize: true,
   });
   const getSuppliers = async (currentPage, currentPageSize, search) => {
     try {
@@ -136,6 +129,31 @@ const PurchaseCreateForm = ({ setVisibleModal, materialId }) => {
       },
     };
   };
+
+  useEffect(() => {
+    if (materialId > 0) {
+      selectRefSupplierId.current.setValue("");
+      selectRefDeliveryMethodId.current.setValue("");
+      formik.setValues({ ...purchase, materialId: materialId });
+      formik.setErrors({});
+      formik.setTouched({});
+    }
+  }, [materialId]);
+
+  useEffect(() => {
+    if (materialId > 0 && visibleModal) {
+      getDeliveryMethods();
+    }
+  }, [visibleModal]);
+
+  const clearForm = () => {
+    selectRefSupplierId.current.setValue("");
+    selectRefDeliveryMethodId.current.setValue("");
+    formik.setValues({ ...purchase, materialId: materialId });
+    formik.setErrors({});
+    formik.setTouched({});
+  };
+
   return (
     <FormikProvider value={formik}>
       <Flex
@@ -185,6 +203,7 @@ const PurchaseCreateForm = ({ setVisibleModal, materialId }) => {
             <div>
               <label>{"Поставщик"}</label>
               <AsyncPaginate
+                selectRef={selectRefSupplierId}
                 loadOptions={loadOptionsSupplier}
                 onChange={(e) => formik.setFieldValue("supplierId", e.value)}
                 additional={{
@@ -196,6 +215,7 @@ const PurchaseCreateForm = ({ setVisibleModal, materialId }) => {
               />
             </div>
             <FormikSelect
+              selectRef={selectRefDeliveryMethodId}
               formik={formik}
               name={"deliveryMethodId"}
               placeholder={"Метод доставки"}
