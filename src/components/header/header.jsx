@@ -38,7 +38,7 @@ const Header = () => {
       ref={componentRef}
     >
       <Image src={logo} />
-      {width >= 1488 ? (
+      {width >= 1920 ? (
         <HStack width={"100%"} justifyContent={"space-between"}>
           <NavBar />
         </HStack>

@@ -48,16 +48,7 @@ const PropertyPage = () => {
       <Text fontSize={14} fontWeight={400} marginBottom="20px">
         Страница создания и редактирования свойств
       </Text>
-      <HStack color={"black"} width="100%">
-        <HStack color={"black"} width="100%">
-          <Button
-            variant="menu_yellow"
-            onClick={() => setVisibleCreateModal(true)}
-          >
-            Добавить новое свойство
-          </Button>
-        </HStack>
-      </HStack>
+      ee
       {propertyListError ? (
         <div>{propertyListError}</div>
       ) : (

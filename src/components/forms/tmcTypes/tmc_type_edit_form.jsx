@@ -20,7 +20,7 @@ const validationSchema = Yup.object().shape({
     .max(255, "Too Long!")
     .required("Required"),
   propertyIdList: Yup.array(
-    Yup.number().min(1, "Too Short!").required("Required"),
+    Yup.number().min(1, "Too Short!").required("Required")
   ).max(20, "Too Long!"),
 });
 
@@ -47,7 +47,7 @@ const TmcTypeEditForm = ({
             value: property.id,
             label: property.name,
           };
-        }),
+        })
       );
       setTmcType(response.data);
     } catch (error) {
@@ -64,7 +64,7 @@ const TmcTypeEditForm = ({
             value: property.id,
             label: property.name,
           };
-        }),
+        })
       );
     } catch (error) {
       console.error("Error getProperties:", error);
@@ -151,7 +151,7 @@ const TmcTypeEditForm = ({
               onChange={(e) => {
                 formik.setFieldValue(
                   "propertyIdList",
-                  e.map((property) => property.value),
+                  e.map((property) => property.value)
                 );
               }}
               placeholder={"Свойства"}

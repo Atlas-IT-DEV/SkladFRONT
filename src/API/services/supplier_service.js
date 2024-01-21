@@ -20,4 +20,19 @@ export default class SupplierService {
       headers: { Authorization: getToken() },
     });
   }
+  static createSupplier(supplier) {
+    return Instance.post(`${contractorsUrl.contractors}`, supplier, {
+      headers: { Authorization: getToken() },
+    });
+  }
+  static getSupplierById(id) {
+    return Instance.get(`${contractorsUrl.contractors}/${id}`,  {
+      headers: { Authorization: getToken() },
+    });
+  }
+  static udateSupplierById(id, supplier) {
+    return Instance.put(`${contractorsUrl.contractors}/${id}`, supplier, {
+      headers: { Authorization: getToken() },
+    });
+  }
 }
