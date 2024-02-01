@@ -55,6 +55,7 @@ const MainPage = () => {
       </Text>
       {admin ? <TableLogs /> : null}
     </VStack>
+    </VStack>
   );
 };
 export default MainPage;
