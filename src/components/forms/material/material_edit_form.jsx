@@ -260,7 +260,7 @@ const MaterialEditForm = ({
         fontWeight="bold"
         mb={9}
       >
-        <Text fontSize="2xl">Редактироваие материала</Text>
+        <Text fontSize="2xl">Редактирование материала</Text>
         <CloseButton onClick={onClose} />
       </Flex>
       <Box pb={6}>

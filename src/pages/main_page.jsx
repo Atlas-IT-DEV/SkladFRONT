@@ -2,6 +2,8 @@ import { Text, VStack } from "@chakra-ui/react";
 import MainInfo from "../components/main_info";
 import Recent from "../components/recent";
 import MaterialSearch from "../components/material_search";
+import TablePurchases from "../components/tables/tablePurchases/table_purchases";
+import TableLogs from "../components/tables/table_logs";
 
 const MainPage = () => {
   return (
@@ -16,11 +18,13 @@ const MainPage = () => {
         Главная страница
       </Text>
       <Text fontSize={14} fontWeight={400} marginBottom="20px">
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-        tempor incididunt ut labore et dolore magna aliqua. Dignissim enim sit
-        amet venenatis urna cursus eget nunc scelerisque.
+        На главной странице вы можете видеть недавние действия пользователей,
+        которые работают с вашим складом. Это поможет вам быть в курсе всех
+        изменений, которые происходят на складе, а также контролировать работу
+        своих сотрудников.
       </Text>
-      <MainInfo />
+
+      <TableLogs />
     </VStack>
   );
 };

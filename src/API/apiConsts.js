@@ -25,3 +25,4 @@ export const usersUrl = {
   signUp: "signUp",
   me: "me",
 };
+export const logsUrl = 'logs';
