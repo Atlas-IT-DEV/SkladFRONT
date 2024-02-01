@@ -6,7 +6,7 @@ const theme = extendTheme({
     useSystemColorMode: true,
   },
   fonts: {
-    body: `Robot, sans-serif`
+    body: `Montserrat, sans-serif`
   },
   //варианты для различных компонентов
   components: {

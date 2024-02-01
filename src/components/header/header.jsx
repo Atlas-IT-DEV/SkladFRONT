@@ -11,7 +11,7 @@ import {
   DrawerCloseButton,
   DrawerHeader,
   DrawerBody,
-  Image
+  Image,
 } from "@chakra-ui/react";
 import { HamburgerIcon } from "@chakra-ui/icons";
 import NavBar from "./navBar/navBar";
@@ -42,7 +42,7 @@ const Header = () => {
         ref={btnRef}
         aria-label="Открыть меню"
         icon={<HamburgerIcon />}
-        bgColor={'white'}
+        bgColor={"menu_white"}
         onClick={onOpen}
       />
       <Drawer
@@ -56,7 +56,7 @@ const Header = () => {
           <DrawerCloseButton />
           <DrawerHeader fontSize={22}>Навигация</DrawerHeader>
           <DrawerBody>
-            <NavBar/>
+            <NavBar />
           </DrawerBody>
         </DrawerContent>
       </Drawer>
@@ -101,11 +101,11 @@ export default Header;
 //       justifyContent="space-between"
 //       align="center"
 //       width="100%"
-      // paddingLeft={["10px", "15px", "20px", "25px", "30px"]}
-      // paddingRight={["10px", "15px", "20px", "25px", "30px"]}
-      // paddingTop={5}
-      // paddingBottom={5}
-      // boxShadow="0px 0px 25px 0px rgba(0, 0, 0, 0.10)"
+// paddingLeft={["10px", "15px", "20px", "25px", "30px"]}
+// paddingRight={["10px", "15px", "20px", "25px", "30px"]}
+// paddingTop={5}
+// paddingBottom={5}
+// boxShadow="0px 0px 25px 0px rgba(0, 0, 0, 0.10)"
 //       direction="row"
 //       spacing="20px"
 //       ref={componentRef}
