@@ -14,9 +14,9 @@ export default class UserService {
       headers: { Authorization: getToken() },
     });
   }
-  static me() {
+  static me(token) {
     return Instance.get(`${usersUrl.users}/${usersUrl.me}`, {
-      headers: { Authorization: getToken() },
+      headers: { Authorization: getToken() || `Bearer ${token}` },
     });
   }
 }

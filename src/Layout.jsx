@@ -18,6 +18,8 @@ function Layout() {
         setCookie("warehouseId", response.data.warehouseId);
       } else if (!response.data.role === cookie.role) {
         setCookie("role", response.data.role);
+      } else if (response.data.userName !== cookie.userName) {
+        setCookie("userName", response.data.userName);
       }
     } catch (e) {
       if (e.response.status === 401) {

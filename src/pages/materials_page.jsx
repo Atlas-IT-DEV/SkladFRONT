@@ -45,7 +45,7 @@ const MaterialsPage = () => {
       currentPage,
       currentPageSize,
       searchStr,
-      showHidden
+      showHidden,
     ).then((response) => {
       setMaterialList(response.data.materials);
       setTotalPages(response.data.totalPages);
@@ -158,8 +158,7 @@ const MaterialsPage = () => {
             formatResult={formatResult}
             onSelect={handleOnSelect}
             onSearch={handleOnSearch}
-            styling={{ zIndex: 1}}
-
+            styling={{ zIndex: 1 }}
           />
         </div>
         <Checkbox
@@ -185,6 +184,7 @@ const MaterialsPage = () => {
           </Button>
           <Select
             fontSize={["14px", "14px", "16px", "16px", "16px"]}
+            defaultValue={{ value: null, label: "Все склады" }}
             options={warehouseList}
             onChange={(e) => {
               setWarehouseId(e.value);

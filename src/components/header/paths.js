@@ -53,4 +53,8 @@ export const authenticationPaths = [
     name: "Регистрация",
     haveAccess: new Set([roles.ADMIN]),
   },
+  {
+    name: "Имя",
+    haveAccess: new Set(["AUTH"]),
+  },
 ];

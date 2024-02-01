@@ -1,4 +1,11 @@
-import { HStack, Image, Stack, useDimensions, VStack } from "@chakra-ui/react";
+import {
+  HStack,
+  Image,
+  Stack,
+  Text,
+  useDimensions,
+  VStack,
+} from "@chakra-ui/react";
 import starbucks from "../../images/starbucks.svg";
 import logo from "./../../images/Logotype.svg";
 import useWindowDimensions from "../../hooks/window_dimensions";
@@ -71,6 +78,9 @@ const Header = () => {
                     zIndex="20"
                     backgroundColor="white"
                   >
+                    <Text fontSize={14} fontWeight={"bold"} color={"#1a8dff"}>
+                      {cookie.userName}
+                    </Text>
                     {paths.map((item) => {
                       if (
                         (item?.haveAccess?.has("AUTH") && cookie.role) ||

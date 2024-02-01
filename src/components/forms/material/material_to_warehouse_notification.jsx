@@ -132,7 +132,7 @@ const MaterialToWarehouseNotification = ({
   }, [materialId]);
 
   useEffect(() => {
-    if (cookie.warehouseId) {
+    if (cookie.warehouseId > 0) {
       formik.setFieldValue("warehouseId", cookie.warehouseId);
     }
     if (visibleModal > 0) {
@@ -169,11 +169,7 @@ const MaterialToWarehouseNotification = ({
       console.error("Error getSuppliers:", error);
     }
   };
-  console.log(
-    warehouseList.filter(
-      (warehouse) => warehouse.value === cookie.warehouseId,
-    )[0],
-  );
+  console.log(cookie.role === "ADMIN" ? { warehouseList } : undefined);
   return (
     <FormikProvider value={formik}>
       <Flex
@@ -232,7 +228,7 @@ const MaterialToWarehouseNotification = ({
                 )[0]
               }
               selectRef={selectWarehouseIdRef}
-              options={cookie.role === "ADMIN" ? { warehouseList } : undefined}
+              options={cookie.role === "ADMIN" ? warehouseList : undefined}
               onChange={(e) => {
                 formik.setFieldValue("warehouseId", e?.value);
               }}

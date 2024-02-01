@@ -1,13 +1,4 @@
-import {
-  VStack,
-  Text,
-  Card,
-  CardHeader,
-  Heading,
-  CardBody,
-  Grid,
-  GridItem,
-} from "@chakra-ui/react";
+import { Card, CardBody, Grid, GridItem, Text, VStack } from "@chakra-ui/react";
 
 const MainInfo = () => {
   return (
@@ -22,7 +13,7 @@ const MainInfo = () => {
         <GridItem>
           <Card borderRadius={0}>
             <CardBody>
-              <Text fontSize={14} fontWei ght={700} lineHeight="normal">
+              <Text fontSize={14} fontWeight={700} lineHeight="normal">
                 Очень важная информация
               </Text>
               <Text fontSize={14} fontWeight={400} color="dark">
