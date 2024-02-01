@@ -23,7 +23,7 @@ const PropertyPage = () => {
     <VStack
       padding={25}
       alignItems="flex-start"
-      spacing="40px"
+      spacing="20px"
       flexGrow={1}
       width="100%"
     >
@@ -38,7 +38,7 @@ const PropertyPage = () => {
       </MyModal>
       <Text
         color="#000"
-        fontSize={[24, 26, 28, 32, 36]}
+        fontSize='22px !important'
         fontWeight={700}
         lineHeight="normal"
         fontStyle="normal"

@@ -10,6 +10,8 @@
     "@emotion/styled": "^11.11.0",
     "@fontsource/inter": "^5.0.15",
     "@fontsource/open-sans": "^5.0.17",
+    "@fontsource/roboto": "^5.0.8",
+    "@fontsource/roboto-mono": "^5.0.16",
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",

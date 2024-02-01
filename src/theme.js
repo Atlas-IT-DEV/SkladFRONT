@@ -5,6 +5,9 @@ const theme = extendTheme({
     initialColorMode: "light",
     useSystemColorMode: true,
   },
+  fonts: {
+    body: `Robot, sans-serif`
+  },
   //варианты для различных компонентов
   components: {
     Button: {
