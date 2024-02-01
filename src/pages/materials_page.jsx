@@ -184,7 +184,7 @@ const MaterialsPage = () => {
           </Button>
           <Select
             fontSize={["14px", "14px", "16px", "16px", "16px"]}
-            value={{ value: null, label: "Все склады" }}
+            defaultValue={{ value: null, label: "Все склады" }}
             options={warehouseList}
             onChange={(e) => {
               setWarehouseId(e.value);

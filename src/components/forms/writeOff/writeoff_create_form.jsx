@@ -369,7 +369,7 @@ const WriteoffCreateForm = ({
               />
             </div>
             <FormikSelect
-              defaultValue={
+              value={
                 warehouses.filter(
                   (warehouse) => warehouse.value === cookie.warehouseId,
                 )[0]
