@@ -19,10 +19,12 @@ import CraftifyService from "../../../API/services/craftify_service";
 import usePropertyValidationById from "../../../hooks/property_validation_by_id";
 import MaterialService from "../../../API/services/material_service";
 import {
+  blobToBase64,
   mapPropertiesValidationToArray,
   materialPropertyDTOListToArray,
 } from "./support/conversion_functions";
 import FormikSelect from "../../UI/formik_select";
+import Slider from "./slider/slider";
 
 const validationSchema = Yup.object().shape({
   name: Yup.string()
@@ -225,7 +227,9 @@ const MaterialCreateForm = ({
     });
   };
 
-  const imageChangedHandler = (event) => {
+  const [viewImages, setViewImages] = useState([]);
+
+  const imageChangedHandler = async (event) => {
     try {
       const dt = new DataTransfer();
       for (let i = 0; i < event.target.files.length; i++) {
@@ -238,6 +242,12 @@ const MaterialCreateForm = ({
       }
       event.target.files = dt.files;
       setImages(dt.files);
+      const images = [];
+      for (let i = 0; i < dt.files.length; i++) {
+        const response = await blobToBase64(dt.files[i]);
+        images.push(response);
+      }
+      setViewImages(images);
     } catch (error) {
       console.error("Error imageChangedHandler:", error);
     }
@@ -246,6 +256,20 @@ const MaterialCreateForm = ({
   const clearImages = () => {
     refImageInput.current.value = null;
     setImages(refImageInput.current.files);
+    setViewImages([]);
+  };
+
+  const deleteImage = (index) => {
+    const newImages = new DataTransfer();
+    for (let i = 0; i < images.length; i++) {
+      if (i !== index) {
+        newImages.items.add(images[i]);
+      }
+    }
+    viewImages.splice(index, 1);
+    setImages(newImages.files);
+    setViewImages(viewImages);
+    refImageInput.current.files = newImages.files;
   };
 
   const formik = useFormik({
@@ -323,6 +347,11 @@ const MaterialCreateForm = ({
                 placeholder="Изображение"
               />
             </div>
+            {viewImages.length === 0 ? (
+              ""
+            ) : (
+              <Slider deleteImage={deleteImage} images={viewImages} />
+            )}
             <div>
               <label>Имя</label>
               <Input

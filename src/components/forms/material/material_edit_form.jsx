@@ -18,6 +18,7 @@ import ImageService from "../../../API/services/image_service";
 import CraftifyService from "../../../API/services/craftify_service";
 import usePropertyValidationById from "../../../hooks/property_validation_by_id";
 import {
+  blobToBase64,
   mapPropertiesValidationToArray,
   materialPropertyDTOListToArray,
 } from "./support/conversion_functions";
@@ -85,14 +86,6 @@ const MaterialEditForm = ({
   };
 
   const [viewImages, setViewImages] = useState([]);
-
-  function blobToBase64(blob) {
-    return new Promise((resolve, _) => {
-      const reader = new FileReader();
-      reader.onloadend = () => resolve(reader.result);
-      reader.readAsDataURL(blob);
-    });
-  }
 
   const getImages = async (images) => {
     const dt = new DataTransfer();
