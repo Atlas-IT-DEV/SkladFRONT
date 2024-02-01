@@ -2,6 +2,7 @@ import React from "react";
 import Select from "react-select";
 
 const FormikSelect = ({
+  value,
   isMulti,
   selectRef,
   placeholder,
@@ -22,6 +23,7 @@ const FormikSelect = ({
     <div>
       <label>{placeholder}</label>
       <Select
+        value={value}
         isMulti={isMulti}
         closeMenuOnSelect={!isMulti}
         defaultValue={defaultValue}

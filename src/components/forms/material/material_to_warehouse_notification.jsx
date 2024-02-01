@@ -14,11 +14,10 @@ import WarehouseService from "../../../API/services/warehouse_service";
 import MaterialService from "../../../API/services/material_service";
 import PurchaseService from "../../../API/services/purchase_service";
 import MaterialFormTransferDto from "../../../dto/material_form_transfer_dto";
-import NotificationService from "../../../API/services/notification_service";
-import WarehouseToWarehouseDto from "../../../dto/warehouse_to_warehouse_dto";
 import MaterialTransferDto from "../../../dto/material_transfer_dto";
 import { getRole } from "../../../API/helper/userCookie";
 import FormikSelect from "../../UI/formik_select";
+import { useCookies } from "react-cookie";
 
 const validationSchema = Yup.object().shape({
   warehouseId: Yup.number().min(1, "Too Short!").required("Required"),
@@ -54,7 +53,7 @@ const MaterialToWarehouseNotification = ({
   getMaterialList,
 }) => {
   const materialTransfer = new MaterialFormTransferDto({ materialId });
-
+  const [cookie, setCookie] = useCookies();
   const formik = useFormik({
     initialValues: materialTransfer,
     validationSchema: validationSchema,
@@ -133,6 +132,9 @@ const MaterialToWarehouseNotification = ({
   }, [materialId]);
 
   useEffect(() => {
+    if (cookie.warehouseId) {
+      formik.setFieldValue("warehouseId", cookie.warehouseId);
+    }
     if (visibleModal > 0) {
       getMaterial(materialId);
       getWarehouses();
@@ -155,15 +157,10 @@ const MaterialToWarehouseNotification = ({
           materialTransfer.warehouseId,
           new MaterialTransferDto(materialTransfer),
         );
-      } else {
-        await NotificationService.createNotification(
-          new WarehouseToWarehouseDto({
-            currentWarehouseId: -1,
-            newWarehouseId: materialTransfer.warehouseId,
-            materialId: materialTransfer.materialId,
-            purchaseId: materialTransfer.purchaseId,
-            count: materialTransfer.count,
-          }),
+      } else if (getRole() === "WAREHOUSE_RESPONSIBLE") {
+        await WarehouseService.addMaterialToWarehouse(
+          cookie.warehouseId,
+          new MaterialTransferDto(materialTransfer),
         );
       }
 
@@ -172,7 +169,11 @@ const MaterialToWarehouseNotification = ({
       console.error("Error getSuppliers:", error);
     }
   };
-
+  console.log(
+    warehouseList.filter(
+      (warehouse) => warehouse.value === cookie.warehouseId,
+    )[0],
+  );
   return (
     <FormikProvider value={formik}>
       <Flex
@@ -225,8 +226,13 @@ const MaterialToWarehouseNotification = ({
               placeholder={"Закупки"}
             />
             <FormikSelect
+              value={
+                warehouseList.filter(
+                  (warehouse) => warehouse.value === cookie.warehouseId,
+                )[0]
+              }
               selectRef={selectWarehouseIdRef}
-              options={warehouseList}
+              options={cookie.role === "ADMIN" ? { warehouseList } : undefined}
               onChange={(e) => {
                 formik.setFieldValue("warehouseId", e?.value);
               }}
