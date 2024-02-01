@@ -97,7 +97,7 @@ const MaterialEditForm = ({
   const getImages = async (images) => {
     const dt = new DataTransfer();
     const imageArray = [];
-    console.log(images);
+    // console.log(images);
     for (const image of images) {
       await ImageService.getImageBlob(image.path).then((response) => {
         dt.items.add(
@@ -107,9 +107,6 @@ const MaterialEditForm = ({
         );
         imageArray.push(response.data);
       });
-      // await ImageService.getImage(image.path).then((response) => {
-      //   imageArray.push(response.data);
-      // });
     }
     setViewImages(
       await Promise.all(
@@ -197,7 +194,7 @@ const MaterialEditForm = ({
     setImages(refImageInput.current.files);
   };
 
-  const imageChangedHandler = (event) => {
+  const imageChangedHandler = async (event) => {
     try {
       const dt = new DataTransfer();
       for (let i = 0; i < event.target.files.length; i++) {
@@ -210,6 +207,12 @@ const MaterialEditForm = ({
       }
       event.target.files = dt.files;
       setImages(dt.files);
+      const images = [];
+      for (let i = 0; i < dt.files.length; i++) {
+        const response = await blobToBase64(dt.files[i]);
+        images.push(response);
+      }
+      setViewImages(images);
     } catch (error) {
       console.error("Error imageChangedHandler:", error);
     }
@@ -273,7 +276,7 @@ const MaterialEditForm = ({
     formik.setErrors({});
     formik.setTouched({});
   };
-  console.log(viewImages);
+  // console.log(viewImages);
   return (
     <>
       <Flex
@@ -323,10 +326,11 @@ const MaterialEditForm = ({
                 fontSize={["14px", "14px", "16px", "16px", "16px"]}
               />
             </div>
-            {viewImages.map((image) => {
-              console.log(image);
+            {viewImages.map((image, index) => {
+              // console.log(image);
               return (
                 <Box
+                  key={index}
                   alignItems={"center"}
                   display={"flex"}
                   justifyContent={"center"}
