@@ -42,7 +42,7 @@ const TableWriteoffs = ({ getWriteOffList, writeoffList }) => {
               <UlForTable sort={sort} setSort={setSort} name="Причина" />
             </td>
             <td>
-              <UlForTable sort={sort} setSort={setSort} name="Комметнарий" />
+              <UlForTable sort={sort} setSort={setSort} name="Комментарий" />
             </td>
             <td>
               <UlForTable sort={sort} setSort={setSort} name="Клиент" />

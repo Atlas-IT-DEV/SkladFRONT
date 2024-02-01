@@ -69,7 +69,6 @@ const UlToClickMaterial = ({
               setVisibleWarehouseToWarehouse(true);
             }}
           >
-            Перемещение на другой склад
           </button>
         </li>
       ) : (

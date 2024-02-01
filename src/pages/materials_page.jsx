@@ -151,14 +151,15 @@ const MaterialsPage = () => {
           <Text>обрезка материала</Text>
         </HStack>
       </VStack>
-      <HStack gap={"25px"}>
-        <div style={{ width: 400 }}>
+      <Stack gap={"25px"} direction={width >= 768 ? "row" : "column"}>
+        <div style={{ width: 320 }}>
           <ReactSearchAutocomplete
             items={materialList}
             formatResult={formatResult}
             onSelect={handleOnSelect}
             onSearch={handleOnSearch}
-            styling={{ zIndex: 1 }}
+            styling={{ zIndex: 1}}
+
           />
         </div>
         <Checkbox
@@ -167,7 +168,7 @@ const MaterialsPage = () => {
         >
           Показывать скрытые материалы
         </Checkbox>
-      </HStack>
+      </Stack>
 
       <Stack color={"black"} width="100%" direction={"row"} align="flex-start">
         <Stack
@@ -178,21 +179,9 @@ const MaterialsPage = () => {
           <Button
             variant="menu_yellow"
             fontSize={["14px", "14px", "16px", "16px", "16px"]}
-          >
-            Рулонные материалы
-          </Button>
-          <Button
-            variant="menu_yellow"
-            fontSize={["14px", "14px", "16px", "16px", "16px"]}
             onClick={() => setVisibleCreateModal(true)}
           >
             Добавить новый
-          </Button>
-          <Button
-            variant="menu_yellow"
-            fontSize={["14px", "14px", "16px", "16px", "16px"]}
-          >
-            Скрытые
           </Button>
           <Select
             fontSize={["14px", "14px", "16px", "16px", "16px"]}
@@ -203,12 +192,6 @@ const MaterialsPage = () => {
             placeholder="Склады"
           ></Select>
         </Stack>
-        <Button
-          variant="menu_yellow"
-          fontSize={["14px", "14px", "16px", "16px", "16px"]}
-        >
-          Рулонные материалы
-        </Button>
       </Stack>
       {materialListError ? (
         <div>{materialListError}</div>
