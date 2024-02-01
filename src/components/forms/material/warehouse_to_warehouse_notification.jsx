@@ -19,6 +19,7 @@ import WarehouseToWarehouseDto from "../../../dto/warehouse_to_warehouse_dto";
 import MaterialTransferDto from "../../../dto/material_transfer_dto";
 import { getRole } from "../../../API/helper/userCookie";
 import FormikSelect from "../../UI/formik_select";
+import { useCookies } from "react-cookie";
 
 const validationSchema = Yup.object().shape({
   warehouseId: Yup.number().min(1, "Too Short!").required("Required"),
@@ -54,7 +55,12 @@ const WarehouseToWarehouseNotification = ({
   warehouseId,
   getMaterialList,
 }) => {
-  const materialTransfer = new MaterialFormTransferDto(materialId);
+  const [cookie, setCookie] = useCookies();
+  const materialTransfer = new MaterialFormTransferDto(
+    materialId,
+    cookie.warehouseId,
+  );
+
   const formik = useFormik({
     initialValues: materialTransfer,
     validationSchema: validationSchema,
@@ -128,10 +134,12 @@ const WarehouseToWarehouseNotification = ({
 
   useEffect(() => {
     if (materialId > 0) {
-      formik.setValues(new MaterialFormTransferDto(materialId));
-      formik.setTouched({});
       selectPurchaseIdRef.current?.setValue();
       selectWarehouseIdRef.current?.setValue();
+      formik.setValues(
+        new MaterialFormTransferDto(materialId, cookie.warehouseId),
+      );
+      formik.setTouched({});
       getMaterial();
       getWarehouses();
     }
@@ -150,6 +158,7 @@ const WarehouseToWarehouseNotification = ({
     selectPurchaseIdRef.current?.setValue();
     selectWarehouseIdRef.current?.setValue();
   };
+
   const Transfer = async (materialTransfer) => {
     try {
       delete materialTransfer.maxCount;
@@ -228,8 +237,13 @@ const WarehouseToWarehouseNotification = ({
               placeholder={"Закупки"}
             />
             <FormikSelect
+              value={
+                warehouseList.filter(
+                  (warehouse) => warehouse.value === cookie.warehouseId,
+                )[0]
+              }
               selectRef={selectWarehouseIdRef}
-              options={warehouseList}
+              options={cookie.role === "ADMIN" ? warehouseList : undefined}
               onChange={(e) => {
                 formik.setFieldValue("warehouseId", e?.value);
               }}

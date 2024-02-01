@@ -91,7 +91,7 @@ const PropertyEditForm = ({
     formik.setErrors({});
     formik.setTouched({});
   };
-  console.log(property);
+
   return (
     <FormikProvider value={formik}>
       <Flex

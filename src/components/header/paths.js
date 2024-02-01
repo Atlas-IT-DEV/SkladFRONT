@@ -1,6 +1,6 @@
 import { deleteUser } from "../../API/helper/userCookie";
 
-const roles = {
+export const roles = {
   ADMIN: "ADMIN",
   WAREHOUSE_RESPONSIBLE: "WAREHOUSE_RESPONSIBLE",
   MASTER: "MASTER",
