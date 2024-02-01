@@ -5,6 +5,7 @@ import {
   CloseButton,
   Flex,
   HStack,
+  Image,
   Input,
   SimpleGrid,
   Text,
@@ -83,17 +84,38 @@ const MaterialEditForm = ({
     }
   };
 
+  const [viewImages, setViewImages] = useState([]);
+
+  function blobToBase64(blob) {
+    return new Promise((resolve, _) => {
+      const reader = new FileReader();
+      reader.onloadend = () => resolve(reader.result);
+      reader.readAsDataURL(blob);
+    });
+  }
+
   const getImages = async (images) => {
     const dt = new DataTransfer();
+    const imageArray = [];
+    console.log(images);
     for (const image of images) {
-      await ImageService.getImage(image.path).then((response) => {
+      await ImageService.getImageBlob(image.path).then((response) => {
         dt.items.add(
           new File([response.data], image.path, {
             type: response.data.type,
           }),
         );
+        imageArray.push(response.data);
       });
+      // await ImageService.getImage(image.path).then((response) => {
+      //   imageArray.push(response.data);
+      // });
     }
+    setViewImages(
+      await Promise.all(
+        imageArray.map(async (image) => await blobToBase64(image)),
+      ),
+    );
     return dt;
   };
 
@@ -251,7 +273,7 @@ const MaterialEditForm = ({
     formik.setErrors({});
     formik.setTouched({});
   };
-
+  console.log(viewImages);
   return (
     <>
       <Flex
@@ -301,6 +323,24 @@ const MaterialEditForm = ({
                 fontSize={["14px", "14px", "16px", "16px", "16px"]}
               />
             </div>
+            {viewImages.map((image) => {
+              console.log(image);
+              return (
+                <Box
+                  alignItems={"center"}
+                  display={"flex"}
+                  justifyContent={"center"}
+                >
+                  <Image
+                    objectFit={"contain"}
+                    height={"300px"}
+                    src={image}
+                    alt={"Изображение"}
+                  />
+                </Box>
+              );
+            })}
+
             <div>
               <label>Имя</label>
               <Input

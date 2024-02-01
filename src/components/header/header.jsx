@@ -97,8 +97,10 @@ const Header = () => {
                     })}
                     {authenticationPaths.map((item) => {
                       if (
-                        (item?.haveAccess?.has("AUTH") && cookie.role) ||
-                        item?.haveAccess?.has(cookie.role)
+                        item?.haveAccess?.has(cookie.role) ||
+                        (item?.haveAccess?.has("AUTH") &&
+                          cookie.role &&
+                          item.name !== "Имя")
                       ) {
                         return (
                           <MyLink

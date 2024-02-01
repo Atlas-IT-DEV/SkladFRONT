@@ -1,8 +1,4 @@
 import { Text, VStack } from "@chakra-ui/react";
-import MainInfo from "../components/main_info";
-import Recent from "../components/recent";
-import MaterialSearch from "../components/material_search";
-import TablePurchases from "../components/tables/tablePurchases/table_purchases";
 import TableLogs from "../components/tables/table_logs";
 import useWindowDimensions from "../hooks/window_dimensions";
 import UserService from "../API/services/user_service";
@@ -26,6 +22,13 @@ const MainPage = () => {
       spacing="40px"
       flexGrow={1}
       width={"100%"}
+    >
+    <VStack
+      padding={25}
+      alignItems="flex-start"
+      spacing="40px"
+      flexGrow={1}
+      width="100%"
     >
       <Text
         color="#000"
