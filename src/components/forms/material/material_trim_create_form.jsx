@@ -163,7 +163,7 @@ const MaterialTrimCreateForm = ({
         fontWeight="bold"
         mb={9}
       >
-        <Text fontSize="2xl">Создание свойства</Text>
+        <Text fontSize="2xl">Создание обрезка</Text>
         <CloseButton onClick={onClose} />
       </Flex>
       <Box pb={6}>

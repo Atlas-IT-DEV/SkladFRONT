@@ -8,11 +8,9 @@ import { useCookies } from "react-cookie";
 import NavBar from "./navBar/navBar";
 import { authenticationPaths, paths } from "./paths";
 import MyLink from "./link/my_link";
-import { useNavigate } from "react-router";
 
 const Header = () => {
   const { width, height } = useWindowDimensions();
-  const navigate = useNavigate();
   const [modalMenu, setModalMenu] = useState([false, null]);
   const componentRef = useRef(null);
   const dimensions = useDimensions(componentRef, true);
