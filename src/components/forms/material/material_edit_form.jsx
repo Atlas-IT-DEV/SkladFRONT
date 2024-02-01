@@ -5,7 +5,6 @@ import {
   CloseButton,
   Flex,
   HStack,
-  Image,
   Input,
   SimpleGrid,
   Text,
@@ -23,6 +22,7 @@ import {
   materialPropertyDTOListToArray,
 } from "./support/conversion_functions";
 import FormikSelect from "../../UI/formik_select";
+import Slider from "./slider/slider";
 
 const validationSchema = Yup.object().shape({
   name: Yup.string()
@@ -97,7 +97,6 @@ const MaterialEditForm = ({
   const getImages = async (images) => {
     const dt = new DataTransfer();
     const imageArray = [];
-    // console.log(images);
     for (const image of images) {
       await ImageService.getImageBlob(image.path).then((response) => {
         dt.items.add(
@@ -192,6 +191,20 @@ const MaterialEditForm = ({
   const clearImages = () => {
     refImageInput.current.value = null;
     setImages(refImageInput.current.files);
+    setViewImages([]);
+  };
+
+  const deleteImage = (index) => {
+    const newImages = new DataTransfer();
+    for (let i = 0; i < images.length; i++) {
+      if (i !== index) {
+        newImages.items.add(images[i]);
+      }
+    }
+    viewImages.splice(index, 1);
+    setImages(newImages.files);
+    setViewImages(viewImages);
+    refImageInput.current.files = newImages.files;
   };
 
   const imageChangedHandler = async (event) => {
@@ -276,7 +289,7 @@ const MaterialEditForm = ({
     formik.setErrors({});
     formik.setTouched({});
   };
-  // console.log(viewImages);
+
   return (
     <>
       <Flex
@@ -326,25 +339,11 @@ const MaterialEditForm = ({
                 fontSize={["14px", "14px", "16px", "16px", "16px"]}
               />
             </div>
-            {viewImages.map((image, index) => {
-              // console.log(image);
-              return (
-                <Box
-                  key={index}
-                  alignItems={"center"}
-                  display={"flex"}
-                  justifyContent={"center"}
-                >
-                  <Image
-                    objectFit={"contain"}
-                    height={"300px"}
-                    src={image}
-                    alt={"Изображение"}
-                  />
-                </Box>
-              );
-            })}
-
+            {viewImages.length === 0 ? (
+              ""
+            ) : (
+              <Slider deleteImage={deleteImage} images={viewImages} />
+            )}
             <div>
               <label>Имя</label>
               <Input

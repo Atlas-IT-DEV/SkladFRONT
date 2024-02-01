@@ -2,15 +2,11 @@ import React, { useEffect, useState } from "react";
 import { Box, Button, VStack } from "@chakra-ui/react";
 import styles from "../forTable/table.module.css";
 import Pagination from "../../pagination/pagination";
-import PurchaseService from "../../../API/services/purchase_service";
 import UrForTable from "../forTable/ulForTable/ul_for_table";
-import UlToClickPurchase from "../tablePurchases/ulToClickPurchase/ul_to_click_purchase";
 import { useFetching } from "../../../hooks/useFetching";
 import MyModal from "../../myModal/my_modal";
-import PurchaseEditForm from "../../forms/purchase/purchase_edit_form";
 import useWindowDimensions from "../../../hooks/window_dimensions";
 import SupplierService from "../../../API/services/supplier_service";
-import DeliveryMethodCreateForm from "../../forms/deliveryMethod/delivery_method_create_form";
 import SupplierCreateForm from "../../forms/suppliers/supplier_create_form";
 import UlToClickSuppliers from "./ulToClickSuppliers";
 import SupplierEditForm from "../../forms/suppliers/supplier_edit_form";
@@ -29,12 +25,11 @@ const TableSuppliers = () => {
   const [getPurchaseList, purchaseListError] = useFetching(async () => {
     await SupplierService.getSuppliersClients(
       currentPage,
-      currentPageSize
+      currentPageSize,
     ).then((response) => {
       setPurchaseList(response.data.suppliers);
       setTotalPages(response.data.totalPages);
       setTotalCountPurchases(response.data.totalItems);
-      console.log(response);
     });
   });
   const [visibleCreateModal, setVisibleCreateModal] = useState();
@@ -68,14 +63,14 @@ const TableSuppliers = () => {
           />
         </MyModal>
         <MyModal
-        visibleModal={visibleCreateModal}
-        setVisibleModal={setVisibleCreateModal}
-      >
-        <SupplierCreateForm
+          visibleModal={visibleCreateModal}
           setVisibleModal={setVisibleCreateModal}
-          getSuppliersList={getPurchaseList}
-        />
-      </MyModal>
+        >
+          <SupplierCreateForm
+            setVisibleModal={setVisibleCreateModal}
+            getSuppliersList={getPurchaseList}
+          />
+        </MyModal>
         {purchaseListError ? (
           <div>{purchaseListError}</div>
         ) : (

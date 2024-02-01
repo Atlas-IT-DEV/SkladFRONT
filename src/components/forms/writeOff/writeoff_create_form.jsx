@@ -399,7 +399,6 @@ const WriteoffCreateForm = ({
               />
             </div>
             {formik.values.materials?.map((material, index) => {
-              console.log(material);
               return (
                 <div key={material.materialId}>
                   {material.currentPurchaseMaterials.length === 1 ? (

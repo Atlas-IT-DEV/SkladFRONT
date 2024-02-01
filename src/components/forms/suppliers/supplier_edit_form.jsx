@@ -1,20 +1,20 @@
 import React, { useEffect, useState } from "react";
-import { FormikProvider, useFormik, FieldArray } from "formik";
+import { FieldArray, FormikProvider, useFormik } from "formik";
 import {
   Box,
   Button,
   CloseButton,
   Flex,
+  Heading,
+  IconButton,
   SimpleGrid,
+  Stack,
   Text,
 } from "@chakra-ui/react";
 import * as Yup from "yup";
 import FormikInput from "../../UI/formik_input";
-import DeliveryMethodService from "../../../API/services/deliveryMethod_service";
 import SupplierService from "../../../API/services/supplier_service";
 import CustomInput from "../../staff_form";
-import CustomSelect from "../../custom_select";
-import { Heading, IconButton, Stack } from "@chakra-ui/react";
 import { AddIcon, CloseIcon } from "@chakra-ui/icons";
 
 const validationSchema = Yup.object().shape({
@@ -57,7 +57,7 @@ const validationSchema = Yup.object().shape({
           .matches(/^\+?\d{10,12}$/, "Неверный формат телефона")
           .required("Обязательное поле"),
         fio: Yup.string().required("Обязательное поле"),
-      })
+      }),
     )
     .min(1, "Добавьте хотя бы одного работника"),
   psch: Yup.string()
@@ -149,7 +149,6 @@ const SupplierEditForm = ({
   };
   useEffect(() => {
     formik.setValues(supplier);
-    console.log(supplier);
   }, [supplier]);
 
   return (
