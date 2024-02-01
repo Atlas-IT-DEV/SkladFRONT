@@ -1,4 +1,4 @@
-export const baseUrl = "http://localhost:8080/api/";
+export const baseUrl = "http://192.168.31.178:8080/api/";
 export const craftifyUrl = "tmcCraftifies";
 export const deliveryMethodsUrl = "delivery_methods";
 export const deliveryPlacesUrl = "delivery_places";
