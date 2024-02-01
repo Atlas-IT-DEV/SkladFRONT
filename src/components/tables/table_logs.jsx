@@ -42,16 +42,16 @@ const TableLogs = () => {
         <table className={styles.table} width={width <= 944 ? "944px" : "100%"}>
           <thead>
             <tr className={styles.table__thead_tr}>
-              <td className={styles.table__td}>
-                <Text>
+              <td style={{width:'150px'}}>
+                <Text fontWeight={'bold'}>
                     Тип сведений
                 </Text>
               </td>
-              <td>
-                <Text>Сообщение</Text>
+              <td style={{width:'60%'}}>
+                <Text fontWeight={'bold'}>Сообщение</Text>
               </td>
-              <td className={styles.table__td}>
-                <Text>Дата действия</Text>
+              <td style={{width:'150px'}}>
+                <Text fontWeight={'bold'}>Дата действия</Text>
               </td>
             </tr>
           </thead>
