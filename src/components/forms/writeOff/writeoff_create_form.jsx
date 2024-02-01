@@ -355,7 +355,7 @@ const WriteoffCreateForm = ({
           >
             <FormikInput formik={formik} name={"reason"} label={"Причина"} />
             <div>
-              <label>{"Поставщик"}</label>
+              <label>{"Клиент"}</label>
               <AsyncPaginate
                 selectRef={selectRefSupplierId}
                 loadOptions={loadOptionsSupplier}
@@ -365,7 +365,7 @@ const WriteoffCreateForm = ({
                 }}
                 menuPortalTarget={document.body}
                 styles={{ menuPortal: (base) => ({ ...base, zIndex: 3 }) }}
-                placeholder={"Поставщик"}
+                placeholder={"Клиент"}
               />
             </div>
             <FormikSelect
