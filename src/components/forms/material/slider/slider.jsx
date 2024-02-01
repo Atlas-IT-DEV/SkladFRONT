@@ -32,7 +32,7 @@ const Slider = ({ deleteImage, images }) => {
       <CloseButton
         onClick={() => deleteImage(currentImageIndex)}
         position={"absolute"}
-        zIndex={1}
+        zIndex={2}
       />
       <Box
         className={classNames.arrow}
