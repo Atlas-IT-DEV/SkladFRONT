@@ -24,7 +24,8 @@ const SignInPage = () => {
   const signIn = async (values) => {
     try {
       const response = await UserService.signIn(values.login, values.password);
-      setUser(response.data);
+      const me = await UserService.me(response.data.token);
+      setUser({ ...me.data, token: response.data.token });
       alert("Вы успешно вошли в систему");
       navigate("/materials");
     } catch (error) {
