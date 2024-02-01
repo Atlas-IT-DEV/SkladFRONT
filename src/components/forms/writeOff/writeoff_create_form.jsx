@@ -59,7 +59,7 @@ const WriteoffCreateForm = ({
     materials: [],
     warehouseId: cookie.warehouseId,
   };
-  const [warehouses, setWarehouses] = useState();
+  const [warehouses, setWarehouses] = useState([]);
 
   const onClose = () => {
     setVisibleModal(false);
@@ -368,18 +368,19 @@ const WriteoffCreateForm = ({
                 placeholder={"Поставщик"}
               />
             </div>
-            {cookie.warehouseId > 0 ? (
-              ""
-            ) : (
-              <FormikSelect
-                selectRef={selectRefWarehouseId}
-                formik={formik}
-                name={"warehouseId"}
-                placeholder={"Склад"}
-                options={warehouses}
-                onChange={setWarehouseId}
-              />
-            )}
+            <FormikSelect
+              defaultValue={
+                warehouses.filter(
+                  (warehouse) => warehouse.value === cookie.warehouseId,
+                )[0]
+              }
+              selectRef={selectRefWarehouseId}
+              formik={formik}
+              name={"warehouseId"}
+              placeholder={"Склад"}
+              options={cookie.role === "ADMIN" ? warehouses : undefined}
+              onChange={setWarehouseId}
+            />
             <div>
               <label>{"Материалы"}</label>
               <AsyncPaginate
