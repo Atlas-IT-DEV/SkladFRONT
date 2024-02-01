@@ -1,5 +1,5 @@
 import React from "react";
-import { HStack, Text } from "@chakra-ui/react";
+import { HStack, Text, VStack } from "@chakra-ui/react";
 import { authenticationPaths, paths } from "../paths";
 import MyLink from "../link/my_link";
 import { useCookies } from "react-cookie";
@@ -8,8 +8,7 @@ const NavBar = () => {
   const [cookie, setCookie] = useCookies(["token"]);
 
   return (
-    <>
-      <HStack spacing={5}>
+    <VStack align={'flex-start'}>
         {paths.map((item) => {
           if (
             item?.haveAccess?.has(cookie.role) ||
@@ -18,8 +17,6 @@ const NavBar = () => {
             return <MyLink key={item.name} to={item.path} name={item.name} />;
           }
         })}
-      </HStack>
-      <HStack spacing={5}>
         {authenticationPaths.map((item) => {
           if (
             item?.haveAccess?.has(cookie.role) ||
@@ -43,7 +40,7 @@ const NavBar = () => {
             return (
               <Text
                 key={item.name}
-                fontSize={14}
+                fontSize={22}
                 fontWeight={"bold"}
                 color={"#1a8dff"}
               >
@@ -52,8 +49,7 @@ const NavBar = () => {
             );
           }
         })}
-      </HStack>
-    </>
+    </VStack>
   );
 };
 
