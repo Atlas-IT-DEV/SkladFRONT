@@ -1,6 +1,6 @@
 export default class MaterialFormTransferDto {
-  constructor(materialId) {
-    this.warehouseId = "";
+  constructor(materialId, warehouseId) {
+    this.warehouseId = warehouseId || "";
     this.materialId = materialId;
     this.purchaseId = "";
     this.count = "";

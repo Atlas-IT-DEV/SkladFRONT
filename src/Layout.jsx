@@ -14,7 +14,6 @@ function Layout() {
       const response = await UserService.me();
 
       if (!(response.data.warehouseId === cookie.warehouseId)) {
-        console.log(response.data.warehouseId);
         setCookie("warehouseId", response.data.warehouseId);
       } else if (!response.data.role === cookie.role) {
         setCookie("role", response.data.role);

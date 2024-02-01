@@ -100,7 +100,7 @@ const MaterialTrimCreateForm = ({
           label: `Идентификатор закупки: ${purchase.purchaseId}`,
         })),
       );
-      console.log(response.data);
+
       formik.setValues({
         name: "",
         tmcId: response.data.tmc.id,

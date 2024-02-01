@@ -19,8 +19,12 @@ import { ReactSearchAutocomplete } from "react-search-autocomplete";
 import { CiEdit, CiShoppingCart } from "react-icons/ci";
 import { HiOutlineArrowsRightLeft } from "react-icons/hi2";
 import { MdOutlineContentCut } from "react-icons/md";
+import { useCookies } from "react-cookie";
+import { roles } from "../components/header/paths";
 
 const MaterialsPage = () => {
+  const [cookie, setCookie] = useCookies();
+
   const [visibleCreateModal, setVisibleCreateModal] = useState();
 
   const [materialList, setMaterialList] = useState([]);
@@ -175,13 +179,18 @@ const MaterialsPage = () => {
           spacing="25px"
           direction={width >= 935 ? "row" : "column"}
         >
-          <Button
-            variant="menu_yellow"
-            fontSize={["14px", "14px", "16px", "16px", "16px"]}
-            onClick={() => setVisibleCreateModal(true)}
-          >
-            Добавить новый
-          </Button>
+          {cookie.role === roles.ADMIN ||
+          cookie.role === roles.WAREHOUSE_RESPONSIBLE ? (
+            <Button
+              variant="menu_yellow"
+              fontSize={["14px", "14px", "16px", "16px", "16px"]}
+              onClick={() => setVisibleCreateModal(true)}
+            >
+              Добавить новый
+            </Button>
+          ) : (
+            ""
+          )}
           <Select
             fontSize={["14px", "14px", "16px", "16px", "16px"]}
             defaultValue={{ value: null, label: "Все склады" }}

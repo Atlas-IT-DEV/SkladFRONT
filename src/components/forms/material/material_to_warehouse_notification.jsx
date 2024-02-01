@@ -169,7 +169,7 @@ const MaterialToWarehouseNotification = ({
       console.error("Error getSuppliers:", error);
     }
   };
-  console.log(cookie.role === "ADMIN" ? { warehouseList } : undefined);
+
   return (
     <FormikProvider value={formik}>
       <Flex
