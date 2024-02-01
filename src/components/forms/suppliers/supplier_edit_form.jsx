@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { FormikProvider, useFormik } from "formik";
+import { FormikProvider, useFormik, FieldArray } from "formik";
 import {
   Box,
   Button,
@@ -12,6 +12,10 @@ import * as Yup from "yup";
 import FormikInput from "../../UI/formik_input";
 import DeliveryMethodService from "../../../API/services/deliveryMethod_service";
 import SupplierService from "../../../API/services/supplier_service";
+import CustomInput from "../../staff_form";
+import CustomSelect from "../../custom_select";
+import { Heading, IconButton, Stack } from "@chakra-ui/react";
+import { AddIcon, CloseIcon } from "@chakra-ui/icons";
 
 const validationSchema = Yup.object().shape({
   name: Yup.string()
@@ -42,6 +46,20 @@ const validationSchema = Yup.object().shape({
     .min(1, "Too Short!")
     .max(255, "Too Long!")
     .required("Required"),
+  staff: Yup.array()
+    .of(
+      Yup.object().shape({
+        position: Yup.string().required("Обязательное поле"),
+        email: Yup.string()
+          .email("Неверный формат почты")
+          .required("Обязательное поле"),
+        phone: Yup.string()
+          .matches(/^\+?\d{10,12}$/, "Неверный формат телефона")
+          .required("Обязательное поле"),
+        fio: Yup.string().required("Обязательное поле"),
+      })
+    )
+    .min(1, "Добавьте хотя бы одного работника"),
   psch: Yup.string()
     .min(1, "Too Short!")
     .max(255, "Too Long!")
@@ -74,11 +92,11 @@ const SupplierEditForm = ({
     name: "",
     brand: "",
     supplierType: "LEGAL_ENTITY",
-    staff: [],
     website: "",
     address: "",
     email: "",
     phone: "",
+    staff: [{ position: "", email: "", phone: "", fio: "" }],
     deliveryPlaceIdList: [1],
     psch: "",
     kpp: "",
@@ -90,28 +108,10 @@ const SupplierEditForm = ({
   const getSupplier = async (supplierId) => {
     try {
       const response = await SupplierService.getSupplierById(supplierId);
-      setSupplier(response);
+      setSupplier(response.data);
     } catch (error) {
       console.error("Error get supplier:", error);
     }
-  };
-
-  const supplierNew = {
-    name: "",
-    brand: "",
-    supplierType: "LEGAL_ENTITY",
-    staff: [],
-    website: "",
-    address: "",
-    email: "",
-    phone: "",
-    deliveryPlaceIdList: [1],
-    psch: "",
-    kpp: "",
-    ksch: "",
-    bic: "",
-    client: true,
-    inn: "",
   };
 
   const onClose = () => {
@@ -149,6 +149,7 @@ const SupplierEditForm = ({
   };
   useEffect(() => {
     formik.setValues(supplier);
+    console.log(supplier);
   }, [supplier]);
 
   return (
@@ -195,6 +196,65 @@ const SupplierEditForm = ({
             <FormikInput formik={formik} name={"address"} label={"Адрес"} />
             <FormikInput formik={formik} name={"email"} label={"Почта"} />
             <FormikInput formik={formik} name={"phone"} label={"Телефон"} />
+            <FieldArray name="staff">
+              {({ push, remove }) => (
+                <Stack spacing={4}>
+                  {formik.values.staff.map((worker, index) => (
+                    <Box
+                      key={index}
+                      p={4}
+                      border="1px"
+                      borderColor="gray.200"
+                      rounded="md"
+                    >
+                      <Flex justify="space-between" align="center" mb={2}>
+                        <Heading size="sm">Работник #{index + 1}</Heading>
+                        {formik.values.staff.length > 1 && (
+                          <IconButton
+                            aria-label="Удалить работника"
+                            icon={<CloseIcon />}
+                            onClick={() => remove(index)}
+                          />
+                        )}
+                      </Flex>
+                      <Stack spacing={4}>
+                        <CustomInput
+                          name={`staff.${index}.position`}
+                          label="Должность"
+                          placeholder="Введите должность"
+                        />
+                        <CustomInput
+                          name={`staff.${index}.email`}
+                          label="Почта"
+                          placeholder="Введите почту"
+                          type="email"
+                        />
+                        <CustomInput
+                          name={`staff.${index}.phone`}
+                          label="Телефон"
+                          placeholder="Введите телефон"
+                          type="tel"
+                        />
+                        <CustomInput
+                          name={`staff.${index}.fio`}
+                          label="ФИО"
+                          placeholder="Введите ФИО"
+                        />
+                      </Stack>
+                    </Box>
+                  ))}
+                  <Button
+                    leftIcon={<AddIcon />}
+                    variant="menu_yellow"
+                    onClick={() =>
+                      push({ position: "", email: "", phone: "", fio: "" })
+                    }
+                  >
+                    Добавить работника
+                  </Button>
+                </Stack>
+              )}
+            </FieldArray>
             <FormikInput formik={formik} name={"psch"} label={"ПСКХ"} />
             <FormikInput formik={formik} name={"kpp"} label={"КПП"} />
             <FormikInput formik={formik} name={"ksch"} label={"КСКХ"} />
