@@ -61,7 +61,6 @@ const SignUpPage = () => {
       password: "",
       passwordConfirm: "",
       role: "",
-      warehouseId: 0,
     },
     validate,
     onSubmit: (values) => {
