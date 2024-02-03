@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useFetching } from "../hooks/useFetching";
 import TmcService from "../API/services/tmc_service";
-import { Button, HStack, Text, VStack } from "@chakra-ui/react";
+import { Button, HStack, Text, VStack, Tooltip } from "@chakra-ui/react";
 import MyModal from "../components/myModal/my_modal";
 import TableTmcs from "../components/tables/tableTmcs/table_tmcs";
 import TmcCreateForm from "../components/forms/tmc/tmc_create_form";
@@ -39,7 +39,7 @@ const TmcsPage = () => {
       </MyModal>
       <Text
         color="#000"
-        fontSize='22px !important'
+        fontSize="22px !important"
         fontWeight={700}
         lineHeight="normal"
         fontStyle="normal"
@@ -51,12 +51,17 @@ const TmcsPage = () => {
       </Text>
       <HStack color={"black"} width="100%">
         <HStack color={"black"} width="100%">
-          <Button
-            variant="menu_yellow"
-            onClick={() => setVisibleCreateModal(true)}
+          <Tooltip
+            label="Чтобы создать ТМЦ, задайте его название и укажите, какими свойствами оно обладает"
+            aria-label="Подсказка"
           >
-            Добавить новый ТМЦ
-          </Button>
+            <Button
+              variant="menu_yellow"
+              onClick={() => setVisibleCreateModal(true)}
+            >
+              Добавить новый ТМЦ
+            </Button>
+          </Tooltip>
         </HStack>
       </HStack>
       {tmcListError ? (

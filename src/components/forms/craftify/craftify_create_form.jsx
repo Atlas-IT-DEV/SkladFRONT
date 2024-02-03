@@ -63,7 +63,7 @@ const CraftifyCreateForm = ({ getCraftifyList, setVisibleModal }) => {
         fontWeight="bold"
         mb={9}
       >
-        <Text fontSize="2xl">Создание обработки</Text>
+        <Text fontSize="2xl">Создание способа обработки</Text>
         <CloseButton onClick={onClose} />
       </Flex>
       <Box pb={6}>

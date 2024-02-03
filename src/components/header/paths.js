@@ -38,6 +38,7 @@ export const paths = [
   { path: "/warehouse_page", name: "Склады", haveAccess: new Set(["AUTH"]) },
   { path: "/writeoffs_page", name: "Списания", haveAccess: new Set(["AUTH"]) },
   { path: "/suppliers", name: "Поставщики", haveAccess: new Set(["AUTH"]) },
+  { path: "/user_control", name: "Администрирование", haveAccess: new Set([roles.ADMIN]) },
 ];
 
 export const authenticationPaths = [

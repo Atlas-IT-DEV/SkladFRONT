@@ -6,6 +6,7 @@ import Footer from "./components/footer";
 import { useCookies } from "react-cookie";
 import UserService from "./API/services/user_service";
 import { deleteUser } from "./API/helper/userCookie";
+import Helper from "./components/helper_button_modal";
 
 function Layout() {
   const [cookie, setCookie] = useCookies();
@@ -32,6 +33,7 @@ function Layout() {
   return (
     <VStack backgroundColor="menu_white" width="100%" minH={"100VH"}>
       <Header />
+      <Helper/>
       <Outlet />
       <Footer />
     </VStack>

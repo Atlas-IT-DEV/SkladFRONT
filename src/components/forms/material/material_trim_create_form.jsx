@@ -192,7 +192,7 @@ const MaterialTrimCreateForm = ({
               placeholder={"Закупка"}
               options={materialPurchases}
             />
-            <FormikInput formik={formik} name={"count"} label={"Количество"} />
+            <FormikInput formik={formik} name={"count"} label={"Кол-во"} />
           </SimpleGrid>
           <Flex justifyContent="flex-end">
             <Button

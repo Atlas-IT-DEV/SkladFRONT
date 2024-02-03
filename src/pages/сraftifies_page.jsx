@@ -5,6 +5,7 @@ import MyModal from "../components/myModal/my_modal";
 import CraftifyService from "../API/services/craftify_service";
 import TableCraftifies from "../components/tables/tableCraftifies/table_craftifies";
 import CraftifyCreateForm from "../components/forms/craftify/craftify_create_form";
+import Example from "../components/helper_button_modal";
 
 const СraftifiesPage = () => {
   const [visibleCreateModal, setVisibleCreateModal] = useState();
@@ -54,7 +55,7 @@ const СraftifiesPage = () => {
             variant="menu_yellow"
             onClick={() => setVisibleCreateModal(true)}
           >
-            Добавить новую обработку
+            Добавить новый
           </Button>
         </HStack>
       </HStack>

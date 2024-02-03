@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Button, HStack, Text, VStack } from "@chakra-ui/react";
+import { Button, HStack, Text, Tooltip, VStack } from "@chakra-ui/react";
 import TableProperties from "../components/tables/tableProperties/table_properties";
 import MyModal from "../components/myModal/my_modal";
 import PropertyCreateForm from "../components/forms/property/property_create_form";
@@ -38,7 +38,7 @@ const PropertyPage = () => {
       </MyModal>
       <Text
         color="#000"
-        fontSize='22px !important'
+        fontSize="22px !important"
         fontWeight={700}
         lineHeight="normal"
         fontStyle="normal"
@@ -50,12 +50,17 @@ const PropertyPage = () => {
       </Text>
       <HStack color={"black"} width="100%">
         <HStack color={"black"} width="100%">
-          <Button
-            variant="menu_yellow"
-            onClick={() => setVisibleCreateModal(true)}
+          <Tooltip
+            label="Чтобы создать свойство, задайте его название и укажите, какие данные оно хранит"
+            aria-label="Подсказка"
           >
-            Добавить свойство
-          </Button>
+            <Button
+              variant="menu_yellow"
+              onClick={() => setVisibleCreateModal(true)}
+            >
+              Добавить свойство
+            </Button>
+          </Tooltip>
         </HStack>
       </HStack>
       ee

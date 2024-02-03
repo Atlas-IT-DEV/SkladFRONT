@@ -6,10 +6,18 @@ const theme = extendTheme({
     useSystemColorMode: true,
   },
   fonts: {
-    body: `Montserrat, sans-serif`
+    body: `Montserrat, sans-serif`,
   },
   //варианты для различных компонентов
   components: {
+    Tooltip: {
+      baseStyle: {
+        background: "rgba(0, 0, 0, 0.5);",
+        borderRadius: "12px",
+        padding: "5px",
+        fontSize: "14px !important",
+      },
+    },
     Button: {
       variants: {
         menu_yellow: {

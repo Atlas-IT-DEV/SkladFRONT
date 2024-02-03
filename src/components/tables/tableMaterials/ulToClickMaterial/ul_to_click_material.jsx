@@ -3,6 +3,7 @@ import styles from "../../forTable/ul_to_click.module.css";
 import { CiEdit, CiShoppingCart } from "react-icons/ci";
 import { HiOutlineArrowsRightLeft } from "react-icons/hi2";
 import { MdOutlineContentCut } from "react-icons/md";
+import { HStack, Tooltip } from "@chakra-ui/react";
 import { useCookies } from "react-cookie";
 import { roles } from "../../../header/paths";
 
@@ -30,7 +31,11 @@ const UlToClickMaterial = ({
               setVisibleEditModal(true);
             }}
           >
-            <CiEdit />
+            <Tooltip label='Просмотр/редактирование карточки материала' aria-label="Подсказка">
+              <HStack>
+                <CiEdit />
+              </HStack>
+            </Tooltip>
           </button>
         </li>
       ) : (
@@ -44,7 +49,11 @@ const UlToClickMaterial = ({
               setVisibleCreateTrimModal(true);
             }}
           >
-            <MdOutlineContentCut />
+            <Tooltip label='Создание обрезка материала' aria-label="Подсказка">
+              <HStack>
+                <MdOutlineContentCut />
+              </HStack>
+            </Tooltip>
           </button>
         </li>
       ) : (
@@ -60,7 +69,11 @@ const UlToClickMaterial = ({
                 setVisibleCreatePurchaseModal(true);
               }}
             >
-              <CiShoppingCart width="16px" height="16px" />
+              <Tooltip label='Создать закупку' aria-label="Подсказка">
+                <HStack>
+                  <CiShoppingCart width="16px" height="16px" />
+                </HStack>
+              </Tooltip>
             </button>
           </li>
           {warehouseId < 0 ? (
@@ -71,7 +84,11 @@ const UlToClickMaterial = ({
                   setVisibleToWarehouse(true);
                 }}
               >
-                <HiOutlineArrowsRightLeft />
+                <Tooltip label='Перемещение материала' aria-label="Подсказка">
+                  <HStack>
+                    <HiOutlineArrowsRightLeft />
+                  </HStack>
+                </Tooltip>
               </button>
             </li>
           ) : (

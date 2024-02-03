@@ -56,7 +56,7 @@ const DeliveryMethodsPage = () => {
             variant="menu_yellow"
             onClick={() => setVisibleCreateModal(true)}
           >
-            Добавить новый способ доставки
+            Добавить новый способ
           </Button>
         </HStack>
       </HStack>

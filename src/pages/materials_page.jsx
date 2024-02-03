@@ -5,6 +5,7 @@ import {
   Stack,
   Text,
   VStack,
+  Tooltip,
 } from "@chakra-ui/react";
 import React, { useEffect, useRef, useState } from "react";
 import MyModal from "../components/myModal/my_modal";
@@ -49,7 +50,7 @@ const MaterialsPage = () => {
       currentPage,
       currentPageSize,
       searchStr,
-      showHidden,
+      showHidden
     ).then((response) => {
       setMaterialList(response.data.materials);
       setTotalPages(response.data.totalPages);
@@ -130,7 +131,7 @@ const MaterialsPage = () => {
       </MyModal>
       <Text
         color="#000"
-        fontSize='22px !important'
+        fontSize="22px !important"
         fontWeight={700}
         lineHeight="normal"
         fontStyle="normal"
@@ -162,6 +163,7 @@ const MaterialsPage = () => {
             formatResult={formatResult}
             onSelect={handleOnSelect}
             onSearch={handleOnSearch}
+            placeholder="Начните вводить название..."
             styling={{ zIndex: 1 }}
           />
         </div>
@@ -181,25 +183,39 @@ const MaterialsPage = () => {
         >
           {cookie.role === roles.ADMIN ||
           cookie.role === roles.WAREHOUSE_RESPONSIBLE ? (
-            <Button
-              variant="menu_yellow"
-              fontSize={["14px", "14px", "16px", "16px", "16px"]}
-              onClick={() => setVisibleCreateModal(true)}
+            <Tooltip
+              label="Прежде чем создать материал, убедитесь, что у вас есть все необходимые данные: тмц, тип тмц, свойства и способы обработки."
+              aria-label="Подсказка"
+              placement="top"
             >
-              Добавить новый
-            </Button>
+              <Button
+                variant="menu_yellow"
+                fontSize={["14px", "14px", "16px", "16px", "16px"]}
+                onClick={() => setVisibleCreateModal(true)}
+              >
+                Добавить новый
+              </Button>
+            </Tooltip>
           ) : (
             ""
           )}
-          <Select
-            fontSize={["14px", "14px", "16px", "16px", "16px"]}
-            defaultValue={{ value: null, label: "Все склады" }}
-            options={warehouseList}
-            onChange={(e) => {
-              setWarehouseId(e.value);
-            }}
-            placeholder="Склады"
-          ></Select>
+          <Tooltip
+            label="Отвечает за отображение материалов в таблице согласно выбранному складу"
+            aria-label="Подсказка"
+            placement="top"
+          >
+            <VStack>
+              <Select
+                fontSize={["14px", "14px", "16px", "16px", "16px"]}
+                defaultValue={{ value: null, label: "Все склады" }}
+                options={warehouseList}
+                onChange={(e) => {
+                  setWarehouseId(e.value);
+                }}
+                placeholder="Склады"
+              ></Select>
+            </VStack>
+          </Tooltip>
         </Stack>
       </Stack>
       {materialListError ? (

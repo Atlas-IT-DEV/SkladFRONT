@@ -56,7 +56,7 @@ const DeliveryPlacesPage = () => {
             variant="menu_yellow"
             onClick={() => setVisibleCreateModal(true)}
           >
-            Добавить новый адрес отгрузки
+            Добавить новый адрес
           </Button>
         </HStack>
       </HStack>

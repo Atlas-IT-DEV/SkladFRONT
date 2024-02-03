@@ -193,7 +193,7 @@ const PurchaseCreateForm = ({ visibleModal, setVisibleModal, materialId }) => {
               name={"articleNumber"}
               label={"Номер изделия"}
             />
-            <FormikInput formik={formik} name={"count"} label={"Количество"} />
+            <FormikInput formik={formik} name={"count"} label={"Кол-во"} />
             <FormikInput
               formik={formik}
               name={"price"}

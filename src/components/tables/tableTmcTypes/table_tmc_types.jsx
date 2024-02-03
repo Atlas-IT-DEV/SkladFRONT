@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Box } from "@chakra-ui/react";
+import { Box, Tooltip, VStack } from "@chakra-ui/react";
 import MyModal from "../../myModal/my_modal";
 import UlForTable from "../forTable/ulForTable/ul_for_table";
 import styles from "../forTable/table.module.css";
@@ -54,16 +54,22 @@ const TableTmcTypes = ({ getTmcTypeList, tmcTypeList }) => {
               <td className={styles.table__td}>{tmcType.name}</td>
               <td className={styles.table__td}>
                 <ul>
-                  <Select
-                    menuPortalTarget={document.body}
-                    styles={{ menuPortal: (base) => ({ ...base, zIndex: 3 }) }}
-                    options={tmcType.properties.map((property) => {
-                      return {
-                        label: property.name + " " + property.type,
-                      };
-                    })}
-                    placeholder={"Свойства"}
-                  />
+                  <Tooltip label='Клик для просмотра' aria-label="Подсказка">
+                    <VStack>
+                      <Select
+                        menuPortalTarget={document.body}
+                        styles={{
+                          menuPortal: (base) => ({ ...base, zIndex: 3 }),
+                        }}
+                        options={tmcType.properties.map((property) => {
+                          return {
+                            label: property.name + " " + property.type,
+                          };
+                        })}
+                        placeholder={"Свойства"}
+                      />
+                    </VStack>
+                  </Tooltip>
                 </ul>
                 {tmcType.type}
               </td>

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useFetching } from "../hooks/useFetching";
 import TmcTypeService from "../API/services/tmcType_service";
-import { Button, HStack, Text, VStack } from "@chakra-ui/react";
+import { Button, HStack, Text, Tooltip, VStack } from "@chakra-ui/react";
 import MyModal from "../components/myModal/my_modal";
 import TableTmcTypes from "../components/tables/tableTmcTypes/table_tmc_types";
 import TmcTypeCreateForm from "../components/forms/tmcTypes/tmc_type_create_form";
@@ -39,7 +39,7 @@ const TmcTypesPage = () => {
       </MyModal>
       <Text
         color="#000"
-        fontSize='22px !important'
+        fontSize="22px !important"
         fontWeight={700}
         lineHeight="normal"
         fontStyle="normal"
@@ -51,12 +51,14 @@ const TmcTypesPage = () => {
       </Text>
       <HStack color={"black"} width="100%">
         <HStack color={"black"} width="100%">
-          <Button
-            variant="menu_yellow"
-            onClick={() => setVisibleCreateModal(true)}
-          >
-            Добавить новый ТМЦ
-          </Button>
+          <Tooltip label="Чтобы создать тип ТМЦ, задайте его название и укажите, какими свойствами оно обладает">
+            <Button
+              variant="menu_yellow"
+              onClick={() => setVisibleCreateModal(true)}
+            >
+              Добавить новый тип ТМЦ
+            </Button>
+          </Tooltip>
         </HStack>
       </HStack>
       {tmcTypeListError ? (

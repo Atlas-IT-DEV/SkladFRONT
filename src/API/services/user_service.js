@@ -19,4 +19,19 @@ export default class UserService {
       headers: { Authorization: getToken() || `Bearer ${token}` },
     });
   }
+  static getAll(page, size) {
+    const params = {
+      page,
+      size,
+    };
+    return Instance.get(`${usersUrl.users}`, {
+      params,
+      headers: { Authorization: getToken() },
+    });
+  }
+  static update(userId, user) {
+    return Instance.put(`${usersUrl}/${userId}`, user, {
+      headers: { Authorization: getToken() },
+    });
+  }
 }

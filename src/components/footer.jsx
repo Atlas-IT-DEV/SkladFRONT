@@ -15,7 +15,7 @@ const Footer = () => {
           color="light_dark"
           fontSize={["12px", "14px", "16px", "16px", "16px"]}
         >
-          Дизайн студия RICO DESIGN © 1995–2023
+          Дизайн студия RICO DESIGN © 1995–2024
         </Text>
         <HStack
           onClick={() => {

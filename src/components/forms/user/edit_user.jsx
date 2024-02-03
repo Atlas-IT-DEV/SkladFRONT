@@ -8,71 +8,75 @@ import {
   SimpleGrid,
   Text,
 } from "@chakra-ui/react";
-import * as Yup from "yup";
 import FormikInput from "../../UI/formik_input";
-import CraftifyService from "../../../API/services/craftify_service";
+import PurchaseService from "../../../API/services/purchase_service";
+import UserService from "../../../API/services/user_service";
+import * as Yup from "yup";
+import CustomSelect from "../../custom_select";
 
 const validationSchema = Yup.object().shape({
-  name: Yup.string()
+  password: Yup.string()
+    .nullable()
     .min(1, "Too Short!")
-    .max(255, "Too Long!")
+    .max(100, "Too Long!")
     .required("Required"),
 });
 
-const CraftifyEditForm = ({
-  visibleModal,
-  getCraftifyList,
-  setVisibleModal,
-  craftifyId,
-}) => {
-  const craftify = {
-    name: "",
+const UserEditForm = ({ setVisibleModal, purchaseId, getPurchaseList, userInfo }) => {
+  const purchase = {
+    login:'',
+    username:'',
+    password: "",
+    role:'',
+    warehouseId: 1
   };
 
   const onClose = () => {
     setVisibleModal(false);
-    clearForm();
   };
 
-  const editCraftify = async (craftify) => {
+  const updatePurchase = async (purchase) => {
     try {
-      await CraftifyService.updateCraftify(craftifyId, craftify);
-      getCraftifyList();
+      await UserService.update(purchaseId, purchase);
     } catch (error) {
-      console.error("Error editCraftify:", error);
+      console.error("Error createPurchase:", error);
     }
   };
 
   const formik = useFormik({
-    initialValues: craftify,
+    initialValues: purchase,
     validationSchema: validationSchema,
     onSubmit: (values, { setSubmitting }) => {
-      editCraftify(values);
+      updatePurchase(values);
       setVisibleModal(false);
       setSubmitting(false);
     },
+    enableReinitialize: true,
   });
 
-  const getCraftify = async (craftifyId) => {
-    try {
-      const response = await CraftifyService.getCraftify(craftifyId);
-      formik.setValues(response.data);
-    } catch (error) {
-      console.error("Error getCraftify:", error);
-    }
-  };
+  //   const getPurchase = async (purchaseId) => {
+  //     try {
+  //       const response = await PurchaseService.getPurchase(purchaseId);
+  //       formik.setValues({
+  //         linkToMaterial: response.data.linkToMaterial || "",
+  //         comment: response.data.comment || "",
+  //       });
+  //     } catch (error) {
+  //       console.error("Error getMaterial:", error);
+  //     }
+  //   };
 
-  useEffect(() => {
-    if (craftifyId > 0) {
-      getCraftify(craftifyId);
-    }
-  }, [craftifyId]);
+  //   useEffect(() => {
+  //     if (purchaseId > 0) {
+  //       getPurchase(purchaseId);
+  //     }
+  //   }, [purchaseId]);
 
-  const clearForm = () => {
-    getCraftify(craftifyId);
-    formik.setErrors({});
-    formik.setTouched({});
-  };
+  //   const clearForm = () => {
+  //     getPurchase(purchaseId);
+  //     formik.setErrors({});
+  //     formik.setTouched({});
+  //   };
 
   return (
     <FormikProvider value={formik}>
@@ -82,7 +86,7 @@ const CraftifyEditForm = ({
         fontWeight="bold"
         mb={9}
       >
-        <Text fontSize="2xl">Редактирование способа обработки</Text>
+        <Text fontSize="2xl">Изменение данных пользователя</Text>
         <CloseButton onClick={onClose} />
       </Flex>
       <Box pb={6}>
@@ -103,7 +107,11 @@ const CraftifyEditForm = ({
               },
             }}
           >
-            <FormikInput formik={formik} name={"name"} label={"Название"} />
+            <FormikInput
+              formik={formik}
+              name={"password"}
+              label={"Новый пароль"}
+            />
           </SimpleGrid>
           <Flex justifyContent="flex-end">
             <Button variant="menu_red" onClick={onClose} mr={3}>
@@ -119,4 +127,4 @@ const CraftifyEditForm = ({
   );
 };
 
-export default CraftifyEditForm;
+export default UserEditForm;

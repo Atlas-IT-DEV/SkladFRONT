@@ -51,7 +51,7 @@ const TableLogs = () => {
                 <Text fontWeight={'bold'}>Сообщение</Text>
               </td>
               <td style={{width:'150px'}}>
-                <Text fontWeight={'bold'}>Дата действия</Text>
+                <Text fontWeight={'bold'}>Дата</Text>
               </td>
             </tr>
           </thead>

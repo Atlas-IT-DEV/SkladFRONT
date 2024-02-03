@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useFetching } from "../hooks/useFetching";
-import { Button, HStack, Text, VStack } from "@chakra-ui/react";
+import { Button, HStack, Text, VStack, Tooltip } from "@chakra-ui/react";
 import MyModal from "../components/myModal/my_modal";
 import WriteoffService from "../API/services/writeoff_service";
 import WriteoffCreateForm from "../components/forms/writeOff/writeoff_create_form";
@@ -39,7 +39,7 @@ const WriteoffsPage = () => {
       </MyModal>
       <Text
         color="#000"
-        fontSize='22px !important'
+        fontSize="22px !important"
         fontWeight={700}
         lineHeight="normal"
         fontStyle="normal"
@@ -51,12 +51,17 @@ const WriteoffsPage = () => {
       </Text>
       <HStack color={"black"} width="100%">
         <HStack color={"black"} width="100%">
-          <Button
-            variant="menu_yellow"
-            onClick={() => setVisibleCreateModal(true)}
+          <Tooltip
+            label="Чтобы создать списание, заполните следующие поля: причина списания, клиент, склад, материал и количество"
+            aria-label="Подсказка"
           >
-            Создать списание
-          </Button>
+            <Button
+              variant="menu_yellow"
+              onClick={() => setVisibleCreateModal(true)}
+            >
+              Создать списание
+            </Button>
+          </Tooltip>
         </HStack>
       </HStack>
       {warehouseListError ? (

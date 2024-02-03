@@ -73,11 +73,11 @@ const TablePurchases = () => {
                 <UrForTable
                   sort={sort}
                   setSort={setSort}
-                  name="Номер артикула"
+                  name="Артикул"
                 />
               </td>
               <td className={styles.table__td}>
-                <UrForTable sort={sort} setSort={setSort} name="Количество" />
+                <UrForTable sort={sort} setSort={setSort} name="Кол-во" />
               </td>
               <td className={styles.table__td}>
                 <UrForTable sort={sort} setSort={setSort} name={"Цена"} />
@@ -86,7 +86,7 @@ const TablePurchases = () => {
                 <UrForTable sort={sort} setSort={setSort} name={"Поставщик"} />
               </td>
               <td className={styles.table__td}>
-                <UrForTable sort={sort} setSort={setSort} name={"Время"} />
+                <UrForTable sort={sort} setSort={setSort} name={"Дата"} />
               </td>
               <td className={styles.table__td}></td>
             </tr>

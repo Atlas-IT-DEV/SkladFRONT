@@ -42,13 +42,13 @@ const TableNotifications = ({ notificationList, getNotificationList }) => {
               <UlForTable sort={sort} setSort={setSort} name="Материал" />
             </td>
             <td className={styles.table__td}>
-              <UlForTable sort={sort} setSort={setSort} name={"Количество"} />
+              <UlForTable sort={sort} setSort={setSort} name={"Кол-во"} />
             </td>
             <td className={styles.table__td}>
               <UlForTable
                 sort={sort}
                 setSort={setSort}
-                name={"Количество на складе"}
+                name={"Кол-во на складе"}
               />
             </td>
             <td className={styles.table__td}></td>

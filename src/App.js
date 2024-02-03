@@ -17,6 +17,7 @@ import WarehousePage from "./pages/warehouse_page";
 import SupplierPage from "./pages/supplier_page";
 import Layout from "./Layout";
 import WriteoffsPage from "./pages/writeoffs_page";
+import UserControlPage from "./pages/user_control_page";
 import PrivateRoutes from "./common/private_Routes";
 
 const router = createHashRouter([
@@ -92,6 +93,10 @@ const router = createHashRouter([
             path: "/signup_page",
             element: <SignUpPage />,
           },
+          {
+            path: '/user_control',
+            element: <UserControlPage/>
+          }
         ],
       },
     ],

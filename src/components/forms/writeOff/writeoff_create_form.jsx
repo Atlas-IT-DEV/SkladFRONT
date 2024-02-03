@@ -407,7 +407,7 @@ const WriteoffCreateForm = ({
                       placeholder={material?.materialName}
                       defaultValue={{
                         value: material.materialPurchases[0].purchaseId,
-                        label: `id: ${material.materialPurchases[0].purchaseId}, Количество: ${material.currentPurchaseMaterials[0].countOnWarehouse}`,
+                        label: `id: ${material.materialPurchases[0].purchaseId}, Кол-во: ${material.currentPurchaseMaterials[0].countOnWarehouse}`,
                       }}
                     />
                   ) : (
@@ -417,7 +417,7 @@ const WriteoffCreateForm = ({
                       options={material.currentPurchaseMaterials?.map(
                         (purchaseMaterial) => ({
                           value: purchaseMaterial.purchaseId,
-                          label: `id: ${purchaseMaterial.purchaseId}, Количество: ${purchaseMaterial.countOnWarehouse}`,
+                          label: `id: ${purchaseMaterial.purchaseId}, Кол-во: ${purchaseMaterial.countOnWarehouse}`,
                         }),
                       )}
                       formik={formik}
@@ -432,7 +432,7 @@ const WriteoffCreateForm = ({
                       >
                         <label>{`id: ${
                           materialPurchase.purchaseId
-                        }, Количество: ${
+                        }, Кол-во: ${
                           material.currentPurchaseMaterials.find(
                             (purchaseMaterial) =>
                               purchaseMaterial.purchaseId ===

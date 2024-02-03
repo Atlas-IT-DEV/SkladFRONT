@@ -200,7 +200,7 @@ const MaterialToWarehouseNotification = ({
             }}
           >
             <div>
-              <label>{"Количество"}</label>
+              <label>{"Кол-во"}</label>
               <Input
                 isInvalid={formik.errors.count && formik.touched.count}
                 errorBorderColor="crimson"
@@ -209,7 +209,7 @@ const MaterialToWarehouseNotification = ({
                 value={formik.values.count}
                 onChange={changeCount}
                 height="40px"
-                placeholder={"Количество"}
+                placeholder={"Кол-во"}
               />
             </div>
             <FormikSelect

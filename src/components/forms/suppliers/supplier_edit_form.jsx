@@ -14,8 +14,9 @@ import {
 import * as Yup from "yup";
 import FormikInput from "../../UI/formik_input";
 import SupplierService from "../../../API/services/supplier_service";
-import CustomInput from "../../staff_form";
 import { AddIcon, CloseIcon } from "@chakra-ui/icons";
+import CustomInput from "../../staff_form";
+import CustomSelect from "../../custom_select";
 
 const validationSchema = Yup.object().shape({
   name: Yup.string()
@@ -182,10 +183,15 @@ const SupplierEditForm = ({
           >
             <FormikInput formik={formik} name={"name"} label={"Название"} />
             <FormikInput formik={formik} name={"brand"} label={"Бренд"} />
-            <FormikInput
-              formik={formik}
-              name={"supplierType"}
+            <CustomSelect
+              name="supplierType"
               label={"Тип поставщика"}
+              options={[
+                { value: "LEGAL_ENTITY", label: "Юр. лицо" },
+                { value: "INDIVIDUAL_ENTREPRENEUR", label: "ИП" },
+                { value: "SELF_EMPLOYEED", label: "Самозанятый" },
+                { value: "OTHER", label: "Другое" },
+              ]}
             />
             <FormikInput
               formik={formik}
