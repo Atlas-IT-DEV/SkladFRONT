@@ -22,29 +22,36 @@ const validationSchema = Yup.object().shape({
     .required("Required"),
 });
 
-const UserEditForm = ({ setVisibleModal, purchaseId, getPurchaseList, userInfo }) => {
+const UserEditForm = ({
+  setVisibleModal,
+  purchaseId,
+  userInfo,
+  warehouses,
+  getPurchaseList,
+}) => {
   const purchase = {
-    login:'',
-    username:'',
+    login: "",
+    username: "",
     password: "",
-    role:'',
-    warehouseId: 1
+    role: "",
+    warehouseId: 1,
   };
 
   const onClose = () => {
     setVisibleModal(false);
   };
 
-  const updatePurchase = async (purchase) => {
+  const updatePurchase = async (userInfo) => {
     try {
-      await UserService.update(purchaseId, purchase);
+      await UserService.update(purchaseId, userInfo);
+      getPurchaseList()
     } catch (error) {
       console.error("Error createPurchase:", error);
     }
   };
 
   const formik = useFormik({
-    initialValues: purchase,
+    initialValues: userInfo,
     validationSchema: validationSchema,
     onSubmit: (values, { setSubmitting }) => {
       updatePurchase(values);
@@ -112,6 +119,16 @@ const UserEditForm = ({ setVisibleModal, purchaseId, getPurchaseList, userInfo }
               name={"password"}
               label={"Новый пароль"}
             />
+            {userInfo.role == "MASTER" ||
+            userInfo.role == "WAREHOUSE_RESPONSIBLE" ? (
+              <CustomSelect
+                name="warehouseId"
+                label={"Склады"}
+                options={warehouses.map((warehouse) => {
+                  return { value: warehouse.id, label: warehouse.name };
+                })}
+              />
+            ) : null}
           </SimpleGrid>
           <Flex justifyContent="flex-end">
             <Button variant="menu_red" onClick={onClose} mr={3}>

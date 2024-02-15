@@ -3,8 +3,13 @@ import { writeoffsUrl } from "../apiConsts";
 import { getToken } from "../helper/userCookie";
 
 export default class WriteOffService {
-  static getWriteoffs() {
+  static getWriteoffs(page, size) {
+    const params = {
+      page,
+      size,
+    };
     return Instance.get(writeoffsUrl, {
+      params,
       headers: { Authorization: getToken() },
     });
   }

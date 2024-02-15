@@ -44,14 +44,14 @@ const TmcTypesPage = () => {
         lineHeight="normal"
         fontStyle="normal"
       >
-        Типы ТМЦ
+        Типы материалов (Типы ТМЦ)
       </Text>
       <Text fontSize={14} fontWeight={400} marginBottom="20px">
-        Страница создания и редактирования типов ТМЦ
+        Страница создания и редактирования типов материалов (ТМЦ)
       </Text>
       <HStack color={"black"} width="100%">
         <HStack color={"black"} width="100%">
-          <Tooltip label="Чтобы создать тип ТМЦ, задайте его название и укажите, какими свойствами оно обладает">
+          <Tooltip label="Чтобы создать тип материала (тип ТМЦ), задайте его название и укажите, какими свойствами оно обладает">
             <Button
               variant="menu_yellow"
               onClick={() => setVisibleCreateModal(true)}

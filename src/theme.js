@@ -13,7 +13,6 @@ const theme = extendTheme({
     Tooltip: {
       baseStyle: {
         background: "rgba(0, 0, 0, 0.5);",
-        borderRadius: "12px",
         padding: "5px",
         fontSize: "14px !important",
       },

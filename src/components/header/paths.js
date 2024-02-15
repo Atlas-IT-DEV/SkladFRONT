@@ -18,8 +18,8 @@ export const paths = [
     name: "Способы обработки",
     haveAccess: new Set(["AUTH"]),
   },
-  { path: "/tmcs", name: "ТМЦ", haveAccess: new Set(["AUTH"]) },
-  { path: "/tmctypes", name: "Типы тмц", haveAccess: new Set(["AUTH"]) },
+  { path: "/tmcs", name: "Виды материалов", haveAccess: new Set(["AUTH"]) },
+  { path: "/tmctypes", name: "Типы материалов", haveAccess: new Set(["AUTH"]) },
   {
     path: "/delivery_methods",
     name: "Способы доставки",

@@ -98,7 +98,7 @@ const TmcTypeCreateForm = ({
         fontWeight="bold"
         mb={9}
       >
-        <Text fontSize="2xl">Создание типа ТМЦ</Text>
+        <Text fontSize="2xl">Создание типа материала (типа ТМЦ)</Text>
         <CloseButton onClick={onClose} />
       </Flex>
       <Box pb={6}>

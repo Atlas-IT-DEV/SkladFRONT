@@ -1,5 +1,6 @@
 export const baseUrl = "http://192.168.31.178:8080/api/";
 // export const baseUrl = "http://192.168.1.38/api/";
+// export const baseUrl = "http://192.168.1.27:8080/api/";
 export const craftifyUrl = "tmcCraftifies";
 export const deliveryMethodsUrl = "delivery_methods";
 export const deliveryPlacesUrl = "delivery_places";
@@ -25,4 +26,4 @@ export const usersUrl = {
   signUp: "signUp",
   me: "me",
 };
-export const logsUrl = 'logs';
+export const logsUrl = "logs";

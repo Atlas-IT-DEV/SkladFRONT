@@ -26,8 +26,12 @@ export default class PurchaseService {
     });
   }
 
-  static createPurchase(purchase) {
+  static createPurchase(purchase, warehouseId) {
+    const params = {
+      warehouseId
+    }
     return Instance.post(purchasesUrl, purchase, {
+      params,
       headers: { Authorization: getToken() },
     });
   }

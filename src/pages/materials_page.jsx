@@ -36,7 +36,7 @@ const MaterialsPage = () => {
 
   const [searchStr, setSearchStr] = useState("");
   const [showHidden, setShowHidden] = useState(false);
-  const [warehouseId, setWarehouseId] = useState();
+  const [warehouseId, setWarehouseId] = useState(null);
 
   const [warehouseList, setWarehouseList] = useState([
     { value: -1, label: "Нераспределенные" },
@@ -45,6 +45,9 @@ const MaterialsPage = () => {
   const { width, height } = useWindowDimensions();
 
   const [getMaterialList, materialListError] = useFetching(async () => {
+    if (searchStr != "") {
+      setCurrentPage(1);
+    }
     await MaterialService.getMaterials(
       warehouseId,
       currentPage,
@@ -139,6 +142,14 @@ const MaterialsPage = () => {
         Материалы
       </Text>
       <VStack align={"flex-start"}>
+        <Text
+          color="#000"
+          fontWeight={700}
+          lineHeight="normal"
+          fontStyle="normal"
+        >
+          Условные обозначения:
+        </Text>
         <HStack>
           <CiEdit />
           <Text>редактирование материала.</Text>
@@ -164,7 +175,7 @@ const MaterialsPage = () => {
             onSelect={handleOnSelect}
             onSearch={handleOnSearch}
             placeholder="Начните вводить название..."
-            styling={{ zIndex: 1 }}
+            styling={{ zIndex: 1, borderRadius:0 }}
           />
         </div>
         <Checkbox

@@ -44,15 +44,15 @@ const TmcsPage = () => {
         lineHeight="normal"
         fontStyle="normal"
       >
-        ТМЦ
+        Вид материала (ТМЦ)
       </Text>
       <Text fontSize={14} fontWeight={400} marginBottom="20px">
-        Страница создания и редактирования ТМЦ
+        Страница создания и редактирования видов материалов (ТМЦ)
       </Text>
       <HStack color={"black"} width="100%">
         <HStack color={"black"} width="100%">
           <Tooltip
-            label="Чтобы создать ТМЦ, задайте его название и укажите, какими свойствами оно обладает"
+            label="Чтобы создать ТМЦ (вид материала), задайте его название и укажите, какими свойствами оно обладает"
             aria-label="Подсказка"
           >
             <Button

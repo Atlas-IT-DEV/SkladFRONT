@@ -34,7 +34,7 @@ const validationSchema = Yup.object().shape({
   tmcId: Yup.number().min(1, "Too Short!").required("Required"),
   tmcTypeId: Yup.number().min(1, "Too Short!").required("Required"),
   tmCraftifyIdList: Yup.array(
-    Yup.number().min(1, "Too Short!").required("Required"),
+    Yup.number().min(1, "Too Short!").required("Required")
   ).max(20, "Too Long!"),
   show: Yup.boolean().required("Required"),
 });
@@ -70,7 +70,7 @@ const MaterialCreateForm = ({
   const [craftifyList, setCraftifyTypeList] = useState([]);
 
   const [mapPropertiesValidation, setMapPropertiesValidation] = useState(
-    new Map(),
+    new Map()
   );
 
   const [currentProperties, setCurrentProperties] = useState([]);
@@ -87,7 +87,7 @@ const MaterialCreateForm = ({
   const [propertyChangeability, changeMapPropertiesValidation] =
     usePropertyValidationById(
       mapPropertiesValidation,
-      setMapPropertiesValidation,
+      setMapPropertiesValidation
     );
 
   const createMaterial = async () => {
@@ -98,9 +98,9 @@ const MaterialCreateForm = ({
         JSON.stringify({
           ...material,
           materialPropertyDTOList: materialPropertyDTOListToArray(
-            material.materialPropertyDTOList,
+            material.materialPropertyDTOList
           ),
-        }),
+        })
       );
       for (let i = 0; i < images?.length; i++) {
         formData.append("files", images[i]);
@@ -129,7 +129,7 @@ const MaterialCreateForm = ({
         setTmcTypeList(
           response.data.map((craftify) => {
             return { value: craftify.id, label: craftify.name };
-          }),
+          })
         );
       });
     } catch (error) {
@@ -143,7 +143,7 @@ const MaterialCreateForm = ({
         setCraftifyTypeList(
           response.data.map((tmcType) => {
             return { value: tmcType.id, label: tmcType.name };
-          }),
+          })
         );
       });
     } catch (error) {
@@ -202,7 +202,7 @@ const MaterialCreateForm = ({
       if (material.materialPropertyDTOList.has(property.id)) {
         newMaterialPropertyDTOList.set(
           property.id,
-          material.materialPropertyDTOList.get(property.id),
+          material.materialPropertyDTOList.get(property.id)
         );
       } else {
         if (property.type === "BOOLEAN") {
@@ -390,6 +390,7 @@ const MaterialCreateForm = ({
               placeholder="Тип ТМЦ"
               // fontSize={["14px", "14px", "16px", "16px", "16px"]}
             />
+            
             <FormikSelect
               isMulti
               selectRef={selectRefCraftifyIdList}

@@ -29,7 +29,13 @@ const TableUsers = () => {
       name: "asdasd",
     },
   ]);
-  const [userInfo, setUserInfo] = useState();
+  const [userInfo, setUserInfo] = useState({
+    login: "",
+    username: "",
+    password: "",
+    role: "",
+    warehouseId: 1,
+  });
 
   const [getUsersList, usersListError] = useFetching(async () => {
     await UserService.getAll(currentPage, currentPageSize).then((response) => {
@@ -58,7 +64,14 @@ const TableUsers = () => {
   };
   const getUserInfo = (id) => {
     let found = usersList.find((item) => item.id == id);
-    setUserInfo(found);
+    let userData = {
+      login: found.login,
+      username: found.userName,
+      password: "",
+      role: found.userRole,
+      warehouseId: found.warehouseId,
+    };
+    setUserInfo(userData);
   };
 
   return (
@@ -77,6 +90,7 @@ const TableUsers = () => {
           purchaseId={userId}
           getPurchaseList={getUsersList}
           userInfo={userInfo}
+          warehouses={warehouses}
         />
       </MyModal>
       {usersListError ? (

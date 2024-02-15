@@ -30,7 +30,7 @@ export default class UserService {
     });
   }
   static update(userId, user) {
-    return Instance.put(`${usersUrl}/${userId}`, user, {
+    return Instance.put(`${usersUrl.users}/${userId}`, user, {
       headers: { Authorization: getToken() },
     });
   }

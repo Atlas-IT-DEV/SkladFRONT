@@ -3,6 +3,8 @@ import { FormikProvider, useFormik, FieldArray } from "formik";
 import {
   Box,
   Button,
+  Checkbox,
+  CheckboxGroup,
   CloseButton,
   Flex,
   SimpleGrid,
@@ -248,6 +250,13 @@ const SupplierCreateForm = ({ getSuppliersList, setVisibleModal }) => {
             <FormikInput formik={formik} name={"ksch"} label={"КСКХ"} />
             <FormikInput formik={formik} name={"bic"} label={"БИК"} />
             <FormikInput formik={formik} name={"inn"} label={"ИНН"} />
+            <Checkbox
+              name="client"
+              isChecked={formik.values.client}
+              onChange={() =>
+                formik.setFieldValue("client", !formik.values.client)
+              }
+            >Клиент ?</Checkbox>
           </SimpleGrid>
           <Flex justifyContent="flex-end">
             <Button variant="menu_red" onClick={onClose} mr={3}>

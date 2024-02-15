@@ -97,7 +97,7 @@ const TmcCreateForm = ({ visibleModal, getTmcList, setVisibleModal }) => {
         fontWeight="bold"
         mb={9}
       >
-        <Text fontSize="2xl">Создание ТМЦ</Text>
+        <Text fontSize="2xl">Создание ТМЦ (вида материала)</Text>
         <CloseButton onClick={onClose} />
       </Flex>
       <Box pb={6}>

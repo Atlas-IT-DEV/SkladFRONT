@@ -24,7 +24,7 @@ const validationSchema = Yup.object().shape({
     .min(1, "Too Short!")
     .max(255, "Too Long!")
     .required("Required"),
-  supplierId: Yup.number().min(1, "Too Short!").required("Required"),
+  supplierId: Yup.number().min(1, "Too Short!"),
   materials: Yup.array()
     .of(
       Yup.object().shape({
@@ -55,7 +55,6 @@ const WriteoffCreateForm = ({
   const [cookie, setCookie] = useCookies();
   const writeOff = {
     reason: "",
-    supplierId: 0,
     materials: [],
     warehouseId: cookie.warehouseId,
   };
