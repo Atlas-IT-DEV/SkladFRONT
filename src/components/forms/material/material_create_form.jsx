@@ -91,6 +91,7 @@ const MaterialCreateForm = ({
       console.error("Error createProperty:", error);
     }
   };
+  const [accordionState, setAccordionState] = useState(-1)
 
   const [material, setMaterial] = useState({
     name: "",
@@ -521,7 +522,7 @@ const MaterialCreateForm = ({
                 </AccordionPanel>
               </AccordionItem>
             </Accordion>
-            <Accordion allowMultiple>
+            <Accordion allowMultiple allowToggle index={accordionState}>
               <AccordionItem>
                 <AccordionButton>
                   Добавить новый вид материала
