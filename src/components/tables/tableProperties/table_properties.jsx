@@ -26,7 +26,6 @@ const TableProperties = ({ getPropertyList, propertyList }) => {
         setVisibleModal={setVisibleEditModal}
       >
         <PropertyEditForm
-          visibleModal={visibleEditModal}
           setVisibleModal={setVisibleEditModal}
           getPropertyList={getPropertyList}
           propertyId={propertyId}

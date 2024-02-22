@@ -11,7 +11,7 @@ import {
 import * as Yup from "yup";
 import PropertyService from "../../../API/services/property_service";
 import FormikSelect from "../../UI/formik_select";
-import { optionTypeList } from "./optionTypeList";
+import { optionMeasureList, optionTypeList } from "./optionTypeList";
 import FormikInput from "../../UI/formik_input";
 
 const validationSchema = Yup.object().shape({
@@ -23,14 +23,20 @@ const validationSchema = Yup.object().shape({
     .min(1, "Too Short!")
     .max(255, "Too Long!")
     .required("Required"),
+  measure: Yup.string()
+    .min(1, "Too Short!")
+    .max(255, "Too Long!")
+    .required("Required"),
 });
 
 const PropertyCreateForm = ({ getPropertyList, setVisibleModal }) => {
   const selectRefType = useRef();
+  const selectRefMeasure = useRef();
 
   const property = {
     name: "",
     type: "",
+    measure: "",
   };
 
   const onClose = () => {
@@ -59,6 +65,7 @@ const PropertyCreateForm = ({ getPropertyList, setVisibleModal }) => {
   });
   const clearForm = () => {
     selectRefType.current.setValue("");
+    selectRefMeasure.current.setValue("");
     formik.setValues(property);
     formik.setErrors({});
     formik.setTouched({});
@@ -99,6 +106,13 @@ const PropertyCreateForm = ({ getPropertyList, setVisibleModal }) => {
               name={"type"}
               placeholder={"Тип"}
               options={optionTypeList}
+            />
+            <FormikSelect
+              selectRef={selectRefMeasure}
+              formik={formik}
+              name={"measure"}
+              placeholder={"Единица измерения"}
+              options={optionMeasureList}
             />
           </SimpleGrid>
           <Flex justifyContent="flex-end">
