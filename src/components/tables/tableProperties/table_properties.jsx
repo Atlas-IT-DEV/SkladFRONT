@@ -6,6 +6,10 @@ import styles from "../forTable/table.module.css";
 import UlToClickProperty from "./ulToClickProperties/ul_to_click_property";
 import PropertyEditForm from "../../forms/property/property_edit_form";
 import useWindowDimensions from "../../../hooks/window_dimensions";
+import {
+  optionMeasureList,
+  optionTypeList,
+} from "../../forms/property/optionTypeList";
 
 const TableProperties = ({ getPropertyList, propertyList }) => {
   const [sort, setSort] = useState(false);
@@ -42,6 +46,13 @@ const TableProperties = ({ getPropertyList, propertyList }) => {
             </td>
             <td className={styles.table__td}>
               <UlForTable sort={sort} setSort={setSort} name="Тип" />
+            </td>{" "}
+            <td className={styles.table__td}>
+              <UlForTable
+                sort={sort}
+                setSort={setSort}
+                name="Единица измерения"
+              />
             </td>
             <td className={styles.table__td}></td>
           </tr>
@@ -51,7 +62,19 @@ const TableProperties = ({ getPropertyList, propertyList }) => {
             <tr className={styles.table__tbody_tr} key={property.id}>
               <td className={styles.table__td}>{index + 1}.</td>
               <td className={styles.table__td}>{property.name}</td>
-              <td className={styles.table__td}>{property.type}</td>
+              <td className={styles.table__td}>
+                {
+                  optionTypeList.find((type) => type.value === property.type)
+                    .label
+                }
+              </td>
+              <td className={styles.table__td}>
+                {
+                  optionMeasureList.find(
+                    (measure) => measure.value === property.measure,
+                  ).label
+                }
+              </td>
               <td className={styles.table__td}>
                 <UlToClickProperty
                   propertyId={property.id}
