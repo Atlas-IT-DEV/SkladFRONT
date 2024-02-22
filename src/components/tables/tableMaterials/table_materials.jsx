@@ -11,6 +11,8 @@ import WarehouseToWarehouseNotification from "../../forms/material/warehouse_to_
 import MaterialToWarehouseNotification from "../../forms/material/material_to_warehouse_notification";
 import MaterialTrimCreateForm from "../../forms/material/material_trim_create_form";
 import PurchaseCreateForm from "../../forms/purchase/purchase_create_form";
+import MaterialService from "../../../API/services/material_service";
+import AllWarehouses from "./all_warehouses_count";
 
 const TableMaterials = ({
   totalPages,
@@ -33,6 +35,11 @@ const TableMaterials = ({
   const [visibleWarehouseToWarehouse, setVisibleWarehouseToWarehouse] =
     useState(false);
   const { width, height } = useWindowDimensions();
+  const getCountAll = async (id) => {
+    const result =  await MaterialService.getMaterial(id)
+    console.log(result.data)
+    return result.data.name
+  }
 
   return (
     <Box
@@ -142,7 +149,7 @@ const TableMaterials = ({
               <td className={styles.table__td}>{material.tmcName}</td>
               <td className={styles.table__td}>{material.tmcTypeName}</td>
               <td className={styles.table__td}>{material.supplierNames}</td>
-              <td className={styles.table__td}>{material.count}</td>
+              <td className={styles.table__td}>{warehouseId == null ? <AllWarehouses materialId={material.id}/> : material.count}</td>
               <td>
                 <UlToClickMaterial
                   warehouseId={warehouseId}

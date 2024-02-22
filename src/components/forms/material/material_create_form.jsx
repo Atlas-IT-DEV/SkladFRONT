@@ -1,4 +1,9 @@
 import {
+  Accordion,
+  AccordionButton,
+  AccordionIcon,
+  AccordionItem,
+  AccordionPanel,
   Box,
   Button,
   Checkbox,
@@ -9,6 +14,7 @@ import {
   SimpleGrid,
   Stack,
   Text,
+  VStack,
 } from "@chakra-ui/react";
 import React, { useEffect, useRef, useState } from "react";
 import { useFormik } from "formik";
@@ -25,6 +31,10 @@ import {
 } from "./support/conversion_functions";
 import FormikSelect from "../../UI/formik_select";
 import Slider from "./slider/slider";
+import Select from "react-select";
+import PropertyService from "../../../API/services/property_service";
+import { optionTypeList } from "../property/optionTypeList";
+import { motion } from "framer-motion";
 
 const validationSchema = Yup.object().shape({
   name: Yup.string()
@@ -53,6 +63,34 @@ const MaterialCreateForm = ({
     materialPropertyDTOList: new Map(),
     show: true,
   };
+  let tmcTypeNew = { name: "", propertyIdList: [] };
+  let tmcNew = { name: "", propertyIdList: [] };
+  let propertyNew = {name:'', type:''}
+  const [propertyList, setPropertyList] = useState([]);
+  const createTmcType = async (propety) => {
+    try {
+      await TmcTypeService.createTmcType(propety);
+      getTmcTypes();
+    } catch (error) {
+      console.error("Error createTmcType:", error);
+    }
+  };
+  const createTmc = async (propety) => {
+    try {
+      await TmcService.createTmc(propety);
+      getTmcs();
+    } catch (error) {
+      console.error("Error createTmc:", error);
+    }
+  };
+  const createProperty = async (propety) => {
+    try {
+      await PropertyService.createProperty(propety);
+      getProperties();
+    } catch (error) {
+      console.error("Error createProperty:", error);
+    }
+  };
 
   const [material, setMaterial] = useState({
     name: "",
@@ -78,6 +116,9 @@ const MaterialCreateForm = ({
   const [images, setImages] = useState(null);
 
   const [isSubmit, setIsSubmit] = useState(false);
+  const [propertyNewInf, setPropertyNewInf] = useState();
+  const [tmcNewInf, setTmcNewInf] = useState()
+  const [tmcTypeNewInf, setTmcTypeNewInf] = useState()
 
   const refImageInput = useRef();
   const selectRefTMC = useRef();
@@ -89,7 +130,25 @@ const MaterialCreateForm = ({
       mapPropertiesValidation,
       setMapPropertiesValidation
     );
-
+  const getProperties = async () => {
+    try {
+      const response = await PropertyService.getProperties();
+      setPropertyList(
+        response.data.map((property) => {
+          return {
+            value: property.id,
+            label: property.name,
+          };
+        })
+      );
+      console.log(propertyList);
+    } catch (error) {
+      console.error("Error getProperties:", error);
+    }
+  };
+  useEffect(() => {
+    getProperties();
+  }, []);
   const createMaterial = async () => {
     try {
       const formData = new FormData();
@@ -375,7 +434,7 @@ const MaterialCreateForm = ({
                 return { value: tmc.id, label: tmc.name };
               })}
               onChange={(e) => changeTmcId(e)}
-              placeholder="ТМЦ"
+              placeholder="ТМЦ (вид материала)"
               // fontSize={["14px", "14px", "16px", "16px", "16px"]}
             />
             <FormikSelect
@@ -387,10 +446,120 @@ const MaterialCreateForm = ({
                 }
                 setMaterial({ ...material, tmcTypeId: e.value });
               }}
-              placeholder="Тип ТМЦ"
+              placeholder="Тип ТМЦ (тип материала)"
               // fontSize={["14px", "14px", "16px", "16px", "16px"]}
             />
-            
+            <Accordion allowMultiple>
+              <AccordionItem>
+                <AccordionButton>
+                  Добавить новое свойство
+                  <AccordionIcon />
+                </AccordionButton>
+                <AccordionPanel minH={350} p={10}>
+                  <VStack width={"100%"} align={"flex-end"}>
+                    <Input
+                      placeholder="Название"
+                      onChange={(e) => {
+                        propertyNew.name = e.target.value;
+                      }}
+                    />
+                    <Box width={"100%"} zIndex={99}>
+                      <Select
+                        placeholder="Тип"
+                        options={optionTypeList}
+                        onChange={(e) => {propertyNew.type = e.value; console.log(propertyNew)}}
+                      />
+                    </Box>
+                    <Button
+                      variant={"menu_yellow"}
+                      onClick={() => {
+                        createProperty(propertyNew);
+                      }}
+                    >
+                      Создать
+                    </Button>
+                  </VStack>
+                </AccordionPanel>
+              </AccordionItem>
+            </Accordion>
+            <Accordion allowMultiple>
+              <AccordionItem>
+                <AccordionButton>
+                  Добавить новый тип материала
+                  <AccordionIcon />
+                </AccordionButton>
+                <AccordionPanel minH={300} p={10}>
+                  <VStack width={"100%"} align={"flex-end"}>
+                    <Input
+                      placeholder="Название"
+                      onChange={(e) => {
+                        tmcTypeNew.name = e.target.value;
+                        console.log(tmcTypeNew);
+                      }}
+                    />
+                    <Box width={"100%"}>
+                      <Select
+                        isMulti // Включает возможность выбора нескольких опций
+                        placeholder="Свойства"
+                        options={propertyList}
+                        onChange={(e) => {
+                          tmcTypeNew.propertyIdList = e.map(
+                            (value) => value.value
+                          );
+                        }}
+                      />
+                    </Box>
+                    <Button
+                      variant={"menu_yellow"}
+                      onClick={() => {
+                        createTmcType(tmcTypeNew);
+                      }}
+                    >
+                      Создать
+                    </Button>
+                  </VStack>
+                </AccordionPanel>
+              </AccordionItem>
+            </Accordion>
+            <Accordion allowMultiple>
+              <AccordionItem>
+                <AccordionButton>
+                  Добавить новый вид материала
+                  <AccordionIcon />
+                </AccordionButton>
+                <AccordionPanel minH={300} p={10}>
+                  <VStack width={"100%"} align={"flex-end"}>
+                    <Input
+                      placeholder="Название"
+                      onChange={(e) => {
+                        tmcNew.name = e.target.value;
+                        console.log(tmcNew);
+                      }}
+                    />
+                    <Box width={"100%"}>
+                      <Select
+                        isMulti // Включает возможность выбора нескольких опций
+                        placeholder="Свойства"
+                        options={propertyList}
+                        onChange={(e) => {
+                          tmcNew.propertyIdList = e.map(
+                            (value) => value.value
+                          );
+                        }}
+                      />
+                    </Box>
+                    <Button
+                      variant={"menu_yellow"}
+                      onClick={() => {
+                        createTmc(tmcNew);
+                      }}
+                    >
+                      Создать
+                    </Button>
+                  </VStack>
+                </AccordionPanel>
+              </AccordionItem>
+            </Accordion>
             <FormikSelect
               isMulti
               selectRef={selectRefCraftifyIdList}
