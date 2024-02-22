@@ -11,7 +11,7 @@ import {
 import * as Yup from "yup";
 import PropertyService from "../../../API/services/property_service";
 import FormikSelect from "../../UI/formik_select";
-import { optionTypeList } from "./optionTypeList";
+import { optionMeasureList, optionTypeList } from "./optionTypeList";
 import FormikInput from "../../UI/formik_input";
 
 const validationSchema = Yup.object().shape({
@@ -23,20 +23,21 @@ const validationSchema = Yup.object().shape({
     .min(1, "Too Short!")
     .max(255, "Too Long!")
     .required("Required"),
+  measure: Yup.string()
+    .min(1, "Too Short!")
+    .max(255, "Too Long!")
+    .required("Required"),
 });
 
-const PropertyEditForm = ({
-  visibleModal,
-  getPropertyList,
-  setVisibleModal,
-  propertyId,
-}) => {
+const PropertyEditForm = ({ getPropertyList, setVisibleModal, propertyId }) => {
   const property = {
     name: "",
     type: "",
+    measure: "",
   };
 
   const selectTypesRef = useRef();
+  const selectRefMeasure = useRef();
 
   const onClose = () => {
     setVisibleModal(false);
@@ -71,9 +72,15 @@ const PropertyEditForm = ({
           return option.value === response.data.type;
         }),
       );
+      selectRefMeasure.current?.setValue(
+        optionMeasureList.find((option) => {
+          return option.value === response.data.measure;
+        }),
+      );
       formik.setValues({
         name: response.data.name,
         type: response.data.type,
+        measure: response.data.measure,
       });
     } catch (error) {
       console.error("Error getProperty:", error);
@@ -128,6 +135,13 @@ const PropertyEditForm = ({
               name={"type"}
               placeholder={"Тип"}
               options={optionTypeList}
+            />
+            <FormikSelect
+              selectRef={selectRefMeasure}
+              formik={formik}
+              name={"measure"}
+              placeholder={"Единица измерения"}
+              options={optionMeasureList}
             />
           </SimpleGrid>
           <Flex justifyContent="flex-end">
