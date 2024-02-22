@@ -4,8 +4,8 @@ import {
   HStack,
   Stack,
   Text,
-  VStack,
   Tooltip,
+  VStack,
 } from "@chakra-ui/react";
 import React, { useEffect, useRef, useState } from "react";
 import MyModal from "../components/myModal/my_modal";
@@ -22,6 +22,12 @@ import { HiOutlineArrowsRightLeft } from "react-icons/hi2";
 import { MdOutlineContentCut } from "react-icons/md";
 import { useCookies } from "react-cookie";
 import { roles } from "../components/header/paths";
+import {
+  optionAreaList,
+  optionDensityList,
+  optionLengthList,
+  optionLiquidList,
+} from "../components/forms/property/optionTypeList";
 
 const MaterialsPage = () => {
   const [cookie, setCookie] = useCookies();
@@ -38,6 +44,11 @@ const MaterialsPage = () => {
   const [showHidden, setShowHidden] = useState(false);
   const [warehouseId, setWarehouseId] = useState(null);
 
+  const [measureLength, setMeasureLength] = useState(null);
+  const [measureArea, setMeasureArea] = useState(null);
+  const [measureLiquid, setMeasureLiquid] = useState(null);
+  const [measureDensity, setMeasureDensity] = useState(null);
+
   const [warehouseList, setWarehouseList] = useState([
     { value: -1, label: "Нераспределенные" },
     { value: null, label: "Все склады" },
@@ -53,7 +64,7 @@ const MaterialsPage = () => {
       currentPage,
       currentPageSize,
       searchStr,
-      showHidden
+      showHidden,
     ).then((response) => {
       setMaterialList(response.data.materials);
       setTotalPages(response.data.totalPages);
@@ -175,7 +186,7 @@ const MaterialsPage = () => {
             onSelect={handleOnSelect}
             onSearch={handleOnSearch}
             placeholder="Начните вводить название..."
-            styling={{ zIndex: 1, borderRadius:0 }}
+            styling={{ zIndex: 1, borderRadius: 0 }}
           />
         </div>
         <Checkbox
@@ -215,17 +226,59 @@ const MaterialsPage = () => {
             aria-label="Подсказка"
             placement="top"
           >
-            <VStack>
-              <Select
-                fontSize={["14px", "14px", "16px", "16px", "16px"]}
-                defaultValue={{ value: null, label: "Все склады" }}
-                options={warehouseList}
-                onChange={(e) => {
-                  setWarehouseId(e.value);
-                }}
-                placeholder="Склады"
-              ></Select>
-            </VStack>
+            <HStack>
+              <VStack>
+                <Select
+                  fontSize={["14px", "14px", "16px", "16px", "16px"]}
+                  defaultValue={{ value: null, label: "Все склады" }}
+                  options={warehouseList}
+                  onChange={(e) => {
+                    setWarehouseId(e.value);
+                  }}
+                  placeholder="Склады"
+                ></Select>
+              </VStack>
+              <VStack>
+                <Select
+                  fontSize={["14px", "14px", "16px", "16px", "16px"]}
+                  options={optionLengthList}
+                  onChange={(e) => {
+                    setMeasureLength(e.value);
+                  }}
+                  placeholder="Единицы измерения для длины"
+                ></Select>
+              </VStack>
+              <VStack>
+                <Select
+                  fontSize={["14px", "14px", "16px", "16px", "16px"]}
+                  options={optionAreaList}
+                  onChange={(e) => {
+                    setMeasureArea(e.value);
+                  }}
+                  placeholder="Единицы измерения для площади"
+                ></Select>
+              </VStack>
+              <VStack>
+                <Select
+                  fontSize={["14px", "14px", "16px", "16px", "16px"]}
+                  options={optionLiquidList}
+                  onChange={(e) => {
+                    setMeasureLiquid(e.value);
+                  }}
+                  placeholder="Единицы измерения для жидксоти"
+                ></Select>
+              </VStack>
+              <VStack>
+                <Select
+                  fontSize={["14px", "14px", "16px", "16px", "16px"]}
+                  options={optionDensityList}
+                  onChange={(e) => {
+                    setMeasureDensity(e.value);
+                  }}
+                  placeholder="Единицы измерения для плотности"
+                ></Select>
+              </VStack>
+            </HStack>
           </Tooltip>
         </Stack>
       </Stack>
