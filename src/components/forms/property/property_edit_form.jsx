@@ -19,21 +19,11 @@ const validationSchema = Yup.object().shape({
     .min(1, "Too Short!")
     .max(255, "Too Long!")
     .required("Required"),
-  type: Yup.string()
-    .min(1, "Too Short!")
-    .max(255, "Too Long!")
-    .required("Required"),
-  measure: Yup.string()
-    .min(1, "Too Short!")
-    .max(255, "Too Long!")
-    .required("Required"),
 });
 
 const PropertyEditForm = ({ getPropertyList, setVisibleModal, propertyId }) => {
   const property = {
     name: "",
-    type: "",
-    measure: "",
   };
 
   const selectTypesRef = useRef();
@@ -129,20 +119,7 @@ const PropertyEditForm = ({ getPropertyList, setVisibleModal, propertyId }) => {
             }}
           >
             <FormikInput formik={formik} name={"name"} label={"Название"} />
-            <FormikSelect
-              selectRef={selectTypesRef}
-              formik={formik}
-              name={"type"}
-              placeholder={"Тип"}
-              options={optionTypeList}
-            />
-            <FormikSelect
-              selectRef={selectRefMeasure}
-              formik={formik}
-              name={"measure"}
-              placeholder={"Единица измерения"}
-              options={optionMeasureList}
-            />
+
           </SimpleGrid>
           <Flex justifyContent="flex-end">
             <Button variant="menu_red" onClick={onClose} mr={3}>

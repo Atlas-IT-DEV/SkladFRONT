@@ -33,7 +33,8 @@ import FormikSelect from "../../UI/formik_select";
 import Slider from "./slider/slider";
 import Select from "react-select";
 import PropertyService from "../../../API/services/property_service";
-import { optionTypeList } from "../property/optionTypeList";
+import { optionMeasureList, optionTypeList } from "../property/optionTypeList";
+import { motion } from "framer-motion";
 
 const validationSchema = Yup.object().shape({
   name: Yup.string()
@@ -64,7 +65,7 @@ const MaterialCreateForm = ({
   };
   let tmcTypeNew = { name: "", propertyIdList: [] };
   let tmcNew = { name: "", propertyIdList: [] };
-  let propertyNew = { name: "", type: "" };
+  let propertyNew = { name: "", type: "", measure: "" };
   const [propertyList, setPropertyList] = useState([]);
   const createTmcType = async (propety) => {
     try {
@@ -90,6 +91,8 @@ const MaterialCreateForm = ({
       console.error("Error createProperty:", error);
     }
   };
+  const [accordionStateType, setAccordeonStateType] = useState(-1);
+  const [accordionState, setAccordionState] = useState(-1);
 
   const [material, setMaterial] = useState({
     name: "",
@@ -107,7 +110,7 @@ const MaterialCreateForm = ({
   const [craftifyList, setCraftifyTypeList] = useState([]);
 
   const [mapPropertiesValidation, setMapPropertiesValidation] = useState(
-    new Map(),
+    new Map()
   );
 
   const [currentProperties, setCurrentProperties] = useState([]);
@@ -453,7 +456,7 @@ const MaterialCreateForm = ({
                   Добавить новое свойство
                   <AccordionIcon />
                 </AccordionButton>
-                <AccordionPanel minH={350} p={10}>
+                <AccordionPanel minH={350} p={10} height={"max-content"}>
                   <VStack width={"100%"} align={"flex-end"}>
                     <Input
                       placeholder="Название"
@@ -468,6 +471,17 @@ const MaterialCreateForm = ({
                         onChange={(e) => {
                           propertyNew.type = e.value;
                         }}
+                        maxMenuHeight={150}
+                      />
+                    </Box>
+                    <Box width={"100%"} zIndex={99}>
+                      <Select
+                        placeholder="Единица измерения"
+                        options={optionMeasureList}
+                        onChange={(e) => {
+                          propertyNew.measure = e.value;
+                        }}
+                        maxMenuHeight={150}
                       />
                     </Box>
                     <Button
@@ -482,9 +496,15 @@ const MaterialCreateForm = ({
                 </AccordionPanel>
               </AccordionItem>
             </Accordion>
-            <Accordion allowMultiple>
+            <Accordion allowMultiple allowToggle index={accordionStateType}>
               <AccordionItem>
-                <AccordionButton>
+                <AccordionButton
+                  onClick={() => {
+                    accordionStateType == -1
+                      ? setAccordeonStateType(0)
+                      : setAccordeonStateType(-1);
+                  }}
+                >
                   Добавить новый тип материала
                   <AccordionIcon />
                 </AccordionButton>
@@ -506,12 +526,14 @@ const MaterialCreateForm = ({
                             (value) => value.value,
                           );
                         }}
+                        maxMenuHeight={150}
                       />
                     </Box>
                     <Button
                       variant={"menu_yellow"}
                       onClick={() => {
                         createTmcType(tmcTypeNew);
+                        setAccordeonStateType(-1);
                       }}
                     >
                       Создать
@@ -520,9 +542,15 @@ const MaterialCreateForm = ({
                 </AccordionPanel>
               </AccordionItem>
             </Accordion>
-            <Accordion allowMultiple>
+            <Accordion allowMultiple allowToggle index={accordionState}>
               <AccordionItem>
-                <AccordionButton>
+                <AccordionButton
+                  onClick={() => {
+                    accordionState == -1
+                      ? setAccordionState(0)
+                      : setAccordionState(-1);
+                  }}
+                >
                   Добавить новый вид материала
                   <AccordionIcon />
                 </AccordionButton>
@@ -542,12 +570,14 @@ const MaterialCreateForm = ({
                         onChange={(e) => {
                           tmcNew.propertyIdList = e.map((value) => value.value);
                         }}
+                        maxMenuHeight={150}
                       />
                     </Box>
                     <Button
                       variant={"menu_yellow"}
                       onClick={() => {
                         createTmc(tmcNew);
+                        setAccordionState(-1)
                       }}
                     >
                       Создать
