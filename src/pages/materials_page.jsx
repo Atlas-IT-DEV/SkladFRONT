@@ -4,8 +4,8 @@ import {
   HStack,
   Stack,
   Text,
-  VStack,
   Tooltip,
+  VStack,
 } from "@chakra-ui/react";
 import React, { useEffect, useRef, useState } from "react";
 import MyModal from "../components/myModal/my_modal";
@@ -22,6 +22,12 @@ import { HiOutlineArrowsRightLeft } from "react-icons/hi2";
 import { MdOutlineContentCut } from "react-icons/md";
 import { useCookies } from "react-cookie";
 import { roles } from "../components/header/paths";
+import {
+  optionAreaList,
+  optionDensityList,
+  optionLengthList,
+  optionLiquidList,
+} from "../components/forms/property/optionTypeList";
 
 const MaterialsPage = () => {
   const [cookie, setCookie] = useCookies();
@@ -38,6 +44,13 @@ const MaterialsPage = () => {
   const [showHidden, setShowHidden] = useState(false);
   const [warehouseId, setWarehouseId] = useState(null);
 
+  const [measure, setMeasure] = useState({
+    length: "",
+    area: "",
+    liquid: "",
+    density: "",
+  });
+
   const [warehouseList, setWarehouseList] = useState([
     { value: -1, label: "Нераспределенные" },
     { value: null, label: "Все склады" },
@@ -53,7 +66,7 @@ const MaterialsPage = () => {
       currentPage,
       currentPageSize,
       searchStr,
-      showHidden
+      showHidden,
     ).then((response) => {
       setMaterialList(response.data.materials);
       setTotalPages(response.data.totalPages);
@@ -237,17 +250,71 @@ const MaterialsPage = () => {
             aria-label="Подсказка"
             placement="top"
           >
-            <VStack>
-              <Select
-                fontSize={["14px", "14px", "16px", "16px", "16px"]}
-                defaultValue={{ value: null, label: "Все склады" }}
-                options={warehouseList}
-                onChange={(e) => {
-                  setWarehouseId(e.value);
-                }}
-                placeholder="Склады"
-              ></Select>
-            </VStack>
+            <HStack>
+              <VStack>
+                <Select
+                  fontSize={["14px", "14px", "16px", "16px", "16px"]}
+                  defaultValue={{ value: null, label: "Все склады" }}
+                  options={warehouseList}
+                  onChange={(e) => {
+                    setWarehouseId(e.value);
+                  }}
+                  placeholder="Склады"
+                ></Select>
+              </VStack>
+              <VStack>
+                <Select
+                  fontSize={["14px", "14px", "16px", "16px", "16px"]}
+                  options={optionLengthList}
+                  onChange={(e) => {
+                    setMeasure((prevState) => ({
+                      ...prevState,
+                      length: e.value,
+                    }));
+                  }}
+                  placeholder="Единицы измерения для длины"
+                ></Select>
+              </VStack>
+              <VStack>
+                <Select
+                  fontSize={["14px", "14px", "16px", "16px", "16px"]}
+                  options={optionAreaList}
+                  onChange={(e) => {
+                    setMeasure((prevState) => ({
+                      ...prevState,
+                      area: e.value,
+                    }));
+                  }}
+                  placeholder="Единицы измерения для площади"
+                ></Select>
+              </VStack>
+              <VStack>
+                <Select
+                  fontSize={["14px", "14px", "16px", "16px", "16px"]}
+                  options={optionLiquidList}
+                  onChange={(e) => {
+                    setMeasure((prevState) => ({
+                      ...prevState,
+                      liquid: e.value,
+                    }));
+                  }}
+                  placeholder="Единицы измерения для жидксоти"
+                ></Select>
+              </VStack>
+              <VStack>
+                <Select
+                  fontSize={["14px", "14px", "16px", "16px", "16px"]}
+                  options={optionDensityList}
+                  onChange={(e) => {
+                    setMeasure((prevState) => ({
+                      ...prevState,
+                      density: e.value,
+                    }));
+                  }}
+                  placeholder="Единицы измерения для плотности"
+                ></Select>
+              </VStack>
+            </HStack>
           </Tooltip>
         </Stack>
       </Stack>
@@ -255,6 +322,7 @@ const MaterialsPage = () => {
         <div>{materialListError}</div>
       ) : (
         <TableMaterials
+          measure={measure}
           totalCountMaterials={totalCountMaterials}
           currentPageSize={currentPageSize}
           setCurrentPageSize={setCurrentPageSize}
