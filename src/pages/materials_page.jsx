@@ -61,6 +61,25 @@ const MaterialsPage = () => {
     });
   });
 
+  const [getMaterialListSearch, materialListSearchError] = useFetching(
+    async () => {
+      if (searchStr != "") {
+        setCurrentPage(1);
+      }
+      await MaterialService.getMaterials(
+        warehouseId,
+        currentPage,
+        totalCountMaterials,
+        searchStr,
+        showHidden
+      ).then((response) => {
+        setMaterialList(response.data.materials);
+        setTotalPages(response.data.totalPages);
+        setTotalCountMaterials(response.data.totalItems);
+      });
+    }
+  );
+
   const [getWarehouseList, warehouseListError] = useFetching(async () => {
     await WarehouseService.getWarehouses().then((response) => {
       setWarehouseList([
@@ -77,8 +96,11 @@ const MaterialsPage = () => {
   }, []);
 
   useEffect(() => {
-    getMaterialList();
-  }, [warehouseId, currentPage, currentPageSize, searchStr, showHidden]);
+    searchStr == "" ? getMaterialList() : getMaterialListSearch();
+  }, [warehouseId, currentPage, currentPageSize, showHidden, searchStr]);
+  // useEffect(() => {
+  //   searchStr == "" ? getMaterialList() : getMaterialListSearch();
+  // }, [searchStr]);
 
   const formatResult = (item) => {
     return (
@@ -175,7 +197,7 @@ const MaterialsPage = () => {
             onSelect={handleOnSelect}
             onSearch={handleOnSearch}
             placeholder="Начните вводить название..."
-            styling={{ zIndex: 1, borderRadius:0 }}
+            styling={{ zIndex: 1, borderRadius: 0 }}
           />
         </div>
         <Checkbox
