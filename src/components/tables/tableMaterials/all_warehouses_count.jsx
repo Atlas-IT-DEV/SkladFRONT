@@ -1,23 +1,20 @@
 import {
   Accordion,
-  AccordionItem,
   AccordionButton,
-  AccordionPanel,
   AccordionIcon,
-  Text,
-  VStack,
-  Box,
-  OrderedList,
+  AccordionItem,
+  AccordionPanel,
   ListItem,
+  OrderedList,
+  VStack,
 } from "@chakra-ui/react";
-import { useState } from "react";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import MaterialService from "../../../API/services/material_service";
+
 const AllWarehouses = ({ materialId }) => {
   const [count, setCount] = useState({ warehouses: [], count: 23 });
   const getCountAll = async (id) => {
     const result = await MaterialService.getMaterial(id);
-    console.log(result.data);
     setCount(result.data);
   };
   useEffect(() => {

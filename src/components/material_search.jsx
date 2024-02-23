@@ -1,4 +1,3 @@
-import { HStack, VStack } from "@chakra-ui/react";
 import React from "react";
 import { ReactSearchAutocomplete } from "react-search-autocomplete";
 
@@ -65,22 +64,17 @@ function MaterialSearch() {
   const handleOnSearch = (string, results) => {
     // onSearch will have as the first callback parameter
     // the string searched and for the second the results.
-    console.log(string, results);
   };
 
   const handleOnHover = (result) => {
     // the item hovered
-    console.log(result);
   };
 
   const handleOnSelect = (item) => {
     // the item selected
-    console.log(item);
   };
 
-  const handleOnFocus = () => {
-    console.log("Focused");
-  };
+  const handleOnFocus = () => {};
 
   const formatResult = (item) => {
     return (

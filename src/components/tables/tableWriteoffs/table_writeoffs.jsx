@@ -1,16 +1,5 @@
-import React, { useState } from "react";
-import {
-  Box,
-  VStack,
-  HStack,
-  Tooltip,
-  Button,
-  Accordion,
-  AccordionItem,
-  AccordionButton,
-  AccordionPanel,
-  AccordionIcon,
-} from "@chakra-ui/react";
+import React, { useEffect, useState } from "react";
+import { Box, Button, HStack, Tooltip, VStack } from "@chakra-ui/react";
 import MyModal from "../../myModal/my_modal";
 import UlForTable from "../forTable/ulForTable/ul_for_table";
 import styles from "../forTable/table.module.css";
@@ -19,7 +8,6 @@ import UlToClickWriteoff from "./ulToClickWriteoffs/ul_to_click_writeoff";
 import { convertDateString } from "../../../helperFunc/convertDateToYesterday";
 import WriteoffConfirmForm from "../../forms/writeOff/writeoff_confirm_form";
 import { useCookies } from "react-cookie";
-import { useEffect } from "react";
 import { useFetching } from "../../../hooks/useFetching";
 import WriteOffService from "../../../API/services/writeoff_service";
 import WriteoffCreateForm from "../../forms/writeOff/writeoff_create_form";
@@ -94,12 +82,11 @@ const TableWriteoffs = () => {
   const [getWriteOffList, warehouseListError] = useFetching(async () => {
     const response = await WriteOffService.getWriteoffs(
       currentPage,
-      currentPageSize
+      currentPageSize,
     );
     setWriteoffList(response.data.writeOffs);
     setTotalPages(response.data.totalPages);
     setTotalCountUsers(response.data.totalItems);
-    console.log(response.data);
   });
 
   useEffect(() => {
@@ -109,7 +96,10 @@ const TableWriteoffs = () => {
     <VStack width="100%">
       <HStack color={"black"} width="100%">
         <HStack color={"black"} width="100%">
-          <Tooltip label="Для создания списания выберите нужный материал, склад и клиента(если материал продан)" aria-label="Подсказка">
+          <Tooltip
+            label="Для создания списания выберите нужный материал, склад и клиента(если материал продан)"
+            aria-label="Подсказка"
+          >
             <Button
               variant="menu_yellow"
               onClick={() => setVisibleCreateModal(true)}
@@ -183,7 +173,8 @@ const TableWriteoffs = () => {
                 <td className={styles.table__td}>{writeoff.reason}</td>
                 <td className={styles.table__td} style={{ minWidth: "300px" }}>
                   {writeoff.materials.map(
-                    (material) => `|${material.name} ${material.tmcName} ${material.tmcTypeName} кол-во ${material.count} |`
+                    (material) =>
+                      `|${material.name} ${material.tmcName} ${material.tmcTypeName} кол-во ${material.count} |`,
                   )}
                 </td>
                 <td className={styles.table__td}>{writeoff.totalPrice}</td>

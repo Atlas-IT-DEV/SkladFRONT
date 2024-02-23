@@ -131,13 +131,11 @@ const MaterialsPage = () => {
     string == "" ? setSearchStr("") : setSearchStr(`name:*${string}*`);
   };
   const handleOnSelect = (item) => {
-    console.log(item);
     // async () => {
     //   await MaterialService.getMaterials(
     //     warehouseId,
     //     currentPage,
     //     currentPageSize,
-
     //   ).then((response) => {
     //     setMaterialList(response.data.materials);
     //     setTotalPages(response.data.totalPages);

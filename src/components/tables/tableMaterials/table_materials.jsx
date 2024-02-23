@@ -38,7 +38,6 @@ const TableMaterials = ({
   const { width, height } = useWindowDimensions();
   const getCountAll = async (id) => {
     const result = await MaterialService.getMaterial(id);
-    console.log(result.data);
     return result.data.name;
   };
 

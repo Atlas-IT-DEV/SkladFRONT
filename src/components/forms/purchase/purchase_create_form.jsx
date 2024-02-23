@@ -17,7 +17,6 @@ import FormikSelect from "../../UI/formik_select";
 import { getDate } from "../../../helperFunc/getDate";
 import { AsyncPaginate } from "react-select-async-paginate";
 import WarehouseService from "../../../API/services/warehouse_service";
-import { useFetching } from "../../../hooks/useFetching";
 import Select from "react-select";
 
 const validationSchema = Yup.object().shape({
@@ -36,7 +35,7 @@ const validationSchema = Yup.object().shape({
     .required("Required"),
   price: Yup.number()
     .test("is-decimal", "invalid decimal", (value) =>
-      (value + "").match(/^(\d*\.{0,1}\d{0,2}$)/)
+      (value + "").match(/^(\d*\.{0,1}\d{0,2}$)/),
     )
     .required("Required"),
   supplierId: Yup.number().min(1, "Too Short!").required("Required"),
@@ -56,7 +55,9 @@ const PurchaseCreateForm = ({ visibleModal, setVisibleModal, materialId }) => {
     materialId: materialId,
   };
   const [warehouseId, setWarehouseId] = useState();
-  const [warehouses, setWarehouses] = useState([{value:1, label:'Склад Складов'}])
+  const [warehouses, setWarehouses] = useState([
+    { value: 1, label: "Склад Складов" },
+  ]);
 
   const [deliveryMethodList, setDeliveryMethodList] = useState([]);
   const selectRefSupplierId = useRef();
@@ -68,7 +69,7 @@ const PurchaseCreateForm = ({ visibleModal, setVisibleModal, materialId }) => {
         setDeliveryMethodList(
           response.data.map((deliveryMethod) => {
             return { value: deliveryMethod.id, label: deliveryMethod.name };
-          })
+          }),
         );
       });
     } catch (error) {
@@ -77,10 +78,12 @@ const PurchaseCreateForm = ({ visibleModal, setVisibleModal, materialId }) => {
   };
   const getWarehousesList = async () => {
     const result = await WarehouseService.getWarehouses();
-    let datab = Array.from(result.data).map((elem) => ({value:elem.id, label:elem.name}))
-    datab.push({value:'', label:'Не указано'})
+    let datab = Array.from(result.data).map((elem) => ({
+      value: elem.id,
+      label: elem.name,
+    }));
+    datab.push({ value: "", label: "Не указано" });
     setWarehouses(datab);
-    console.log(datab)
   };
 
   const onClose = () => {
@@ -109,7 +112,7 @@ const PurchaseCreateForm = ({ visibleModal, setVisibleModal, materialId }) => {
     validationSchema: validationSchema,
     onSubmit: (values, { setSubmitting }) => {
       values.dateTime = new Date();
-      createPurchase(values, );
+      createPurchase(values);
       onClose();
       setSubmitting(false);
     },
@@ -119,7 +122,7 @@ const PurchaseCreateForm = ({ visibleModal, setVisibleModal, materialId }) => {
       return await SupplierService.getSuppliersClients(
         currentPage,
         currentPageSize,
-        search
+        search,
       );
     } catch (error) {
       console.error("Error getMaterial:", error);
@@ -156,12 +159,12 @@ const PurchaseCreateForm = ({ visibleModal, setVisibleModal, materialId }) => {
     if (materialId > 0 && visibleModal) {
       getDeliveryMethods();
     }
-    getWarehousesList()
+    getWarehousesList();
   }, [visibleModal]);
 
   useEffect(() => {
     getWarehousesList();
-  }, [])
+  }, []);
 
   const clearForm = () => {
     selectRefSupplierId.current.setValue("");
@@ -213,11 +216,10 @@ const PurchaseCreateForm = ({ visibleModal, setVisibleModal, materialId }) => {
             <Select
               name="supplierType"
               label={"Склад на который нужно переместить товары"}
-              defaultValue={''}
+              defaultValue={""}
               // options={warehouses.map((warehouse) => ({value:warehouse.id, label: warehouse.name}))}
               options={warehouses}
               onChange={(option) => setWarehouseId(option.value)}
-            
             />
             <FormikInput formik={formik} name={"count"} label={"Кол-во"} />
             <FormikInput

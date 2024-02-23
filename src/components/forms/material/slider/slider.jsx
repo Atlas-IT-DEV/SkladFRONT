@@ -5,7 +5,6 @@ import classNames from "./slider.module.css";
 
 const Slider = ({ deleteImage, images }) => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
-  console.log(currentImageIndex);
 
   useEffect(() => {
     setCurrentImageIndex(0);
