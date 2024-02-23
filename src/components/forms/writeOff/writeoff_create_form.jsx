@@ -18,6 +18,8 @@ import SupplierService from "../../../API/services/supplier_service";
 import { AsyncPaginate } from "react-select-async-paginate";
 import WriteOffService from "../../../API/services/writeoff_service";
 import { useCookies } from "react-cookie";
+import PurchaseService from "../../../API/services/purchase_service";
+import { convertDateString } from "../../../helperFunc/convertDateToYesterday";
 
 const validationSchema = Yup.object().shape({
   reason: Yup.string()
@@ -164,17 +166,29 @@ const WriteoffCreateForm = ({
           material.value,
           formik.values.warehouseId,
         );
-        const currentPurchaseMaterials =
-          newMaterial?.currentPurchaseMaterials?.map((purchaseMaterial) => ({
-            purchaseId: purchaseMaterial.purchaseId,
-            countOnWarehouse: purchaseMaterial.countOnWarehouse,
-          }));
+
+        const currentPurchaseMaterials = await Promise.all(
+          newMaterial?.currentPurchaseMaterials?.map(
+            async (purchaseMaterial) => {
+              const purchase = await PurchaseService.getPurchase(
+                purchaseMaterial.purchaseId,
+              );
+              console.log(purchase.data);
+              return {
+                purchaseId: purchaseMaterial.purchaseId,
+                countOnWarehouse: purchaseMaterial.countOnWarehouse,
+                date: convertDateString(purchase.data.dateTime),
+              };
+            },
+          ),
+        );
         const materialPurchases =
           currentPurchaseMaterials.length === 1
             ? [
                 {
                   count: 0,
                   purchaseId: currentPurchaseMaterials[0].purchaseId,
+                  date: currentPurchaseMaterials[0].date,
                 },
               ]
             : [];
@@ -406,7 +420,7 @@ const WriteoffCreateForm = ({
                       placeholder={material?.materialName}
                       defaultValue={{
                         value: material.materialPurchases[0].purchaseId,
-                        label: `id: ${material.materialPurchases[0].purchaseId}, Кол-во: ${material.currentPurchaseMaterials[0].countOnWarehouse}`,
+                        label: `id: ${material.materialPurchases[0].purchaseId}, Кол-во: ${material.currentPurchaseMaterials[0].countOnWarehouse}, дата: ${material.currentPurchaseMaterials[0].date}`,
                       }}
                     />
                   ) : (
@@ -416,7 +430,7 @@ const WriteoffCreateForm = ({
                       options={material.currentPurchaseMaterials?.map(
                         (purchaseMaterial) => ({
                           value: purchaseMaterial.purchaseId,
-                          label: `id: ${purchaseMaterial.purchaseId}, Кол-во: ${purchaseMaterial.countOnWarehouse}`,
+                          label: `id: ${purchaseMaterial.purchaseId}, Кол-во: ${purchaseMaterial.countOnWarehouse}, дата: ${material.currentPurchaseMaterials[0].date}`,
                         }),
                       )}
                       formik={formik}
@@ -429,14 +443,14 @@ const WriteoffCreateForm = ({
                         style={{ marginTop: "1.25rem" }}
                         key={`${material.materialId}-${materialPurchase.purchaseId}`}
                       >
-                        <label>{`id: ${
-                          materialPurchase.purchaseId
-                        }, Кол-во: ${
+                        <label>{`id: ${materialPurchase.purchaseId}, Кол-во: ${
                           material.currentPurchaseMaterials.find(
                             (purchaseMaterial) =>
                               purchaseMaterial.purchaseId ===
                               materialPurchase.purchaseId,
                           ).countOnWarehouse
+                        }, дата: ${
+                          material.currentPurchaseMaterials[0].date
                         }`}</label>
                         <Input
                           value={materialPurchase.count}

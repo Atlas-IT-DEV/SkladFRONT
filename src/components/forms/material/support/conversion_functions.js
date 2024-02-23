@@ -44,9 +44,6 @@ const conversionArray = {
 };
 
 const measurConversion = (startMeasure, endMeasure, value, mesureCategory) => {
-  console.log(value);
-  console.log(conversionArray[mesureCategory][startMeasure]);
-  console.log(conversionArray[mesureCategory][endMeasure]);
   return (
     value *
     (conversionArray[mesureCategory][startMeasure] /

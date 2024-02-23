@@ -35,7 +35,7 @@ const AllWarehouses = ({ materialId }) => {
           <AccordionPanel>
             <OrderedList>
               {count.warehouses.map((warehouse) => (
-                <ListItem>
+                <ListItem key={warehouse.id}>
                   {warehouse.name} {warehouse.count}
                 </ListItem>
               ))}
