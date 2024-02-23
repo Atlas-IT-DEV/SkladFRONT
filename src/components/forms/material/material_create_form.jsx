@@ -118,7 +118,7 @@ const MaterialCreateForm = ({
   const [images, setImages] = useState(null);
 
   const [isSubmit, setIsSubmit] = useState(false);
-  const [propertyNewInf, setPropertyNewInf] = useState();
+  const [propertyNewInf, setPropertyNewInf] = useState({ name: "", type: "", measure: "" });
   const [tmcNewInf, setTmcNewInf] = useState();
   const [tmcTypeNewInf, setTmcTypeNewInf] = useState();
 
@@ -470,6 +470,7 @@ const MaterialCreateForm = ({
                         placeholder="Тип"
                         options={optionTypeList}
                         onChange={(e) => {
+                          propertyNew = Object.
                           propertyNew.type = e.value;
                           console.log(propertyNew);
                         }}

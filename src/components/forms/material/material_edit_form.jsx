@@ -45,7 +45,7 @@ const validationSchema = Yup.object().shape({
           .min(1, "Too Short!")
           .max(50, "Too Long!")
           .required("Required"),
-      }),
+      })
     )
     .max(20, "Too Long!"),
   show: Yup.boolean().required("Required"),
@@ -62,7 +62,7 @@ const MaterialEditForm = ({
   const [material, setMaterial] = useState(new EditMaterialDto());
 
   const [mapPropertiesValidation, setMapPropertiesValidation] = useState(
-    new Map(),
+    new Map()
   );
 
   const [images, setImages] = useState(null);
@@ -75,7 +75,7 @@ const MaterialEditForm = ({
 
   const [propertyChangeability] = usePropertyValidationById(
     mapPropertiesValidation,
-    setMapPropertiesValidation,
+    setMapPropertiesValidation
   );
 
   const refImageInput = useRef();
@@ -102,15 +102,15 @@ const MaterialEditForm = ({
         dt.items.add(
           new File([response.data], image.path, {
             type: response.data.type,
-          }),
+          })
         );
         imageArray.push(response.data);
       });
     }
     setViewImages(
       await Promise.all(
-        imageArray.map(async (image) => await blobToBase64(image)),
-      ),
+        imageArray.map(async (image) => await blobToBase64(image))
+      )
     );
     return dt;
   };
@@ -121,7 +121,7 @@ const MaterialEditForm = ({
       selectCraftifiesRef.current?.setValue(
         response.data.tmCraftifies.map((crafty) => {
           return { value: crafty.id, label: crafty.name };
-        }),
+        })
       );
       setMaterial(new EditMaterialDto(response.data));
       setCurrentProperties(
@@ -131,7 +131,7 @@ const MaterialEditForm = ({
             name: item.property.name,
             type: item.property.type,
           };
-        }),
+        })
       );
       setMapPropertiesValidation(generateBooleanMap(response.data.properties));
       setIsSubmit(false);
@@ -151,12 +151,12 @@ const MaterialEditForm = ({
         JSON.stringify({
           ...material,
           tmCraftifyIdList: material.tmCraftifyIdList.map(
-            (craftify) => craftify.id,
+            (craftify) => craftify.id
           ),
           materialPropertyDTOList: materialPropertyDTOListToArray(
-            material.materialPropertyDTOList,
+            material.materialPropertyDTOList
           ),
-        }),
+        })
       );
       for (let i = 0; i < images?.length; i++) {
         formData.append("files", images[i]);
@@ -175,7 +175,7 @@ const MaterialEditForm = ({
         setCraftifyList(
           response.data.map((tmcType) => {
             return { value: tmcType.id, label: tmcType.name };
-          }),
+          })
         );
       });
     } catch (error) {
@@ -294,17 +294,22 @@ const MaterialEditForm = ({
     for (let key in measure) {
       if (measure[key] !== "") {
         const findMeasure = measureCategory[key].find(
-          (option) => option.value === propertyMeasure,
+          (option) => option.value === propertyMeasure
         );
         if (findMeasure !== undefined) {
+          console.log(
+            optionMeasureList.find(
+              (optionMeasure) => optionMeasure.value === measure[key]
+            )
+          );
           return optionMeasureList.find(
-            (optionMeasure) => optionMeasure.value === measure[key],
+            (optionMeasure) => optionMeasure.value === measure[key]
           );
         }
       }
     }
     return optionMeasureList.find(
-      (optionMeasure) => optionMeasure.value === propertyMeasure,
+      (optionMeasure) => optionMeasure.value === propertyMeasure
     );
   };
 
@@ -437,7 +442,7 @@ const MaterialEditForm = ({
                       <label>
                         {`${item.name} ${
                           optionTypeList.find(
-                            (type) => type.value === item.type,
+                            (type) => type.value === item.type
                           ).label
                         } ${measureReplacing(item.measure).label}`}
                       </label>
@@ -450,7 +455,7 @@ const MaterialEditForm = ({
                         value={unitConversion(
                           item.measure,
                           measure,
-                          material.materialPropertyDTOList.get(item.id),
+                          material.materialPropertyDTOList.get(item.id)
                         )}
                         onChange={(event) =>
                           changeProperty(event.target.value, item.id, item.type)
