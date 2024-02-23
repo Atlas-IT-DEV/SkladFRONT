@@ -173,7 +173,7 @@ const WriteoffCreateForm = ({
               const purchase = await PurchaseService.getPurchase(
                 purchaseMaterial.purchaseId,
               );
-              console.log(purchase.data);
+              console.log(convertDateString(purchase.data.dateTime));
               return {
                 purchaseId: purchaseMaterial.purchaseId,
                 countOnWarehouse: purchaseMaterial.countOnWarehouse,
@@ -430,7 +430,7 @@ const WriteoffCreateForm = ({
                       options={material.currentPurchaseMaterials?.map(
                         (purchaseMaterial) => ({
                           value: purchaseMaterial.purchaseId,
-                          label: `id: ${purchaseMaterial.purchaseId}, Кол-во: ${purchaseMaterial.countOnWarehouse}, дата: ${material.currentPurchaseMaterials[0].date}`,
+                          label: `id: ${purchaseMaterial.purchaseId}, Кол-во: ${purchaseMaterial.countOnWarehouse}, дата: ${purchaseMaterial.date}`,
                         }),
                       )}
                       formik={formik}
@@ -438,20 +438,17 @@ const WriteoffCreateForm = ({
                     />
                   )}
                   {material.materialPurchases?.map((materialPurchase) => {
+                    const purchase = material.currentPurchaseMaterials.find(
+                      (purchaseMaterial) =>
+                        purchaseMaterial.purchaseId ===
+                        materialPurchase.purchaseId,
+                    );
                     return (
                       <div
                         style={{ marginTop: "1.25rem" }}
                         key={`${material.materialId}-${materialPurchase.purchaseId}`}
                       >
-                        <label>{`id: ${materialPurchase.purchaseId}, Кол-во: ${
-                          material.currentPurchaseMaterials.find(
-                            (purchaseMaterial) =>
-                              purchaseMaterial.purchaseId ===
-                              materialPurchase.purchaseId,
-                          ).countOnWarehouse
-                        }, дата: ${
-                          material.currentPurchaseMaterials[0].date
-                        }`}</label>
+                        <label>{`id: ${materialPurchase.purchaseId}, Кол-во: ${purchase.countOnWarehouse}, дата: ${purchase.date}`}</label>
                         <Input
                           value={materialPurchase.count}
                           onChange={(e) =>
