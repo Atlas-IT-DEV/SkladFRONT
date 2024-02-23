@@ -34,7 +34,6 @@ import Slider from "./slider/slider";
 import Select from "react-select";
 import PropertyService from "../../../API/services/property_service";
 import { optionTypeList } from "../property/optionTypeList";
-import { motion } from "framer-motion";
 
 const validationSchema = Yup.object().shape({
   name: Yup.string()
@@ -44,7 +43,7 @@ const validationSchema = Yup.object().shape({
   tmcId: Yup.number().min(1, "Too Short!").required("Required"),
   tmcTypeId: Yup.number().min(1, "Too Short!").required("Required"),
   tmCraftifyIdList: Yup.array(
-    Yup.number().min(1, "Too Short!").required("Required")
+    Yup.number().min(1, "Too Short!").required("Required"),
   ).max(20, "Too Long!"),
   show: Yup.boolean().required("Required"),
 });
@@ -65,7 +64,7 @@ const MaterialCreateForm = ({
   };
   let tmcTypeNew = { name: "", propertyIdList: [] };
   let tmcNew = { name: "", propertyIdList: [] };
-  let propertyNew = {name:'', type:''}
+  let propertyNew = { name: "", type: "" };
   const [propertyList, setPropertyList] = useState([]);
   const createTmcType = async (propety) => {
     try {
@@ -108,7 +107,7 @@ const MaterialCreateForm = ({
   const [craftifyList, setCraftifyTypeList] = useState([]);
 
   const [mapPropertiesValidation, setMapPropertiesValidation] = useState(
-    new Map()
+    new Map(),
   );
 
   const [currentProperties, setCurrentProperties] = useState([]);
@@ -117,8 +116,8 @@ const MaterialCreateForm = ({
 
   const [isSubmit, setIsSubmit] = useState(false);
   const [propertyNewInf, setPropertyNewInf] = useState();
-  const [tmcNewInf, setTmcNewInf] = useState()
-  const [tmcTypeNewInf, setTmcTypeNewInf] = useState()
+  const [tmcNewInf, setTmcNewInf] = useState();
+  const [tmcTypeNewInf, setTmcTypeNewInf] = useState();
 
   const refImageInput = useRef();
   const selectRefTMC = useRef();
@@ -128,7 +127,7 @@ const MaterialCreateForm = ({
   const [propertyChangeability, changeMapPropertiesValidation] =
     usePropertyValidationById(
       mapPropertiesValidation,
-      setMapPropertiesValidation
+      setMapPropertiesValidation,
     );
   const getProperties = async () => {
     try {
@@ -139,9 +138,8 @@ const MaterialCreateForm = ({
             value: property.id,
             label: property.name,
           };
-        })
+        }),
       );
-      console.log(propertyList);
     } catch (error) {
       console.error("Error getProperties:", error);
     }
@@ -157,9 +155,9 @@ const MaterialCreateForm = ({
         JSON.stringify({
           ...material,
           materialPropertyDTOList: materialPropertyDTOListToArray(
-            material.materialPropertyDTOList
+            material.materialPropertyDTOList,
           ),
-        })
+        }),
       );
       for (let i = 0; i < images?.length; i++) {
         formData.append("files", images[i]);
@@ -188,7 +186,7 @@ const MaterialCreateForm = ({
         setTmcTypeList(
           response.data.map((craftify) => {
             return { value: craftify.id, label: craftify.name };
-          })
+          }),
         );
       });
     } catch (error) {
@@ -202,7 +200,7 @@ const MaterialCreateForm = ({
         setCraftifyTypeList(
           response.data.map((tmcType) => {
             return { value: tmcType.id, label: tmcType.name };
-          })
+          }),
         );
       });
     } catch (error) {
@@ -261,7 +259,7 @@ const MaterialCreateForm = ({
       if (material.materialPropertyDTOList.has(property.id)) {
         newMaterialPropertyDTOList.set(
           property.id,
-          material.materialPropertyDTOList.get(property.id)
+          material.materialPropertyDTOList.get(property.id),
         );
       } else {
         if (property.type === "BOOLEAN") {
@@ -467,7 +465,9 @@ const MaterialCreateForm = ({
                       <Select
                         placeholder="Тип"
                         options={optionTypeList}
-                        onChange={(e) => {propertyNew.type = e.value; console.log(propertyNew)}}
+                        onChange={(e) => {
+                          propertyNew.type = e.value;
+                        }}
                       />
                     </Box>
                     <Button
@@ -494,7 +494,6 @@ const MaterialCreateForm = ({
                       placeholder="Название"
                       onChange={(e) => {
                         tmcTypeNew.name = e.target.value;
-                        console.log(tmcTypeNew);
                       }}
                     />
                     <Box width={"100%"}>
@@ -504,7 +503,7 @@ const MaterialCreateForm = ({
                         options={propertyList}
                         onChange={(e) => {
                           tmcTypeNew.propertyIdList = e.map(
-                            (value) => value.value
+                            (value) => value.value,
                           );
                         }}
                       />
@@ -533,7 +532,6 @@ const MaterialCreateForm = ({
                       placeholder="Название"
                       onChange={(e) => {
                         tmcNew.name = e.target.value;
-                        console.log(tmcNew);
                       }}
                     />
                     <Box width={"100%"}>
@@ -542,9 +540,7 @@ const MaterialCreateForm = ({
                         placeholder="Свойства"
                         options={propertyList}
                         onChange={(e) => {
-                          tmcNew.propertyIdList = e.map(
-                            (value) => value.value
-                          );
+                          tmcNew.propertyIdList = e.map((value) => value.value);
                         }}
                       />
                     </Box>

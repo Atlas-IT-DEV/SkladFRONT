@@ -130,6 +130,7 @@ const MaterialEditForm = ({
             id: item.property.id,
             name: item.property.name,
             type: item.property.type,
+            measure: item.property.measure,
           };
         }),
       );
@@ -254,12 +255,24 @@ const MaterialEditForm = ({
     }
   };
 
+  const checkMeasure = () => {
+    for (let key in measure) {
+      if (measure[key] !== "") {
+        return false;
+      }
+    }
+    return true;
+  };
+
   const formik = useFormik({
     initialValues: material,
     validationSchema: validationSchema,
     onSubmit: (values, { setSubmitting }) => {
       if (
-        !mapPropertiesValidationToArray(mapPropertiesValidation).includes(false)
+        !mapPropertiesValidationToArray(mapPropertiesValidation).includes(
+          false,
+        ) &&
+        checkMeasure()
       ) {
         updateMaterial();
         setVisibleModal(false);

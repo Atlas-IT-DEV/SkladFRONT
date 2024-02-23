@@ -2,10 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Box, Text } from "@chakra-ui/react";
 import styles from "./forTable/table.module.css";
 import UserService from "../../API/services/user_service";
-import UrForTable from "./forTable/ulForTable/ul_for_table";
 import MyModal from "./../myModal/my_modal";
-import PurchaseEditForm from "../forms/purchase/purchase_create_form";
-import { convertDateToYesterday } from "./../../helperFunc/convertDateToYesterday";
 import useWindowDimensions from "./../../hooks/window_dimensions";
 import Pagination from "../pagination/pagination";
 import UlToClickUser from "./ultoclickuser";
@@ -47,7 +44,6 @@ const TableUsers = () => {
   const [getWarehousesList, warehousesListError] = useFetching(async () => {
     const result = await WarehouseService.getWarehouses();
     setWarehouses(result.data);
-    console.log(result);
   });
 
   useEffect(() => {
