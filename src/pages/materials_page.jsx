@@ -44,10 +44,12 @@ const MaterialsPage = () => {
   const [showHidden, setShowHidden] = useState(false);
   const [warehouseId, setWarehouseId] = useState(null);
 
-  const [measureLength, setMeasureLength] = useState(null);
-  const [measureArea, setMeasureArea] = useState(null);
-  const [measureLiquid, setMeasureLiquid] = useState(null);
-  const [measureDensity, setMeasureDensity] = useState(null);
+  const [measure, setMeasure] = useState({
+    length: "",
+    area: "",
+    liquid: "",
+    density: "",
+  });
 
   const [warehouseList, setWarehouseList] = useState([
     { value: -1, label: "Нераспределенные" },
@@ -243,7 +245,10 @@ const MaterialsPage = () => {
                   fontSize={["14px", "14px", "16px", "16px", "16px"]}
                   options={optionLengthList}
                   onChange={(e) => {
-                    setMeasureLength(e.value);
+                    setMeasure((prevState) => ({
+                      ...prevState,
+                      length: e.value,
+                    }));
                   }}
                   placeholder="Единицы измерения для длины"
                 ></Select>
@@ -253,7 +258,10 @@ const MaterialsPage = () => {
                   fontSize={["14px", "14px", "16px", "16px", "16px"]}
                   options={optionAreaList}
                   onChange={(e) => {
-                    setMeasureArea(e.value);
+                    setMeasure((prevState) => ({
+                      ...prevState,
+                      area: e.value,
+                    }));
                   }}
                   placeholder="Единицы измерения для площади"
                 ></Select>
@@ -263,7 +271,10 @@ const MaterialsPage = () => {
                   fontSize={["14px", "14px", "16px", "16px", "16px"]}
                   options={optionLiquidList}
                   onChange={(e) => {
-                    setMeasureLiquid(e.value);
+                    setMeasure((prevState) => ({
+                      ...prevState,
+                      liquid: e.value,
+                    }));
                   }}
                   placeholder="Единицы измерения для жидксоти"
                 ></Select>
@@ -273,7 +284,10 @@ const MaterialsPage = () => {
                   fontSize={["14px", "14px", "16px", "16px", "16px"]}
                   options={optionDensityList}
                   onChange={(e) => {
-                    setMeasureDensity(e.value);
+                    setMeasure((prevState) => ({
+                      ...prevState,
+                      density: e.value,
+                    }));
                   }}
                   placeholder="Единицы измерения для плотности"
                 ></Select>
@@ -286,6 +300,7 @@ const MaterialsPage = () => {
         <div>{materialListError}</div>
       ) : (
         <TableMaterials
+          measure={measure}
           totalCountMaterials={totalCountMaterials}
           currentPageSize={currentPageSize}
           setCurrentPageSize={setCurrentPageSize}

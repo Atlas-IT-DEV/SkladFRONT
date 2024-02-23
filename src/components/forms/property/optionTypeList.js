@@ -55,3 +55,24 @@ export const optionDensityList = [
   { value: "GRAMS_CENTIMETER_CUBE", label: "Граммы на кубический сантиметр" },
   { value: "KILOGRAMS_METER_CUBE", label: "Килограммы на кубический метр" },
 ];
+
+export const measureCategory = {
+  length: [
+    { value: "MILLIMETERS", label: "Миллиметры" },
+    { value: "CENTIMETERS", label: "Сантиметры" },
+    { value: "METERS", label: "Метры" },
+  ],
+  area: [
+    { value: "SQUARE_MILLIMETERS", label: "Квадратные миллиметры" },
+    { value: "SQUARE_CENTIMETERS", label: "Квадратные сантиметры" },
+    { value: "SQUARE_METERS", label: "Квадратные метры" },
+  ],
+  liquid: [
+    { value: "MILLILITERS", label: "Миллилитры" },
+    { value: "LITERS", label: "Литры" },
+  ],
+  density: [
+    { value: "GRAMS_CENTIMETER_CUBE", label: "Граммы на кубический сантиметр" },
+    { value: "KILOGRAMS_METER_CUBE", label: "Килограммы на кубический метр" },
+  ],
+};

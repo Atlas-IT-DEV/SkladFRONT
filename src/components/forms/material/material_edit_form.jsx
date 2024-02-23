@@ -21,9 +21,15 @@ import {
   blobToBase64,
   mapPropertiesValidationToArray,
   materialPropertyDTOListToArray,
+  unitConversion,
 } from "./support/conversion_functions";
 import FormikSelect from "../../UI/formik_select";
 import Slider from "./slider/slider";
+import {
+  measureCategory,
+  optionMeasureList,
+  optionTypeList,
+} from "../property/optionTypeList";
 
 const validationSchema = Yup.object().shape({
   name: Yup.string()
@@ -46,6 +52,7 @@ const validationSchema = Yup.object().shape({
 });
 
 const MaterialEditForm = ({
+  measure,
   visibleModal,
   setVisibleModal,
   materialId,
@@ -283,6 +290,24 @@ const MaterialEditForm = ({
     formik.setTouched({});
   };
 
+  const measureReplacing = (propertyMeasure) => {
+    for (let key in measure) {
+      if (measure[key] !== "") {
+        const findMeasure = measureCategory[key].find(
+          (option) => option.value === propertyMeasure,
+        );
+        if (findMeasure !== undefined) {
+          return optionMeasureList.find(
+            (optionMeasure) => optionMeasure.value === measure[key],
+          );
+        }
+      }
+    }
+    return optionMeasureList.find(
+      (optionMeasure) => optionMeasure.value === propertyMeasure,
+    );
+  };
+
   return (
     <>
       <Flex
@@ -402,18 +427,31 @@ const MaterialEditForm = ({
                         changeProperty(event.target.checked, item.id, item.type)
                       }
                     >
-                      {item.name}
+                      {`${item.name} ${
+                        optionTypeList.find((type) => type.value === item.type)
+                          .label
+                      } ${measureReplacing(item.measure).label}`}
                     </Checkbox>
                   ) : (
                     <div>
-                      <label>{item.name}</label>
+                      <label>
+                        {`${item.name} ${
+                          optionTypeList.find(
+                            (type) => type.value === item.type,
+                          ).label
+                        } ${measureReplacing(item.measure).label}`}
+                      </label>
                       <Input
                         isInvalid={
                           mapPropertiesValidation.get(item.id) === false &&
                           isSubmit
                         }
                         errorBorderColor="crimson"
-                        value={material.materialPropertyDTOList.get(item.id)}
+                        value={unitConversion(
+                          item.measure,
+                          measure,
+                          material.materialPropertyDTOList.get(item.id),
+                        )}
                         onChange={(event) =>
                           changeProperty(event.target.value, item.id, item.type)
                         }

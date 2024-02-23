@@ -15,6 +15,7 @@ import MaterialService from "../../../API/services/material_service";
 import AllWarehouses from "./all_warehouses_count";
 
 const TableMaterials = ({
+  measure,
   totalPages,
   materialList,
   currentPage,
@@ -36,10 +37,10 @@ const TableMaterials = ({
     useState(false);
   const { width, height } = useWindowDimensions();
   const getCountAll = async (id) => {
-    const result =  await MaterialService.getMaterial(id)
-    console.log(result.data)
-    return result.data.name
-  }
+    const result = await MaterialService.getMaterial(id);
+    console.log(result.data);
+    return result.data.name;
+  };
 
   return (
     <Box
@@ -65,6 +66,7 @@ const TableMaterials = ({
         setVisibleModal={setVisibleEditModal}
       >
         <MaterialEditForm
+          measure={measure}
           visibleModal={visibleEditModal}
           setVisibleModal={setVisibleEditModal}
           materialId={materialId}
@@ -149,7 +151,13 @@ const TableMaterials = ({
               <td className={styles.table__td}>{material.tmcName}</td>
               <td className={styles.table__td}>{material.tmcTypeName}</td>
               <td className={styles.table__td}>{material.supplierNames}</td>
-              <td className={styles.table__td}>{warehouseId == null ? <AllWarehouses materialId={material.id}/> : material.count}</td>
+              <td className={styles.table__td}>
+                {warehouseId == null ? (
+                  <AllWarehouses materialId={material.id} />
+                ) : (
+                  material.count
+                )}
+              </td>
               <td>
                 <UlToClickMaterial
                   warehouseId={warehouseId}
