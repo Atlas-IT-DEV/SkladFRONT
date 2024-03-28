@@ -10,6 +10,7 @@ import SupplierService from "../../../API/services/supplier_service";
 import SupplierCreateForm from "../../forms/suppliers/supplier_create_form";
 import UlToClickSuppliers from "./ulToClickSuppliers";
 import SupplierEditForm from "../../forms/suppliers/supplier_edit_form";
+import DeliveryPlaceService from "../../../API/services/deliveryPlaces_service";
 
 const TableSuppliers = () => {
   const [sort, setSort] = useState(false);
@@ -19,24 +20,44 @@ const TableSuppliers = () => {
   const [totalPages, setTotalPages] = useState(0);
   const [totalCountPurchases, setTotalCountPurchases] = useState(0);
   const [visibleEditModal, setVisibleEditModal] = useState();
-  const [supplierId, setSupplierId] = useState(-1);
+  const [supplierId, setSupplierId] = useState(1);
   const { width, height } = useWindowDimensions();
+  const [deliveryList, setDeliveryList] = useState([
+    { value: "none", label: "none" },
+  ]);
 
   const [getPurchaseList, purchaseListError] = useFetching(async () => {
     await SupplierService.getSuppliersClients(
       currentPage,
-      currentPageSize,
+      currentPageSize
     ).then((response) => {
       setPurchaseList(response.data.suppliers);
       setTotalPages(response.data.totalPages);
       setTotalCountPurchases(response.data.totalItems);
     });
   });
+
+  const [getDeliveryPlacesList, deliveryPlacesListError] = useFetching(
+    async () => {
+      await DeliveryPlaceService.getDeliveryPlaces().then((response) => {
+        let buffer = response.data.map((element) => {
+          return { value: element.id, label: element.address };
+        });
+        console.log(buffer);
+        setDeliveryList(buffer);
+      });
+      console.log(deliveryList);
+    }
+  );
   const [visibleCreateModal, setVisibleCreateModal] = useState();
 
   useEffect(() => {
     getPurchaseList();
   }, [currentPage, currentPageSize]);
+
+  useEffect(() => {
+    getDeliveryPlacesList();
+  }, []);
 
   return (
     <VStack width={"100%"} align={"flex-start"} spacing={"15px"}>
@@ -60,6 +81,8 @@ const TableSuppliers = () => {
             setVisibleModal={setVisibleEditModal}
             supplierId={supplierId}
             getSuppliersList={getPurchaseList}
+            getDeliveryPlacesList={getDeliveryPlacesList}
+            deliveryPlaceList={deliveryList}
           />
         </MyModal>
         <MyModal
@@ -69,6 +92,8 @@ const TableSuppliers = () => {
           <SupplierCreateForm
             setVisibleModal={setVisibleCreateModal}
             getSuppliersList={getPurchaseList}
+            getDeliveryPlacesList={getDeliveryPlacesList}
+            deliveryPlaceList={deliveryList}
           />
         </MyModal>
         {purchaseListError ? (
@@ -87,6 +112,13 @@ const TableSuppliers = () => {
                   <UrForTable
                     sort={sort}
                     setSort={setSort}
+                    name="Уникальный номер"
+                  />
+                </td>
+                <td>
+                  <UrForTable
+                    sort={sort}
+                    setSort={setSort}
                     name="Название поставщика"
                   />
                 </td>
@@ -97,6 +129,7 @@ const TableSuppliers = () => {
               {purchaseList?.map((purchase, index) => (
                 <tr className={styles.table__tbody_tr} key={purchase.id}>
                   <td className={styles.table__td}>{index + 1}.</td>
+                  <td className={styles.table__td}>#{purchase.id}.</td>
                   <td className={styles.table__td}>{purchase.name}</td>
                   <td className={styles.table__td}>
                     <UlToClickSuppliers

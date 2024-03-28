@@ -66,7 +66,7 @@ const MaterialsPage = () => {
       currentPage,
       currentPageSize,
       searchStr,
-      showHidden,
+      showHidden
     ).then((response) => {
       setMaterialList(response.data.materials);
       setTotalPages(response.data.totalPages);
@@ -243,77 +243,71 @@ const MaterialsPage = () => {
           ) : (
             ""
           )}
-          <Tooltip
-            label="Отвечает за отображение материалов в таблице согласно выбранному складу"
-            aria-label="Подсказка"
-            placement="top"
-          >
-            <HStack>
-              <VStack>
-                <Select
-                  fontSize={["14px", "14px", "16px", "16px", "16px"]}
-                  defaultValue={{ value: null, label: "Все склады" }}
-                  options={warehouseList}
-                  onChange={(e) => {
-                    setWarehouseId(e.value);
-                  }}
-                  placeholder="Склады"
-                ></Select>
-              </VStack>
-              <VStack>
-                <Select
-                  fontSize={["14px", "14px", "16px", "16px", "16px"]}
-                  options={optionLengthList}
-                  onChange={(e) => {
-                    setMeasure((prevState) => ({
-                      ...prevState,
-                      length: e.value,
-                    }));
-                  }}
-                  placeholder="Единицы измерения для длины"
-                ></Select>
-              </VStack>
-              <VStack>
-                <Select
-                  fontSize={["14px", "14px", "16px", "16px", "16px"]}
-                  options={optionAreaList}
-                  onChange={(e) => {
-                    setMeasure((prevState) => ({
-                      ...prevState,
-                      area: e.value,
-                    }));
-                  }}
-                  placeholder="Единицы измерения для площади"
-                ></Select>
-              </VStack>
-              <VStack>
-                <Select
-                  fontSize={["14px", "14px", "16px", "16px", "16px"]}
-                  options={optionLiquidList}
-                  onChange={(e) => {
-                    setMeasure((prevState) => ({
-                      ...prevState,
-                      liquid: e.value,
-                    }));
-                  }}
-                  placeholder="Единицы измерения для жидксоти"
-                ></Select>
-              </VStack>
-              <VStack>
-                <Select
-                  fontSize={["14px", "14px", "16px", "16px", "16px"]}
-                  options={optionDensityList}
-                  onChange={(e) => {
-                    setMeasure((prevState) => ({
-                      ...prevState,
-                      density: e.value,
-                    }));
-                  }}
-                  placeholder="Единицы измерения для плотности"
-                ></Select>
-              </VStack>
-            </HStack>
-          </Tooltip>
+          <HStack>
+            <VStack>
+              <Select
+                fontSize={["14px", "14px", "16px", "16px", "16px"]}
+                defaultValue={{ value: null, label: "Все склады" }}
+                options={warehouseList}
+                onChange={(e) => {
+                  setWarehouseId(e.value);
+                }}
+                placeholder="Склады"
+              ></Select>
+            </VStack>
+            <VStack>
+              <Select
+                fontSize={["14px", "14px", "16px", "16px", "16px"]}
+                options={optionLengthList}
+                onChange={(e) => {
+                  setMeasure((prevState) => ({
+                    ...prevState,
+                    length: e.value,
+                  }));
+                }}
+                placeholder="Длины"
+              ></Select>
+            </VStack>
+            <VStack>
+              <Select
+                fontSize={["14px", "14px", "16px", "16px", "16px"]}
+                options={optionAreaList}
+                onChange={(e) => {
+                  setMeasure((prevState) => ({
+                    ...prevState,
+                    area: e.value,
+                  }));
+                }}
+                placeholder="Площади"
+              ></Select>
+            </VStack>
+            <VStack>
+              <Select
+                fontSize={["14px", "14px", "16px", "16px", "16px"]}
+                options={optionLiquidList}
+                onChange={(e) => {
+                  setMeasure((prevState) => ({
+                    ...prevState,
+                    liquid: e.value,
+                  }));
+                }}
+                placeholder="Обьемы"
+              ></Select>
+            </VStack>
+            <VStack>
+              <Select
+                fontSize={["14px", "14px", "16px", "16px", "16px"]}
+                options={optionDensityList}
+                onChange={(e) => {
+                  setMeasure((prevState) => ({
+                    ...prevState,
+                    density: e.value,
+                  }));
+                }}
+                placeholder="Плотности"
+              ></Select>
+            </VStack>
+          </HStack>
         </Stack>
       </Stack>
       {materialListError ? (

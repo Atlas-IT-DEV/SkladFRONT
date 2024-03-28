@@ -34,7 +34,6 @@ import Slider from "./slider/slider";
 import Select from "react-select";
 import PropertyService from "../../../API/services/property_service";
 import { optionMeasureList, optionTypeList } from "../property/optionTypeList";
-import { motion } from "framer-motion";
 
 const validationSchema = Yup.object().shape({
   name: Yup.string()
@@ -44,7 +43,7 @@ const validationSchema = Yup.object().shape({
   tmcId: Yup.number().min(1, "Too Short!").required("Required"),
   tmcTypeId: Yup.number().min(1, "Too Short!").required("Required"),
   tmCraftifyIdList: Yup.array(
-    Yup.number().min(1, "Too Short!").required("Required"),
+    Yup.number().min(1, "Too Short!").required("Required")
   ).max(20, "Too Long!"),
   show: Yup.boolean().required("Required"),
 });
@@ -66,33 +65,56 @@ const MaterialCreateForm = ({
   let tmcTypeNew = { name: "", propertyIdList: [] };
   let tmcNew = { name: "", propertyIdList: [] };
   let propertyNew = { name: "", type: "", measure: "" };
+  let craftifyNew = { name: "" };
   const [propertyList, setPropertyList] = useState([]);
   const createTmcType = async (propety) => {
     try {
       await TmcTypeService.createTmcType(propety);
       getTmcTypes();
+      setTmcTypeAlert(<Text color={"#28D146"}>Успешно</Text>);
+      setTimeout(() => {
+        setTmcTypeAlert(null);
+      }, 3000);
     } catch (error) {
       console.error("Error createTmcType:", error);
+      setTmcTypeAlert(<Text color={"#FF0F00"}>Ошибка</Text>);
+      setTimeout(() => {
+        setTmcTypeAlert(null);
+      }, 3000);
     }
   };
   const createTmc = async (propety) => {
     try {
       await TmcService.createTmc(propety);
       getTmcs();
+      setTmcAlert(<Text color={"#28D146"}>Успешно</Text>);
+      setTimeout(() => {
+        setTmcAlert(null);
+      }, 3000);
     } catch (error) {
       console.error("Error createTmc:", error);
+      setTmcAlert(<Text color={"#FF0F00"}>Ошибка</Text>);
+      setTimeout(() => {
+        setTmcAlert(null);
+      }, 3000);
     }
   };
   const createProperty = async (propety) => {
     try {
       await PropertyService.createProperty(propety);
       getProperties();
+      setPropertyAlert(<Text color={"#28D146"}>Успешно</Text>);
+      setTimeout(() => {
+        setPropertyAlert(null);
+      }, 3000);
     } catch (error) {
       console.error("Error createProperty:", error);
+      setPropertyAlert(<Text color={"#FF0F00"}>Ошибка</Text>);
+      setTimeout(() => {
+        setPropertyAlert(null);
+      }, 3000);
     }
   };
-  const [accordionStateType, setAccordeonStateType] = useState(-1);
-  const [accordionState, setAccordionState] = useState(-1);
 
   const [material, setMaterial] = useState({
     name: "",
@@ -109,6 +131,11 @@ const MaterialCreateForm = ({
 
   const [craftifyList, setCraftifyTypeList] = useState([]);
 
+  const [tmcAlert, setTmcAlert] = useState(null);
+  const [tmcTypeAlert, setTmcTypeAlert] = useState(null);
+  const [propertyAlert, setPropertyAlert] = useState(null);
+  const [craftifyAlert, setCraftifyAlert] = useState(null);
+
   const [mapPropertiesValidation, setMapPropertiesValidation] = useState(
     new Map()
   );
@@ -118,10 +145,19 @@ const MaterialCreateForm = ({
   const [images, setImages] = useState(null);
 
   const [isSubmit, setIsSubmit] = useState(false);
-  const [propertyNewInf, setPropertyNewInf] = useState({ name: "", type: "", measure: "" });
-  const [tmcNewInf, setTmcNewInf] = useState();
-  const [tmcTypeNewInf, setTmcTypeNewInf] = useState();
-
+  const [propertyNewInf, setPropertyNewInf] = useState({
+    name: "",
+    type: "",
+    measure: "",
+  });
+  const [tmcNewInf, setTmcNewInf] = useState({ name: "", propertyIdList: [] });
+  const [tmcTypeNewInf, setTmcTypeNewInf] = useState({
+    name: "",
+    propertyIdList: [],
+  });
+  const [craftifyNewInf, setCraftifyNewInf] = useState({
+    name: "",
+  });
   const refImageInput = useRef();
   const selectRefTMC = useRef();
   const selectRefTmcType = useRef();
@@ -130,7 +166,7 @@ const MaterialCreateForm = ({
   const [propertyChangeability, changeMapPropertiesValidation] =
     usePropertyValidationById(
       mapPropertiesValidation,
-      setMapPropertiesValidation,
+      setMapPropertiesValidation
     );
   const getProperties = async () => {
     try {
@@ -141,7 +177,7 @@ const MaterialCreateForm = ({
             value: property.id,
             label: property.name,
           };
-        }),
+        })
       );
     } catch (error) {
       console.error("Error getProperties:", error);
@@ -158,9 +194,9 @@ const MaterialCreateForm = ({
         JSON.stringify({
           ...material,
           materialPropertyDTOList: materialPropertyDTOListToArray(
-            material.materialPropertyDTOList,
+            material.materialPropertyDTOList
           ),
-        }),
+        })
       );
       for (let i = 0; i < images?.length; i++) {
         formData.append("files", images[i]);
@@ -170,6 +206,22 @@ const MaterialCreateForm = ({
       });
     } catch (error) {
       console.error("Error putMaterial:", error);
+    }
+  };
+  const createCraftify = async (propety) => {
+    try {
+      await CraftifyService.createCraftify(propety);
+      getCraftifies();
+      setCraftifyAlert(<Text color={"#28D146"}>Успешно</Text>);
+      setTimeout(() => {
+        setCraftifyAlert(null);
+      }, 3000);
+    } catch (error) {
+      console.error("Error createCraftify:", error);
+      setCraftifyAlert(<Text color={"#FF0F00"}>Ошибка</Text>);
+      setTimeout(() => {
+        setCraftifyAlert(null);
+      }, 3000);
     }
   };
 
@@ -189,7 +241,7 @@ const MaterialCreateForm = ({
         setTmcTypeList(
           response.data.map((craftify) => {
             return { value: craftify.id, label: craftify.name };
-          }),
+          })
         );
       });
     } catch (error) {
@@ -203,7 +255,7 @@ const MaterialCreateForm = ({
         setCraftifyTypeList(
           response.data.map((tmcType) => {
             return { value: tmcType.id, label: tmcType.name };
-          }),
+          })
         );
       });
     } catch (error) {
@@ -262,7 +314,7 @@ const MaterialCreateForm = ({
       if (material.materialPropertyDTOList.has(property.id)) {
         newMaterialPropertyDTOList.set(
           property.id,
-          material.materialPropertyDTOList.get(property.id),
+          material.materialPropertyDTOList.get(property.id)
         );
       } else {
         if (property.type === "BOOLEAN") {
@@ -461,7 +513,10 @@ const MaterialCreateForm = ({
                     <Input
                       placeholder="Название"
                       onChange={(e) => {
+                        propertyNew = propertyNewInf;
                         propertyNew.name = e.target.value;
+                        setPropertyNewInf(propertyNew);
+                        console.log(propertyNewInf);
                       }}
                     />
                     <Box width={"100%"} zIndex={99}>
@@ -469,8 +524,9 @@ const MaterialCreateForm = ({
                         placeholder="Тип"
                         options={optionTypeList}
                         onChange={(e) => {
-                          propertyNew = Object.
+                          propertyNew = propertyNewInf;
                           propertyNew.type = e.value;
+                          setPropertyNewInf(propertyNew);
                         }}
                         maxMenuHeight={150}
                       />
@@ -480,32 +536,30 @@ const MaterialCreateForm = ({
                         placeholder="Единица измерения"
                         options={optionMeasureList}
                         onChange={(e) => {
+                          propertyNew = propertyNewInf;
                           propertyNew.measure = e.value;
+                          setPropertyNewInf(propertyNew);
                         }}
                         maxMenuHeight={150}
                       />
                     </Box>
+
                     <Button
                       variant={"menu_yellow"}
                       onClick={() => {
-                        createProperty(propertyNew);
+                        createProperty(propertyNewInf);
                       }}
                     >
                       Создать
                     </Button>
+                    {propertyAlert}
                   </VStack>
                 </AccordionPanel>
               </AccordionItem>
             </Accordion>
-            <Accordion allowMultiple allowToggle index={accordionStateType}>
+            <Accordion allowMultiple>
               <AccordionItem>
-                <AccordionButton
-                  onClick={() => {
-                    accordionStateType == -1
-                      ? setAccordeonStateType(0)
-                      : setAccordeonStateType(-1);
-                  }}
-                >
+                <AccordionButton>
                   Добавить новый тип материала
                   <AccordionIcon />
                 </AccordionButton>
@@ -514,7 +568,9 @@ const MaterialCreateForm = ({
                     <Input
                       placeholder="Название"
                       onChange={(e) => {
+                        tmcTypeNew = tmcTypeNewInf;
                         tmcTypeNew.name = e.target.value;
+                        setTmcTypeNewInf(tmcTypeNew);
                       }}
                     />
                     <Box width={"100%"}>
@@ -523,35 +579,32 @@ const MaterialCreateForm = ({
                         placeholder="Свойства"
                         options={propertyList}
                         onChange={(e) => {
+                          tmcTypeNew = tmcTypeNewInf;
                           tmcTypeNew.propertyIdList = e.map(
-                            (value) => value.value,
+                            (value) => value.value
                           );
+                          setTmcTypeNewInf(tmcTypeNew);
                         }}
                         maxMenuHeight={150}
                       />
                     </Box>
+
                     <Button
                       variant={"menu_yellow"}
                       onClick={() => {
-                        createTmcType(tmcTypeNew);
-                        setAccordeonStateType(-1);
+                        createTmcType(tmcTypeNewInf);
                       }}
                     >
                       Создать
                     </Button>
+                    {tmcTypeAlert}
                   </VStack>
                 </AccordionPanel>
               </AccordionItem>
             </Accordion>
-            <Accordion allowMultiple allowToggle index={accordionState}>
+            <Accordion allowMultiple>
               <AccordionItem>
-                <AccordionButton
-                  onClick={() => {
-                    accordionState == -1
-                      ? setAccordionState(0)
-                      : setAccordionState(-1);
-                  }}
-                >
+                <AccordionButton>
                   Добавить новый вид материала
                   <AccordionIcon />
                 </AccordionButton>
@@ -560,7 +613,9 @@ const MaterialCreateForm = ({
                     <Input
                       placeholder="Название"
                       onChange={(e) => {
+                        tmcNew = tmcNewInf;
                         tmcNew.name = e.target.value;
+                        setTmcNewInf(tmcNew);
                       }}
                     />
                     <Box width={"100%"}>
@@ -574,15 +629,46 @@ const MaterialCreateForm = ({
                         maxMenuHeight={150}
                       />
                     </Box>
+
                     <Button
                       variant={"menu_yellow"}
                       onClick={() => {
-                        createTmc(tmcNew);
-                        setAccordionState(-1)
+                        createTmc(tmcNewInf);
                       }}
                     >
                       Создать
                     </Button>
+                    {tmcAlert}
+                  </VStack>
+                </AccordionPanel>
+              </AccordionItem>
+            </Accordion>
+            <Accordion allowMultiple>
+              <AccordionItem>
+                <AccordionButton>
+                  Добавить новый способ обработки
+                  <AccordionIcon />
+                </AccordionButton>
+                <AccordionPanel minH={300} p={10}>
+                  <VStack width={"100%"} align={"flex-end"}>
+                    <Input
+                      placeholder="Название"
+                      onChange={(e) => {
+                        craftifyNew = craftifyNewInf;
+                        craftifyNew.name = e.target.value;
+                        setCraftifyNewInf(craftifyNew);
+                      }}
+                    />
+
+                    <Button
+                      variant={"menu_yellow"}
+                      onClick={() => {
+                        createCraftify(craftifyNewInf);
+                      }}
+                    >
+                      Создать
+                    </Button>
+                    {craftifyAlert}
                   </VStack>
                 </AccordionPanel>
               </AccordionItem>

@@ -127,6 +127,9 @@ const TableMaterials = ({
               <UlForTable sort={sort} setSort={setSort} name="Поставщики" />
             </td>
             <td className={styles.table__td}>
+              <UlForTable sort={sort} setSort={setSort} name="Средняя цена" />
+            </td>
+            <td className={styles.table__td}>
               <UlForTable
                 sort={sort}
                 setSort={setSort}
@@ -150,6 +153,7 @@ const TableMaterials = ({
               <td className={styles.table__td}>{material.tmcName}</td>
               <td className={styles.table__td}>{material.tmcTypeName}</td>
               <td className={styles.table__td}>{material.supplierNames}</td>
+              <td className={styles.table__td}>{material.averagePrice}</td>
               <td className={styles.table__td}>
                 {warehouseId == null ? (
                   <AllWarehouses materialId={material.id} />

@@ -2,6 +2,7 @@ import { Text, VStack } from "@chakra-ui/react";
 import TableLogs from "../components/tables/table_logs";
 import useWindowDimensions from "../hooks/window_dimensions";
 import UserService from "../API/services/user_service";
+import FileUploader from "../components/pdf-reader";
 import { useState } from "react";
 import { useEffect } from "react";
 
@@ -39,6 +40,7 @@ const MainPage = () => {
       >
         Главная страница
       </Text>
+      <FileUploader/>
       <Text
         fontSize={14}
         fontWeight={400}
