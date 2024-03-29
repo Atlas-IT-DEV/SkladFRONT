@@ -26,10 +26,10 @@ const TableSuppliers = () => {
     { value: "none", label: "none" },
   ]);
 
-  const [getPurchaseList, purchaseListError] = useFetching(async () => {
+  const [getSuppliersList, suppliersListError] = useFetching(async () => {
     await SupplierService.getSuppliersClients(
       currentPage,
-      currentPageSize
+      currentPageSize,
     ).then((response) => {
       setPurchaseList(response.data.suppliers);
       setTotalPages(response.data.totalPages);
@@ -47,12 +47,12 @@ const TableSuppliers = () => {
         setDeliveryList(buffer);
       });
       console.log(deliveryList);
-    }
+    },
   );
   const [visibleCreateModal, setVisibleCreateModal] = useState();
 
   useEffect(() => {
-    getPurchaseList();
+    getSuppliersList();
   }, [currentPage, currentPageSize]);
 
   useEffect(() => {
@@ -80,7 +80,7 @@ const TableSuppliers = () => {
           <SupplierEditForm
             setVisibleModal={setVisibleEditModal}
             supplierId={supplierId}
-            getSuppliersList={getPurchaseList}
+            getSuppliersList={getSuppliersList}
             getDeliveryPlacesList={getDeliveryPlacesList}
             deliveryPlaceList={deliveryList}
           />
@@ -91,13 +91,13 @@ const TableSuppliers = () => {
         >
           <SupplierCreateForm
             setVisibleModal={setVisibleCreateModal}
-            getSuppliersList={getPurchaseList}
+            getSuppliersList={getSuppliersList}
             getDeliveryPlacesList={getDeliveryPlacesList}
             deliveryPlaceList={deliveryList}
           />
         </MyModal>
-        {purchaseListError ? (
-          <div>{purchaseListError}</div>
+        {suppliersListError ? (
+          <div>{suppliersListError}</div>
         ) : (
           <table
             className={styles.table}
