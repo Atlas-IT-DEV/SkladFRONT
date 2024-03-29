@@ -28,11 +28,14 @@ import {
   optionLengthList,
   optionLiquidList,
 } from "../components/forms/property/optionTypeList";
+import MaterialsToWarehouse from "../components/forms/material/materials_to_warehouse";
 
 const MaterialsPage = () => {
   const [cookie, setCookie] = useCookies();
 
   const [visibleCreateModal, setVisibleCreateModal] = useState();
+  const [visibleMaterialsToWarehouse, setVisibleMaterialsToWarehouse] =
+    useState();
 
   const [materialList, setMaterialList] = useState([]);
   const [currentPageSize, setCurrentPageSize] = useState(10);
@@ -168,6 +171,17 @@ const MaterialsPage = () => {
           getMaterialList={getMaterialList}
         />
       </MyModal>
+      <MyModal
+        setVisibleModal={setVisibleMaterialsToWarehouse}
+        visibleModal={visibleMaterialsToWarehouse}
+      >
+        <MaterialsToWarehouse
+          visibleModal={visibleMaterialsToWarehouse}
+          setVisibleModal={setVisibleMaterialsToWarehouse}
+          warehouseId={warehouseId}
+          getMaterialList={getMaterialList}
+        />
+      </MyModal>
       <Text
         color="#000"
         fontSize="22px !important"
@@ -219,6 +233,17 @@ const MaterialsPage = () => {
         >
           Показывать скрытые материалы
         </Checkbox>
+        {warehouseId !== null && warehouseId !== -1 ? (
+          <Button
+            variant="menu_yellow"
+            fontSize={["14px", "14px", "16px", "16px", "16px"]}
+            onClick={() => setVisibleMaterialsToWarehouse(true)}
+          >
+            Переместить на другой склад
+          </Button>
+        ) : (
+          ""
+        )}
       </Stack>
 
       <Stack color={"black"} width="100%" direction={"row"} align="flex-start">
