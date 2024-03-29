@@ -17,8 +17,8 @@ const TrMaterialWarehouse = ({
 }) => {
   return (
     <>
-      <tr className={styles.table__tbody_tr} key={warehouse.warehouse}>
-        {warehouse.warehouse}
+      <tr className={styles.table__tbody_tr}>
+        <td>{warehouse.warehouse}</td>
       </tr>
       <tr className={styles.table__tbody_tr}>
         <td className={styles.table__td}>{index + 1}.</td>
