@@ -108,7 +108,7 @@ const SupplierEditForm = ({
         })
       );
       formik.setFieldValue(
-        "deliveryPlaces",
+        "deliveryPlaceIdList",
         adresses.map((el) => el.value)
       );
     } catch (error) {
@@ -161,11 +161,18 @@ const SupplierEditForm = ({
       })
     );
     formik.setFieldValue(
-      "deliveryPlaces",
+      "deliveryPlaceIdList",
       adresses.map((el) => el.value)
     );
     console.log(formik.values);
   }, [supplier]);
+
+  useEffect(() => {
+    formik.setFieldValue(
+      "deliveryPlaceIdList",
+      adresses.map((el) => el.value)
+    );
+  }, [adresses]);
 
   return (
     <FormikProvider value={formik}>
@@ -340,8 +347,8 @@ const SupplierEditForm = ({
                 console.log(e);
                 setAdresses(e);
                 let buffer = e.map((property) => property.value);
+                console.log("buffer");
                 console.log(buffer);
-                formik.setFieldValue("deliveryPlaceIdList", buffer);
               }}
               maxMenuHeight={150}
             />
