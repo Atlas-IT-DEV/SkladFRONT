@@ -34,6 +34,7 @@ import Slider from "./slider/slider";
 import Select from "react-select";
 import PropertyService from "../../../API/services/property_service";
 import { optionMeasureList, optionTypeList } from "../property/optionTypeList";
+import CreateSupplierForMaterial from "./createSupplierForMaterial/create_supplier_for_material";
 
 const validationSchema = Yup.object().shape({
   name: Yup.string()
@@ -43,7 +44,7 @@ const validationSchema = Yup.object().shape({
   tmcId: Yup.number().min(1, "Too Short!").required("Required"),
   tmcTypeId: Yup.number().min(1, "Too Short!").required("Required"),
   tmCraftifyIdList: Yup.array(
-    Yup.number().min(1, "Too Short!").required("Required")
+    Yup.number().min(1, "Too Short!").required("Required"),
   ).max(20, "Too Long!"),
   show: Yup.boolean().required("Required"),
 });
@@ -137,7 +138,7 @@ const MaterialCreateForm = ({
   const [craftifyAlert, setCraftifyAlert] = useState(null);
 
   const [mapPropertiesValidation, setMapPropertiesValidation] = useState(
-    new Map()
+    new Map(),
   );
 
   const [currentProperties, setCurrentProperties] = useState([]);
@@ -166,7 +167,7 @@ const MaterialCreateForm = ({
   const [propertyChangeability, changeMapPropertiesValidation] =
     usePropertyValidationById(
       mapPropertiesValidation,
-      setMapPropertiesValidation
+      setMapPropertiesValidation,
     );
   const getProperties = async () => {
     try {
@@ -177,7 +178,7 @@ const MaterialCreateForm = ({
             value: property.id,
             label: property.name,
           };
-        })
+        }),
       );
     } catch (error) {
       console.error("Error getProperties:", error);
@@ -194,9 +195,9 @@ const MaterialCreateForm = ({
         JSON.stringify({
           ...material,
           materialPropertyDTOList: materialPropertyDTOListToArray(
-            material.materialPropertyDTOList
+            material.materialPropertyDTOList,
           ),
-        })
+        }),
       );
       for (let i = 0; i < images?.length; i++) {
         formData.append("files", images[i]);
@@ -241,7 +242,7 @@ const MaterialCreateForm = ({
         setTmcTypeList(
           response.data.map((craftify) => {
             return { value: craftify.id, label: craftify.name };
-          })
+          }),
         );
       });
     } catch (error) {
@@ -255,7 +256,7 @@ const MaterialCreateForm = ({
         setCraftifyTypeList(
           response.data.map((tmcType) => {
             return { value: tmcType.id, label: tmcType.name };
-          })
+          }),
         );
       });
     } catch (error) {
@@ -314,7 +315,7 @@ const MaterialCreateForm = ({
       if (material.materialPropertyDTOList.has(property.id)) {
         newMaterialPropertyDTOList.set(
           property.id,
-          material.materialPropertyDTOList.get(property.id)
+          material.materialPropertyDTOList.get(property.id),
         );
       } else {
         if (property.type === "BOOLEAN") {
@@ -502,6 +503,7 @@ const MaterialCreateForm = ({
               placeholder="Тип ТМЦ (тип материала)"
               // fontSize={["14px", "14px", "16px", "16px", "16px"]}
             />
+            <CreateSupplierForMaterial />
             <Accordion allowMultiple>
               <AccordionItem>
                 <AccordionButton>
@@ -581,7 +583,7 @@ const MaterialCreateForm = ({
                         onChange={(e) => {
                           tmcTypeNew = tmcTypeNewInf;
                           tmcTypeNew.propertyIdList = e.map(
-                            (value) => value.value
+                            (value) => value.value,
                           );
                           setTmcTypeNewInf(tmcTypeNew);
                         }}

@@ -7,7 +7,7 @@ import {
   Tooltip,
   VStack,
 } from "@chakra-ui/react";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import MyModal from "../components/myModal/my_modal";
 import MaterialCreateForm from "../components/forms/material/material_create_form";
 import TableMaterials from "../components/tables/tableMaterials/table_materials";
@@ -28,11 +28,14 @@ import {
   optionLengthList,
   optionLiquidList,
 } from "../components/forms/property/optionTypeList";
+import MaterialsToWarehouse from "../components/forms/material/materials_to_warehouse";
 
 const MaterialsPage = () => {
   const [cookie, setCookie] = useCookies();
 
   const [visibleCreateModal, setVisibleCreateModal] = useState();
+  const [visibleMaterialsToWarehouse, setVisibleMaterialsToWarehouse] =
+    useState();
 
   const [materialList, setMaterialList] = useState([]);
   const [currentPageSize, setCurrentPageSize] = useState(10);
@@ -58,40 +61,54 @@ const MaterialsPage = () => {
   const { width, height } = useWindowDimensions();
 
   const [getMaterialList, materialListError] = useFetching(async () => {
-    if (searchStr != "") {
-      setCurrentPage(1);
-    }
-    await MaterialService.getMaterials(
-      warehouseId,
-      currentPage,
-      currentPageSize,
-      searchStr,
-      showHidden
-    ).then((response) => {
-      setMaterialList(response.data.materials);
-      setTotalPages(response.data.totalPages);
-      setTotalCountMaterials(response.data.totalItems);
-    });
-  });
+    const currentMaterialList = [];
+    let currentTotalPages = 0;
+    let currentTotalCountMaterials = 0;
+    // Сомнительная логика
 
-  const [getMaterialListSearch, materialListSearchError] = useFetching(
-    async () => {
-      if (searchStr != "") {
-        setCurrentPage(1);
-      }
+    if (warehouseId === null) {
+      await Promise.all(
+        warehouseList.map(async (warehouse) => {
+          if (warehouse.value !== null && warehouse.value !== -1) {
+            const response = await MaterialService.getMaterials(
+              warehouse.value,
+              currentPage,
+              currentPageSize,
+              searchStr,
+              showHidden,
+            );
+            currentMaterialList.push({
+              warehouse: warehouse.label,
+              materials: response.data.materials,
+            });
+            if (currentTotalPages < response.data.totalPages) {
+              currentTotalPages = response.data.totalPages;
+            }
+            if (currentTotalCountMaterials < response.data.totalItems) {
+              currentTotalCountMaterials = response.data.totalItems;
+            }
+          }
+        }),
+      );
+      setMaterialList(currentMaterialList);
+      setTotalPages(currentTotalPages);
+      setTotalCountMaterials(currentTotalCountMaterials);
+    }
+    // Старая логика
+    else {
       await MaterialService.getMaterials(
         warehouseId,
         currentPage,
-        totalCountMaterials,
+        currentPageSize,
         searchStr,
-        showHidden
+        showHidden,
       ).then((response) => {
         setMaterialList(response.data.materials);
         setTotalPages(response.data.totalPages);
         setTotalCountMaterials(response.data.totalItems);
       });
     }
-  );
+  });
 
   const [getWarehouseList, warehouseListError] = useFetching(async () => {
     await WarehouseService.getWarehouses().then((response) => {
@@ -109,11 +126,15 @@ const MaterialsPage = () => {
   }, []);
 
   useEffect(() => {
-    searchStr == "" ? getMaterialList() : getMaterialListSearch();
-  }, [warehouseId, currentPage, currentPageSize, showHidden, searchStr]);
-  // useEffect(() => {
-  //   searchStr == "" ? getMaterialList() : getMaterialListSearch();
-  // }, [searchStr]);
+    getMaterialList();
+  }, [
+    warehouseId,
+    currentPage,
+    currentPageSize,
+    showHidden,
+    searchStr,
+    warehouseList,
+  ]);
 
   const formatResult = (item) => {
     return (
@@ -129,24 +150,9 @@ const MaterialsPage = () => {
   };
   const handleOnSearch = (string, results) => {
     string == "" ? setSearchStr("") : setSearchStr(`name:*${string}*`);
-  };
-  const handleOnSelect = (item) => {
-    // async () => {
-    //   await MaterialService.getMaterials(
-    //     warehouseId,
-    //     currentPage,
-    //     currentPageSize,
-    //   ).then((response) => {
-    //     setMaterialList(response.data.materials);
-    //     setTotalPages(response.data.totalPages);
-    //     setTotalCountMaterials(response.data.totalItems);
-    //   });
-    // }
+    setCurrentPage(1);
   };
 
-  const selectRef = useRef();
-
-  const [value, onChange] = useState();
   return (
     <VStack
       padding={25}
@@ -162,6 +168,17 @@ const MaterialsPage = () => {
         <MaterialCreateForm
           visibleModal={visibleCreateModal}
           setVisibleModal={setVisibleCreateModal}
+          getMaterialList={getMaterialList}
+        />
+      </MyModal>
+      <MyModal
+        setVisibleModal={setVisibleMaterialsToWarehouse}
+        visibleModal={visibleMaterialsToWarehouse}
+      >
+        <MaterialsToWarehouse
+          visibleModal={visibleMaterialsToWarehouse}
+          setVisibleModal={setVisibleMaterialsToWarehouse}
+          warehouseId={warehouseId}
           getMaterialList={getMaterialList}
         />
       </MyModal>
@@ -205,7 +222,6 @@ const MaterialsPage = () => {
           <ReactSearchAutocomplete
             items={materialList}
             formatResult={formatResult}
-            onSelect={handleOnSelect}
             onSearch={handleOnSearch}
             placeholder="Начните вводить название..."
             styling={{ zIndex: 1, borderRadius: 0 }}
@@ -217,6 +233,17 @@ const MaterialsPage = () => {
         >
           Показывать скрытые материалы
         </Checkbox>
+        {warehouseId !== null && warehouseId !== -1 ? (
+          <Button
+            variant="menu_yellow"
+            fontSize={["14px", "14px", "16px", "16px", "16px"]}
+            onClick={() => setVisibleMaterialsToWarehouse(true)}
+          >
+            Переместить на другой склад
+          </Button>
+        ) : (
+          ""
+        )}
       </Stack>
 
       <Stack color={"black"} width="100%" direction={"row"} align="flex-start">

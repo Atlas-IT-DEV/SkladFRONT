@@ -1,4 +1,5 @@
-export const baseUrl = "http://192.168.31.178:8080/api/";
+// export const baseUrl = "http://192.168.31.178:8080/api/";
+export const baseUrl = "http://localhost:8080/api/";
 // export const baseUrl = "http://192.168.1.38/api/";
 // export const baseUrl = "http://192.168.1.27:8080/api/";
 // export const baseUrl = "http://192.168.145.121:8080/api/";

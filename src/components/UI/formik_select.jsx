@@ -11,6 +11,7 @@ const FormikSelect = ({
   options,
   onChange,
   defaultValue,
+  style,
 }) => {
   const styles =
     formik?.errors[name] && formik?.touched[name]
@@ -20,7 +21,7 @@ const FormikSelect = ({
         }
       : "";
   return (
-    <div>
+    <div style={style}>
       <label>{placeholder}</label>
       <Select
         value={value}

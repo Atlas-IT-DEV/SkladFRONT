@@ -20,6 +20,7 @@ const AllWarehouses = ({ materialId }) => {
   useEffect(() => {
     getCountAll(materialId);
   }, []);
+
   return (
     <VStack>
       <Accordion allowMultiple>
@@ -35,7 +36,7 @@ const AllWarehouses = ({ materialId }) => {
           <AccordionPanel>
             <OrderedList>
               {count.warehouses.map((warehouse) => (
-                <ListItem>
+                <ListItem key={warehouse.id}>
                   {warehouse.name} {warehouse.count}
                 </ListItem>
               ))}

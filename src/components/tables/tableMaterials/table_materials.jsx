@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { Box } from "@chakra-ui/react";
 import styles from "../forTable/table.module.css";
 import Pagination from "../../pagination/pagination";
-import UlToClickMaterial from "./ulToClickMaterial/ul_to_click_material";
 import UlForTable from "../forTable/ulForTable/ul_for_table";
 import MyModal from "../../myModal/my_modal";
 import MaterialEditForm from "../../forms/material/material_edit_form";
@@ -13,6 +12,8 @@ import MaterialTrimCreateForm from "../../forms/material/material_trim_create_fo
 import PurchaseCreateForm from "../../forms/purchase/purchase_create_form";
 import MaterialService from "../../../API/services/material_service";
 import AllWarehouses from "./all_warehouses_count";
+import UlToClickMaterial from "./ulToClickMaterial/ul_to_click_material";
+import TrMaterialWarehouse from "./trMaterialWarehouse/tr_material_warehouse";
 
 const TableMaterials = ({
   measure,
@@ -146,38 +147,109 @@ const TableMaterials = ({
           </tr>
         </thead>
         <tbody>
-          {materialList?.map((material, index) => (
-            <tr className={styles.table__tbody_tr} key={material.id}>
-              <td className={styles.table__td}>{index + 1}.</td>
-              <td className={styles.table__td}>{material.name}</td>
-              <td className={styles.table__td}>{material.tmcName}</td>
-              <td className={styles.table__td}>{material.tmcTypeName}</td>
-              <td className={styles.table__td}>{material.supplierNames}</td>
-              <td className={styles.table__td}>{material.averagePrice}</td>
-              <td className={styles.table__td}>
-                {warehouseId == null ? (
-                  <AllWarehouses materialId={material.id} />
-                ) : (
-                  material.count
-                )}
-              </td>
-              <td>
-                <UlToClickMaterial
-                  warehouseId={warehouseId}
-                  materialId={material.id}
-                  trim={material.trim}
-                  setMaterialId={setMaterialId}
-                  setVisibleEditModal={setVisibleEditModal}
-                  setVisibleCreatePurchaseModal={setVisibleCreatePurchaseModal}
-                  setVisibleCreateTrimModal={setVisibleCreateTrimModal}
-                  setVisibleToWarehouse={setVisibleToWarehouse}
-                  setVisibleWarehouseToWarehouse={
-                    setVisibleWarehouseToWarehouse
+          {warehouseId === null
+            ? materialList?.map((warehouse, index) => {
+                return warehouse?.materials?.map((material, index) => {
+                  if (index === 0) {
+                    return (
+                      <TrMaterialWarehouse
+                        key={`${material.id} ${warehouse.warehouse}`}
+                        warehouseId={warehouseId}
+                        material={material}
+                        warehouse={warehouse}
+                        index={index}
+                        setMaterialId={setMaterialId}
+                        setVisibleEditModal={setVisibleEditModal}
+                        setVisibleCreatePurchaseModal={
+                          setVisibleCreatePurchaseModal
+                        }
+                        setVisibleCreateTrimModal={setVisibleCreateTrimModal}
+                        setVisibleToWarehouse={setVisibleToWarehouse}
+                        setVisibleWarehouseToWarehouse={
+                          setVisibleWarehouseToWarehouse
+                        }
+                      />
+                    );
                   }
-                />
-              </td>
-            </tr>
-          ))}
+                  return (
+                    <tr
+                      className={styles.table__tbody_tr}
+                      key={`${material.id} ${warehouse.warehouse}`}
+                    >
+                      <td className={styles.table__td}>{index + 1}.</td>
+                      <td className={styles.table__td}>{material.name}</td>
+                      <td className={styles.table__td}>{material.tmcName}</td>
+                      <td className={styles.table__td}>
+                        {material.tmcTypeName}
+                      </td>
+                      <td className={styles.table__td}>
+                        {material.supplierNames}
+                      </td>
+                      <td className={styles.table__td}>
+                        {material.averagePrice}
+                      </td>
+                      <td className={styles.table__td}>
+                        {warehouseId == null ? (
+                          <AllWarehouses materialId={material.id} />
+                        ) : (
+                          material.count
+                        )}
+                      </td>
+                      <td>
+                        <UlToClickMaterial
+                          warehouseId={warehouseId}
+                          materialId={material.id}
+                          trim={material.trim}
+                          setMaterialId={setMaterialId}
+                          setVisibleEditModal={setVisibleEditModal}
+                          setVisibleCreatePurchaseModal={
+                            setVisibleCreatePurchaseModal
+                          }
+                          setVisibleCreateTrimModal={setVisibleCreateTrimModal}
+                          setVisibleToWarehouse={setVisibleToWarehouse}
+                          setVisibleWarehouseToWarehouse={
+                            setVisibleWarehouseToWarehouse
+                          }
+                        />
+                      </td>
+                    </tr>
+                  );
+                });
+              })
+            : materialList?.map((material, index) => (
+                <tr className={styles.table__tbody_tr} key={material.id}>
+                  <td className={styles.table__td}>{index + 1}.</td>
+                  <td className={styles.table__td}>{material.name}</td>
+                  <td className={styles.table__td}>{material.tmcName}</td>
+                  <td className={styles.table__td}>{material.tmcTypeName}</td>
+                  <td className={styles.table__td}>{material.supplierNames}</td>
+                  <td className={styles.table__td}>{material.averagePrice}</td>
+                  <td className={styles.table__td}>
+                    {warehouseId === null ? (
+                      <AllWarehouses materialId={material.id} />
+                    ) : (
+                      material.count
+                    )}
+                  </td>
+                  <td>
+                    <UlToClickMaterial
+                      warehouseId={warehouseId}
+                      materialId={material.id}
+                      trim={material.trim}
+                      setMaterialId={setMaterialId}
+                      setVisibleEditModal={setVisibleEditModal}
+                      setVisibleCreatePurchaseModal={
+                        setVisibleCreatePurchaseModal
+                      }
+                      setVisibleCreateTrimModal={setVisibleCreateTrimModal}
+                      setVisibleToWarehouse={setVisibleToWarehouse}
+                      setVisibleWarehouseToWarehouse={
+                        setVisibleWarehouseToWarehouse
+                      }
+                    />
+                  </td>
+                </tr>
+              ))}
         </tbody>
       </table>
       <Pagination
